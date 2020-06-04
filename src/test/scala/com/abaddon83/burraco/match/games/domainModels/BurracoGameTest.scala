@@ -53,5 +53,26 @@ class BurracoGameTest extends AnyFunSuite{
     }
   }
 
+  test("initialise a game with 2 players"){
+    val game = BurracoGame.createNewBurracoGame()
+      .addPlayer(PlayerNotAssigned(PlayerIdentity()))
+      .addPlayer(PlayerNotAssigned(PlayerIdentity()))
+
+    val burracoDealer = BurracoDealer(game)
+
+    burracoDealer.dealCardsToFirstPozzetto()
+
+    val firstPozzettoDeck= burracoDealer.dealCardsToFirstPozzetto()
+    val secondPozzettoDeck = burracoDealer.dealCardsToSecondPozzetto()
+    val playersCards = burracoDealer.dealCardsToPlayers()
+    val discardPile=burracoDealer.dealCardToDiscardPile()
+    val burracoDeck = burracoDealer.burracoDeck
+    val gameInitiated = game.initiate(burracoDeck,firstPozzettoDeck, secondPozzettoDeck,discardPile,playersCards)
+
+    gameInitiated.invariantNumCardsInGame()
+    assert(true)
+
+  }
+
 
 }
