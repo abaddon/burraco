@@ -1,8 +1,16 @@
+import scoverage.ScoverageKeys._
+
 name := "burraco"
 
 version := "0.1"
 
+organization := "com.abaddon83"
+
 scalaVersion := "2.13.2"
+
+coverageExcludedPackages := "<empty>;com.abaddon83.libs.*;(.)*[F-f]ake(.)*"
+coverageMinimum := 80
+coverageFailOnMinimum := false
 
 libraryDependencies ++= {
   //val akkaVersion = "2.6.4"
