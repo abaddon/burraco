@@ -6,10 +6,30 @@ import com.abaddon83.burraco.shares.decks.Suits.Suit
 import scala.collection.mutable.ListBuffer
 
 trait Deck{
-  val cards: ListBuffer[Card]
+  protected val cards: ListBuffer[Card]
+
+  /*def addCard(card: Card): this = {
+    cards.addOne(card)
+    (cards)
+  }*/
+
+  def numCards(): Int = {
+    cards.size
+  }
 
   def grabFirstCard(): Card ={
-    cards.remove(1)
+    //assert(numCards > 0)
+    //println(s"cards.size: ${cards.size}")
+    cards.remove(0)
+  }
+
+  def grabAllCards(): List[Card] ={
+    val grabbedCards = cards.toList
+    cards.remove(0,cards.size)
+
+    assert(cards.size == 0)
+
+    grabbedCards
   }
 
 }

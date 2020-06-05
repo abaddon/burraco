@@ -1,5 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels
 
+import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -54,23 +55,20 @@ class BurracoGameTest extends AnyFunSuite{
   }
 
   test("initialise a game with 2 players"){
+    val totalCardsInGameExpected= 108
+
     val game = BurracoGame.createNewBurracoGame()
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
 
-    val burracoDealer = BurracoDealer(game)
+    val burracoCardsDealt: BurracoCardsDealt = BurracoDealerFactory(game).dealBurracoCards()
 
-    burracoDealer.dealCardsToFirstPozzetto()
+    val gameInitiated = game.initiate(burracoCardsDealt)
 
-    val firstPozzettoDeck= burracoDealer.dealCardsToFirstPozzetto()
-    val secondPozzettoDeck = burracoDealer.dealCardsToSecondPozzetto()
-    val playersCards = burracoDealer.dealCardsToPlayers()
-    val discardPile=burracoDealer.dealCardToDiscardPile()
-    val burracoDeck = burracoDealer.burracoDeck
-    val gameInitiated = game.initiate(burracoDeck,firstPozzettoDeck, secondPozzettoDeck,discardPile,playersCards)
-
-    gameInitiated.invariantNumCardsInGame()
-    assert(true)
+    assert(gameInitiated.players.size == game.players.size)
+    assert(gameInitiated.players.exists( playerInGame => game.players.exists(playerWaiting => playerWaiting.playerIdentity == playerInGame.playerIdentity)))
+    assert(gameInitiated.totalCardsInGame == totalCardsInGameExpected)
+    assert(gameInitiated.gameIdentity == game.gameIdentity)
 
   }
 

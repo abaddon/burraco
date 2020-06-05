@@ -5,7 +5,6 @@ import java.util.UUID
 import com.abaddon83.libs.ddd.AggregateUUIDIdentity
 
 case class GameIdentity private(override protected val id: UUID) extends AggregateUUIDIdentity {
-  //override def toString(): String = s"${getClass.getName}-${id.toString}"
 
 }
 

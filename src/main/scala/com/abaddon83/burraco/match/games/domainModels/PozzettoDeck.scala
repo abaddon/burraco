@@ -4,7 +4,7 @@ import com.abaddon83.burraco.shares.decks.{Card, Deck}
 
 import scala.collection.mutable.ListBuffer
 
-case class PozzettoDeck(override val cards: ListBuffer[Card]) extends Deck{
+case class PozzettoDeck private(override protected val cards: ListBuffer[Card]) extends Deck{
 
 }
 

@@ -1,20 +1,21 @@
 package com.abaddon83.burraco.`match`.games.domainModels
 
-import com.abaddon83.burraco.shares.decks.Card
+import com.abaddon83.burraco.shares.decks.{Card, Deck}
 
 import scala.collection.mutable.ListBuffer
 
-case class DiscardPile(cards: ListBuffer[Card]){
+case class DiscardPile private(override protected val cards: ListBuffer[Card]) extends Deck{
 
-  def grabAllCards(): List[Card] ={
+  override def grabAllCards(): List[Card] ={
     assert(cards.size >0,"The DiscardPile is empty, you can't grab a card from here")
-    val grabbedCards = cards.toList
-    cards.empty
-    assert(cards.size == 0,"The DiscardPile has to be empty")
-    grabbedCards
+    super.grabAllCards()
   }
 
-  def discardCard(card: Card): DiscardPile = {
+  override def grabFirstCard(): Card = {
+    throw new UnsupportedOperationException("You cannot grab only one card from the DiscardPile")
+  }
+
+  def addCard(card: Card): DiscardPile = {
     cards.addOne(card)
     DiscardPile(cards)
   }
