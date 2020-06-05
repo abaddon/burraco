@@ -26,7 +26,7 @@ case class BurracoGameWaitingPlayers(
   ) extends BurracoGame{
 
   def addPlayer(player: PlayerNotAssigned): BurracoGameWaitingPlayers ={
-      assert(players.size<maxPlayers,s"Maximum number of players reached, (Max: ${maxPlayers})")
+      assert(players.size < maxPlayers,s"Maximum number of players reached, (Max: ${maxPlayers})")
       assert(isAlreadyAPlayer(player) == false, s"The player ${player.playerIdentity.toString()} is already a player of game ${this.gameIdentity.toString()}")
       BurracoGameWaitingPlayers(gameIdentity,List(players,List(player)).flatten)
   }

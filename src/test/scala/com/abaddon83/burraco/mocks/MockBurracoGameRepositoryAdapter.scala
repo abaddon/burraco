@@ -43,6 +43,17 @@ val mockBurracoGameRepositoryAdapter = new BurracoGameRepositoryPort {
         }
       }
     }
+
+    override def findAllBurracoGameWaitingPlayers(): Future[List[BurracoGameWaitingPlayers]] = {
+      Future{
+        BurracoGameDB.search().filter(game =>
+          game.isInstanceOf[BurracoGameWaitingPlayers]
+        ).map( game =>
+          game.asInstanceOf[BurracoGameWaitingPlayers]
+        ).toList
+      }
+    }
+
   }
 }
 

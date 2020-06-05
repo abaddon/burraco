@@ -8,15 +8,19 @@ import com.abaddon83.burraco.shares.players.PlayerIdentity
 import scala.concurrent.Future
 
 
-class GameService (
+class BurracoGameService(
                     burracoGameRepositoryPort: BurracoGameRepositoryPort,
                     playerPort: PlayerPort,
                   )(implicit val ec: scala.concurrent.ExecutionContext/* = scala.concurrent.ExecutionContext.global*/){
 
+  def allBurracoGamesWaitingPlayers(): Future[List[BurracoGameWaitingPlayers]] = {
+    burracoGameRepositoryPort.findAllBurracoGameWaitingPlayers()
+  }
+
   def createNewBurracoGame(playerIdentity: PlayerIdentity): Future[BurracoGameWaitingPlayers] = {
     for {
       player <- playerPort.findPlayerNotAssignedBy(playerIdentity)
-      burracoGameWaitingPlayer = BurracoGame.createNewBurracoGame().addPlayer(player)
+      burracoGameWaitingPlayer = BurracoGame.createNewBurracoGame()
     } yield burracoGameRepositoryPort.save(burracoGameWaitingPlayer)
   }
 
@@ -24,8 +28,7 @@ class GameService (
     for{
       burracoGameWaitingPlayers <- burracoGameRepositoryPort.findBurracoGameWaitingPlayersBy(gameIdentity)
       player <- playerPort.findPlayerNotAssignedBy(playerIdentity)
-      burracoGame = burracoGameWaitingPlayers.addPlayer(player)
-    } yield burracoGame
+    } yield burracoGameRepositoryPort.save(burracoGameWaitingPlayers.addPlayer(player))
   }
 
   def initialiseGame(gameIdentity: GameIdentity /*,playerIdentity: PlayerIdentity*/): Future[BurracoGameInitialised] ={
@@ -33,7 +36,7 @@ class GameService (
       burracoGameWaitingPlayers <- burracoGameRepositoryPort.findBurracoGameWaitingPlayersBy(gameIdentity)
       burracoCardsDealt = BurracoDealerFactory(burracoGameWaitingPlayers).dealBurracoCards()
       burracoGameInitialised = burracoGameWaitingPlayers.initiate(burracoCardsDealt)
-    } yield burracoGameInitialised
+    } yield burracoGameRepositoryPort.save(burracoGameInitialised)
   }
 
 

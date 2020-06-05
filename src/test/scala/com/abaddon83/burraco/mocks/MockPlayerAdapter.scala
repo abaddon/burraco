@@ -46,6 +46,7 @@ trait MockPlayerAdapter {
 protected object PlayerDB{
   private val db: ListBuffer[BurracoPlayer] = ListBuffer(
     PlayerNotAssigned(PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")).asInstanceOf[BurracoPlayer],
+    PlayerNotAssigned(PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")).asInstanceOf[BurracoPlayer],
     BurracoPlayerAssigned(PlayerIdentity("a11de97d-d46e-4d73-9f74-a9b0bf7665a5")).asInstanceOf[BurracoPlayer]
   )
 

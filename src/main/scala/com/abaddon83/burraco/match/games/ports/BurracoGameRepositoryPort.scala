@@ -11,4 +11,5 @@ trait BurracoGameRepositoryPort {
   def save(burracoGame: BurracoGameInitialised): BurracoGameInitialised
   def findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): Future[BurracoGameWaitingPlayers]
   def findBurracoGameInitialisedBy(gameIdentity: GameIdentity): Future[BurracoGameInitialised]
+  def findAllBurracoGameWaitingPlayers(): Future[List[BurracoGameWaitingPlayers]]
 }
