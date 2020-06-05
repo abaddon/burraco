@@ -13,8 +13,7 @@ case class PlayerNotAssigned(playerIdentity: PlayerIdentity) extends BurracoPlay
 
 }
 
-case class BurracoPlayerAssigned(
-  playerIdentity: PlayerIdentity) extends BurracoPlayer {
+case class BurracoPlayerAssigned(playerIdentity: PlayerIdentity) extends BurracoPlayer {
 
 }
 

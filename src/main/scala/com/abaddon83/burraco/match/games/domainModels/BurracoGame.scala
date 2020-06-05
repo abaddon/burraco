@@ -7,14 +7,22 @@ trait BurracoGame extends Game {
   val maxPlayers: Int = 4
   val minPlayers: Int = 2
   val totalCardsInGame: Int = 108
-  val players: List[BurracoPlayer]
+  protected val players: List[BurracoPlayer]
+
+  def numPlayers: Int = {
+    players.size
+  }
+
+  def listOfPlayers(): List[BurracoPlayer]= {
+    players
+  }
 
 
 }
 
 case class BurracoGameWaitingPlayers(
     override val gameIdentity: GameIdentity,
-    override val players: List[BurracoPlayer]
+    override protected val players: List[BurracoPlayer]
   ) extends BurracoGame{
 
   def addPlayer(player: PlayerNotAssigned): BurracoGameWaitingPlayers ={
@@ -37,14 +45,21 @@ case class BurracoGameWaitingPlayers(
 
 }
 
+object BurracoGame {
+  def createNewBurracoGame(): BurracoGameWaitingPlayers ={
+    BurracoGameWaitingPlayers(GameIdentity(),List.empty)
+  }
+}
+
 case class BurracoGameInitialised private(
             override val gameIdentity: GameIdentity,
-            override val players: List[BurracoPlayerInGame],
+            override protected val players: List[BurracoPlayerInGame],
             burracoDeck: BurracoDeck,
             firstPozzettoDeck: PozzettoDeck,
             secondPozzettoDeck: PozzettoDeck,
             discardPile: DiscardPile
                                  ) extends BurracoGame{
+
 
   def numCardsInGame: Int = {
     val playersCardsTot = players.map(player => player.cards.size).foldLeft(0)(_ + _)
@@ -59,9 +74,9 @@ case class BurracoGameInitialised private(
 
 object BurracoGameInitialised{
   def apply(burracoGameWaitingPlayers: BurracoGameWaitingPlayers, burracoCardsDealt: BurracoCardsDealt): BurracoGameInitialised = {
-    assert(burracoGameWaitingPlayers.players.exists(player => burracoCardsDealt.playersCards.keys.exists(p => p == player.playerIdentity)),s"One or more players doesn't have their cards")
+    assert(burracoGameWaitingPlayers.listOfPlayers.exists(player => burracoCardsDealt.playersCards.keys.exists(p => p == player.playerIdentity)),s"One or more players doesn't have their cards")
 
-    val burracoPlayersInGame =burracoGameWaitingPlayers.players.map(player =>
+    val burracoPlayersInGame =burracoGameWaitingPlayers.listOfPlayers.map(player =>
       BurracoPlayerInGame(
         player.playerIdentity,
         burracoCardsDealt.playersCards.get(player.playerIdentity).get
@@ -82,8 +97,4 @@ object BurracoGameInitialised{
   }
 }
 
-object BurracoGame {
-  def createNewBurracoGame(): BurracoGameWaitingPlayers ={
-    BurracoGameWaitingPlayers(GameIdentity(),List.empty)
-  }
-}
+

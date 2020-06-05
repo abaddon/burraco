@@ -24,13 +24,13 @@ case class BurracoDealerFactory private(private val burracoDeck: BurracoDeck, pr
   }
 
   private def dealCardsToPlayers(): Map[PlayerIdentity,List[Card]] ={
-    burracoGame.players.map(
+    burracoGame.listOfPlayers.map(
       player => dealCardsToPlayer(player.playerIdentity)
     ).reduce(_++_)
   }
 
   private def dealCardsToFirstPozzetto(): PozzettoDeck = {
-    PozzettoDeck(grabCards(numCardsPozzetto(burracoGame.players.size%2)))
+    PozzettoDeck(grabCards(numCardsPozzetto(burracoGame.listOfPlayers.size%2)))
   }
 
   private def dealCardsToSecondPozzetto(): PozzettoDeck = {

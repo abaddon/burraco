@@ -9,7 +9,7 @@ class BurracoGameTest extends AnyFunSuite{
   test("create a Burraco match") {
     val game = BurracoGame.createNewBurracoGame()
     assert(game.isInstanceOf[BurracoGameWaitingPlayers])
-    assert(game.players.size == 0)
+    assert(game.numPlayers == 0)
   }
 
   test("add a player"){
@@ -18,7 +18,7 @@ class BurracoGameTest extends AnyFunSuite{
     val newGame = game.addPlayer(PlayerNotAssigned(PlayerIdentity()))
 
     assert(newGame.gameIdentity == game.gameIdentity)
-    assert(newGame.players.size == game.players.size+1)
+    assert(newGame.numPlayers == game.numPlayers+1)
   }
 
   test("add 4 players"){
@@ -29,7 +29,7 @@ class BurracoGameTest extends AnyFunSuite{
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
 
     assert(game.gameIdentity == game.gameIdentity)
-    assert(game.players.size == 4)
+    assert(game.numPlayers == 4)
   }
 
   test("add 5 players should fail"){
@@ -65,8 +65,8 @@ class BurracoGameTest extends AnyFunSuite{
 
     val gameInitiated = game.initiate(burracoCardsDealt)
 
-    assert(gameInitiated.players.size == game.players.size)
-    assert(gameInitiated.players.exists( playerInGame => game.players.exists(playerWaiting => playerWaiting.playerIdentity == playerInGame.playerIdentity)))
+    assert(gameInitiated.numPlayers == game.numPlayers)
+    assert(gameInitiated.listOfPlayers.exists( playerInGame => game.listOfPlayers().exists(playerWaiting => playerWaiting.playerIdentity == playerInGame.playerIdentity)))
     assert(gameInitiated.totalCardsInGame == totalCardsInGameExpected)
     assert(gameInitiated.gameIdentity == game.gameIdentity)
 
