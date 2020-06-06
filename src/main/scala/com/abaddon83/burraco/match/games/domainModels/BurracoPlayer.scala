@@ -17,10 +17,10 @@ case class BurracoPlayerAssigned(playerIdentity: PlayerIdentity) extends Burraco
 
 }
 
-case class BurracoPlayerInGame(playerIdentity: PlayerIdentity, cards: ListBuffer[Card]) extends BurracoPlayer {
+case class BurracoPlayerInGame(playerIdentity: PlayerIdentity, cards: List[Card]) extends BurracoPlayer {
 
 }
 
 object BurracoPlayerInGame{
-  def apply(playerIdentity: PlayerIdentity, cards: List[Card]): BurracoPlayerInGame = new BurracoPlayerInGame(playerIdentity, cards.to(ListBuffer))
+  def apply(playerIdentity: PlayerIdentity, cards: List[Card]): BurracoPlayerInGame = new BurracoPlayerInGame(playerIdentity, cards)
 }

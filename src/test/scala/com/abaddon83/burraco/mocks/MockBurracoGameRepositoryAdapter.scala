@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.mocks
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoGame, BurracoGameInitialised, BurracoGameWaitingPlayers}
+import com.abaddon83.burraco.`match`.games.domainModels.BurracoGame.{BurracoGame, BurracoGameInitialised, BurracoGameWaitingPlayers}
 import com.abaddon83.burraco.`match`.games.ports.BurracoGameRepositoryPort
 import com.abaddon83.burraco.shares.games.GameIdentity
 

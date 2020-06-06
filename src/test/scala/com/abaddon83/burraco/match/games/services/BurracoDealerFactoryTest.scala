@@ -1,6 +1,7 @@
 package com.abaddon83.burraco.`match`.games.services
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoGame, PlayerNotAssigned}
+import com.abaddon83.burraco.`match`.games.domainModels.BurracoGame.BurracoGame
+import com.abaddon83.burraco.`match`.games.domainModels.PlayerNotAssigned
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 

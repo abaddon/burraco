@@ -1,6 +1,7 @@
 package com.abaddon83.burraco.`match`.games.services
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoCardsDealt, BurracoDeck, BurracoGameWaitingPlayers, DiscardPile, PozzettoDeck}
+import com.abaddon83.burraco.`match`.games.domainModels.BurracoGame.BurracoGameWaitingPlayers
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoCardsDealt, BurracoDeck, DiscardPile, PozzettoDeck}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
