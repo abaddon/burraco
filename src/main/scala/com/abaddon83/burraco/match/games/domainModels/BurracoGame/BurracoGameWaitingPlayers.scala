@@ -18,12 +18,12 @@ case class BurracoGameWaitingPlayers(
     players.exists(p => p == player)
   }
 
-  def initiate(burracoCardsDealt: BurracoCardsDealt): BurracoGameInitialised = {
+  def initiate(burracoCardsDealt: BurracoCardsDealt): BurracoGamePlayerTurnStart = {
 
     assert(players.size >1, s"Not enough players to initiate the game, ( Min: ${minPlayers})")
     //assert(players.exists(p => p.playerIdentity == playerRequestedToStart),"Only the participants can initiate the game")
 
-    BurracoGameInitialised(this,burracoCardsDealt)
+    BurracoGamePlayerTurnStart(this,burracoCardsDealt).testInvariants()
   }
 
 }

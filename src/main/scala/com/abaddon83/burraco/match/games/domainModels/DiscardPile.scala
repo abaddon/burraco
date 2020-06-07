@@ -19,6 +19,10 @@ case class DiscardPile private(override protected val cards: ListBuffer[Card]) e
     cards.addOne(card)
     DiscardPile(cards)
   }
+
+  def showCards: List[Card] = {
+    cards.toList
+  }
 }
 
 object DiscardPile{

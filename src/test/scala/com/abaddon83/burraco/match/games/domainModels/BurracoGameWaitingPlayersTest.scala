@@ -68,7 +68,6 @@ class BurracoGameWaitingPlayersTest extends AnyFunSuite{
 
     assert(gameInitiated.numPlayers == game.numPlayers)
     assert(gameInitiated.listOfPlayers.exists( playerInGame => game.listOfPlayers().exists(playerWaiting => playerWaiting.playerIdentity == playerInGame.playerIdentity)))
-    assert(gameInitiated.numCardsInGame == totalCardsInGameExpected)
     assert(gameInitiated.gameIdentity == game.gameIdentity)
 
   }
