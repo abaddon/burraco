@@ -30,7 +30,8 @@ trait BurracoGamePlayer extends BurracoGame {
 
     val playersUpdated = players.map(playerInGame =>
       if(playerInGame.playerIdentity == playerIdentity){
-        new BurracoPlayerInGame(playerIdentity,orderedCards)
+        playerInGame.copy(cards = orderedCards)
+        //new BurracoPlayerInGame(playerIdentity,orderedCards)
       }else {
         playerInGame
       }
@@ -40,10 +41,12 @@ trait BurracoGamePlayer extends BurracoGame {
   }
 
   //validation
-  protected def validatePlayerId(playerIdentity: PlayerIdentity) = {
-    if(!players.exists(p => p.playerIdentity == playerIdentity)){
-      throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
+  protected def validatePlayerId(playerIdentity: PlayerIdentity): BurracoPlayerInGame = {
+    players.find(p => p.playerIdentity == playerIdentity) match {
+      case Some(playerInGame) => playerInGame
+      case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
+
   }
 
   protected  def validatePlayerTurn(playerIdentity: PlayerIdentity) = {
@@ -53,9 +56,14 @@ trait BurracoGamePlayer extends BurracoGame {
   }
 
   protected def numCardsInGame: Int = {
-    val playersCardsTot = players.map(player => player.cards.size).foldLeft(0)(_ + _)
+    val playersCardsTot = players.map(player =>
+      player.cards.size +
+        player.cardsOnTable.listOfTris.map( tris => tris.showCards.size).foldLeft(0)(_ + _) +
+        player.cardsOnTable.listOfScale.map( scale => scale.showCards.size).foldLeft(0)(_ + _)
+    ).foldLeft(0)(_ + _)
     playersCardsTot + burracoDeck.numCards() + firstPozzettoDeck.numCards() + secondPozzettoDeck.numCards() + discardPile.numCards()
   }
+
 
   //Invariants
   def testInvariants(): this.type = {

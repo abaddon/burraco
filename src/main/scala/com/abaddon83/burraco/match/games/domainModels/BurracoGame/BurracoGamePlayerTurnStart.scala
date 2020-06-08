@@ -29,7 +29,8 @@ case class BurracoGamePlayerTurnStart private(
 
     val playersUpdated = players.map(playerInGame =>
       if(playerInGame.playerIdentity == playerIdentity){
-        new BurracoPlayerInGame(playerIdentity, burracoDeck.grabFirstCard() :: playerInGame.cards)
+        //new BurracoPlayerInGame(playerIdentity, )
+        playerInGame.copy(cards = burracoDeck.grabFirstCard() :: playerInGame.cards)
       }else {
         playerInGame
       }
@@ -53,7 +54,8 @@ case class BurracoGamePlayerTurnStart private(
 
     val playersUpdated = players.map(playerInGame =>
       if(playerInGame.playerIdentity == playerIdentity){
-        new BurracoPlayerInGame(playerIdentity, List(discardPile.grabAllCards(), playerInGame.cards).flatten)
+        playerInGame.copy(cards = List(discardPile.grabAllCards(), playerInGame.cards).flatten)
+        //new BurracoPlayerInGame(playerIdentity, )
       }else {
         playerInGame
       }

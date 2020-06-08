@@ -22,7 +22,7 @@ object Tris{
   private def validateTris(cards: List[Card]): Unit ={
     assert(cards.size >=3, "A tris is composed by 3 or more cards")
     val cardsWithoutJolly = cards.filterNot(c => c.rank == Jolly || c.rank == Two)
-    assert(cardsWithoutJolly.size <2, "A tris is can contain at least 1 Jolly or Two")
+    assert(cardsWithoutJolly.size <2, "A tris can contain at least 1 Jolly or Two")
     if(cardsWithoutJolly.exists(_.rank != cards.head.rank)){
       throw new IllegalArgumentException("A tris is composed cards with the same rank")
     }

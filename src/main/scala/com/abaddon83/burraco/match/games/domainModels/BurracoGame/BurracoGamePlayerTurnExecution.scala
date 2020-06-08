@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels.BurracoGame
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoDeck, BurracoPlayerInGame, DiscardPile, PozzettoDeck, Tris}
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoDeck, BurracoPlayerInGame, DiscardPile, PozzettoDeck, Scale, Tris}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
@@ -19,25 +19,41 @@ case class BurracoGamePlayerTurnExecution private(
     this.copy(players = playerCardsOrdered(playerIdentity,orderedCards)).testInvariants
   }
 
-  def dropTris(playerIdentity: PlayerIdentity,tris: Tris): BurracoGamePlayerTurnExecution = {
-    validatePlayerId(playerIdentity)
+  def dropOnTableATris(playerIdentity: PlayerIdentity,tris: Tris): BurracoGamePlayerTurnExecution = {
+    val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    val updatedPlayerCards = playerCards(playerIdentity: PlayerIdentity) diff tris.showCards
+    val updatedPlayerCards = player.cards diff tris.showCards
+    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfTris(tris :: player.cardsOnTable.listOfTris)
 
-    //TODO drop sul tavolo mancante
-
-    copy(players = UpdatePlayers(BurracoPlayerInGame(playerIdentity,updatedPlayerCards)))
-
+    UpdatePlayers(player
+      .updateCards(updatedPlayerCards)
+      .updateCardsOnTable(updatedPlayerCardsOnTable)
+    )
   }
 
-  private def UpdatePlayers(burracoPlayerInGame: BurracoPlayerInGame): List[BurracoPlayerInGame] ={
-    players.map( p =>
-      if(p.playerIdentity ==burracoPlayerInGame.playerIdentity){
+  def dropOnTableAScale(playerIdentity: PlayerIdentity,scale: Scale): BurracoGamePlayerTurnExecution = {
+    val player = validatePlayerId(playerIdentity)
+    validatePlayerTurn(playerIdentity)
+
+    val updatedPlayerCards = player.cards diff scale.showCards
+    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfScale(scale :: player.cardsOnTable.listOfScale)
+
+    UpdatePlayers(player
+      .updateCards(updatedPlayerCards)
+      .updateCardsOnTable(updatedPlayerCardsOnTable)
+    )
+  }
+
+  private def UpdatePlayers(burracoPlayerInGame: BurracoPlayerInGame): BurracoGamePlayerTurnExecution ={
+    val updatedPlayers = players.map( playerInGame =>
+      if(playerInGame.playerIdentity ==burracoPlayerInGame.playerIdentity){
         burracoPlayerInGame
       }else
-        p
+        playerInGame
     )
+
+    this.copy(players = updatedPlayers).testInvariants()
   }
 
   //validation
