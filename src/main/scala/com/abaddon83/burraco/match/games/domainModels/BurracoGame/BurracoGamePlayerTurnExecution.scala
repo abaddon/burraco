@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels.BurracoGame
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoDeck, BurracoPlayerInGame, DiscardPile, PozzettoDeck, Scale, Tris}
+import com.abaddon83.burraco.`match`.games.domainModels._
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
@@ -38,6 +38,48 @@ case class BurracoGamePlayerTurnExecution private(
 
     val updatedPlayerCards = player.cards diff scale.showCards
     val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfScale(scale :: player.cardsOnTable.listOfScale)
+
+    UpdatePlayers(player
+      .updateCards(updatedPlayerCards)
+      .updateCardsOnTable(updatedPlayerCardsOnTable)
+    )
+  }
+
+  def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],scaleId:ScaleId): BurracoGamePlayerTurnExecution = {
+    val player = validatePlayerId(playerIdentity)
+    validatePlayerTurn(playerIdentity)
+
+    val updatedPlayerCards = player.cards diff cardsToAppend
+    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfScale(
+      player.cardsOnTable.listOfScale.map(scale =>
+        if(scale.scaleId == scaleId){
+          scale.addCards(cardsToAppend)
+        }else {
+          scale
+        }
+      )
+    )
+
+    UpdatePlayers(player
+      .updateCards(updatedPlayerCards)
+      .updateCardsOnTable(updatedPlayerCardsOnTable)
+    )
+  }
+
+  def appendCardsOnATrisDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],trisId:TrisId): BurracoGamePlayerTurnExecution = {
+    val player = validatePlayerId(playerIdentity)
+    validatePlayerTurn(playerIdentity)
+
+    val updatedPlayerCards = player.cards diff cardsToAppend
+    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfTris(
+      player.cardsOnTable.listOfTris.map(tris =>
+        if(tris.trisId == trisId){
+          tris.addCards(cardsToAppend)
+        }else {
+          tris
+        }
+      )
+    )
 
     UpdatePlayers(player
       .updateCards(updatedPlayerCards)

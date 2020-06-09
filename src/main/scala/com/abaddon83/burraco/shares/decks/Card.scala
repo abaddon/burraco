@@ -8,6 +8,10 @@ import com.abaddon83.burraco.shares.decks.Suits.Suit
 
 case class Card (suit: Suit, rank: Rank) {
 
+  override def toString: String = {
+    s"card: ${suit.icon} - ${rank.label}"
+  }
+
 }
 
 
