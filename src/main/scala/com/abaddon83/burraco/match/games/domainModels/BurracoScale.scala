@@ -1,5 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels
 
+import com.abaddon83.burraco.shares.decks.Ranks.Rank
 import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 import com.abaddon83.burraco.shares.decks.Suits.Suit
 
@@ -18,38 +19,42 @@ case class BurracoScale protected(
 
 
   override def sort(): BurracoScale  ={
-    val aceCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Ace))
-    val jollyCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Jolly))
-    val twoCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Two))
-    val cardsWithoutJolly = (cards diff jollyCards) diff twoCards
-    val sortedCardsWithoutJollyAndAce = cardsWithoutJolly diff aceCards
+    val aceCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Ace)) //Ace
+    val jollyCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Jolly)) //jolly
+    val twoCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Two)) //The card Two, if not used as Two is a jolly
+    val cardsWithoutJolly = cards diff (jollyCards ++ twoCards)
+    val cardsWithoutJollyAndAce = cardsWithoutJolly diff aceCards
 
-    val sortedCardsWithoutJolly = sortCards(sortedCardsWithoutJollyAndAce)
+    val sortedCardsWithoutJollyAndAce = cardsWithoutJollyAndAce.sortWith(sortByRank)
 
-    val rightScaleOrder = getTheScaleOrderSubset(sortedCardsWithoutJolly)
+    val rankSequence = getRankSequence(sortedCardsWithoutJollyAndAce)
 
-    val sortedList = rightScaleOrder.map( rank =>
-      sortedCardsWithoutJolly.find(card => card.rank == rank) match {
-        case Some(card) => card
-        case None => { //controllo tra i jolly
-          rank match {
-            case Ranks.Two => {
-              twoCards.find(card => card.rank == rank && card.suit  == suit) match {
-                case Some(card) => twoCards.remove(twoCards.indexOf(card)) //2 appartenente alla scala non e' un jolly
-                case None => addJolly(jollyCards,twoCards,suit)
-              }
-            }
-            case _ => {
-              sortedCardsWithoutJolly.find(card => card.rank == rank) match {
-                case Some(card) => card
-                case None => addJolly(jollyCards,twoCards,suit)
-              }
-            }
-          }
-        }
+    // try to verify if the card list has a card for each rank element in the sequence
+    val sortedList = rankSequence.map( rank =>
+      sortedCardsWithoutJollyAndAce.find(card => card.rank == rank) match {
+        case Some(card) => card  //card found, I use it
+        case None => findAnAlternativeCard(rank,jollyCards,twoCards) //card not found, I try to use a Jolly or a Two as alternative
       }
     )
-    this.copy(cards = List(appendAce(sortedList, aceCards, jollyCards, twoCards),jollyCards,twoCards).flatten)
+    this.copy(cards = List(
+      appendAce(sortedList, aceCards, jollyCards, twoCards) //The sequence previously calculated did't include the Ace. Now I try to append them on the head of the sequence or at the end.
+      ,jollyCards, //I append at the end of the sequence the jollies not used
+      twoCards //I append at the end of the sequence the Two not used (as Jolly)
+    ).flatten)
+  }
+
+  private def findAnAlternativeCard(rank: Rank,jollyCards: ListBuffer[Card], twoCards:ListBuffer[Card] ) = {
+    {
+      rank match {
+        case Ranks.Two => { //if the rank missing in the sequence is the two then I try to use a two with the same scale suit
+          twoCards.find(card => card.rank == rank && card.suit  == suit) match {
+            case Some(card) => twoCards.remove(twoCards.indexOf(card)) //this 2 is not a jolly in this position, we have to consider it as normal card
+            case None => addJolly(jollyCards,twoCards,suit) //nothing found, I try to find an alternative to cover the position Two
+          }
+        }
+        case _ => addJolly(jollyCards,twoCards,suit) //I try to find an alternative to cover any other position missing
+      }
+    }
   }
 
   private val scaleOrder = List(
@@ -81,7 +86,7 @@ case class BurracoScale protected(
       throw new IllegalArgumentException("The scale sequence is broken")
   }
 
-  private def getTheScaleOrderSubset(cards: List[Card]) ={
+  private def getRankSequence(cards: List[Card]) ={
     val idxHead=findTheCardPosition(cards.head)
     val idxLast = scaleOrder.size - (findTheCardPosition(cards.last)+1)    //13 - 5
     scaleOrder.drop(idxHead).dropRight(idxLast)
@@ -96,18 +101,10 @@ case class BurracoScale protected(
     scaleOrder.drop(idx+1).contains(cardNext.rank)
   }
 
-  private def sortCards(cards: List[Card]): List[Card] ={
-    cards.sortWith(sortByRank)
-  }
 
-  private def appendAce(cardsSorted: List[Card], aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] ={
-    if(aceCards.isEmpty){
-      return cardsSorted
-    }
-    val cardHead = cardsSorted.head
-    val cardLast = cardsSorted.last
 
-    val cardsToAppendOnHead = if(!aceCards.isEmpty){
+  private def appendCardOnHead(cardHead: Card, aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] = {
+    if(!aceCards.isEmpty){
       cardHead.rank match {
         case Ranks.King => List(aceCards.remove(0))
         case Ranks.Queen => {
@@ -116,14 +113,16 @@ case class BurracoScale protected(
           } else if(!twoCards.isEmpty){
             List(aceCards.remove(0),twoCards.remove(0))
           }else{
-            List().empty
+            List()
           }
         }
-        case _ => List().empty
+        case _ => List()
       }
-    } else {List().empty}
+    } else List()
+  }
 
-    val cardsToAppendOnTail = if(!aceCards.isEmpty){
+  private def appendCardOnTail(cardLast: Card, aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] = {
+    if(!aceCards.isEmpty){
       cardLast.rank match {
         case Ranks.Two => List(aceCards.remove(0)) //List(List(aceCards.remove(0)), cardsSorted).flatten
         case Ranks.Three => {
@@ -132,11 +131,11 @@ case class BurracoScale protected(
           } else if(!twoCards.isEmpty){
             List(twoCards.remove(0), aceCards.remove(0))
           }else{
-            List().empty
+            List()
           }
         }
         case Ranks.Four => {
-          twoCards.find(c => c.suit == cardsSorted.head.suit) match {
+          twoCards.find(c => c.suit == suit) match {
             case Some(cardTwoWithSameSuit) => {
               twoCards -= cardTwoWithSameSuit
               if(!jollyCards.isEmpty){
@@ -144,27 +143,33 @@ case class BurracoScale protected(
               } else if(!twoCards.isEmpty){
                 List(twoCards.remove(0), cardTwoWithSameSuit, aceCards.remove(0))
               }else{
-                List().empty
+                List()
               }
             }
             case None => throw new IllegalArgumentException("The scale sequence is broken")
           }
         }
-        case _ => List().empty
+        case _ => List()
       }
-    }else {List().empty}
+    }else {List()}
+  }
+
+  private def appendAce(cardsSorted: List[Card], aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] ={
+    if(aceCards.isEmpty){
+      return cardsSorted
+    }
+
+   val  cardsSortedWithAce = List(
+      appendCardOnHead(cardsSorted.head,aceCards,jollyCards,twoCards),
+      cardsSorted,
+      appendCardOnTail(cardsSorted.last,aceCards,jollyCards,twoCards)
+    ).flatten
 
     if(!aceCards.isEmpty) {
       throw new IllegalArgumentException("The scale sequence is broken")
     }
 
-    List(
-      cardsToAppendOnHead,
-      cardsSorted,
-      cardsToAppendOnTail
-    ).flatten
-
-
+    cardsSortedWithAce
   }
 }
 
