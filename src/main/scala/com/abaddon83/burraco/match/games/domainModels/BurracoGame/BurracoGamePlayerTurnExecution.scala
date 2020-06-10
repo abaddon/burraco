@@ -19,7 +19,7 @@ case class BurracoGamePlayerTurnExecution private(
     this.copy(players = playerCardsOrdered(playerIdentity,orderedCards)).testInvariants
   }
 
-  def dropOnTableATris(playerIdentity: PlayerIdentity,tris: Tris): BurracoGamePlayerTurnExecution = {
+  def dropOnTableATris(playerIdentity: PlayerIdentity,tris: BurracoTris): BurracoGamePlayerTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 

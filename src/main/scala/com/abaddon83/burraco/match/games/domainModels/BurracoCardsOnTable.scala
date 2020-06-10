@@ -3,10 +3,10 @@ package com.abaddon83.burraco.`match`.games.domainModels
 import com.abaddon83.burraco.shares.decks.Card
 
 case class BurracoCardsOnTable(
-                              listOfTris: List[Tris],
-                              listOfScale: List[BurracoScale]
+                                listOfTris: List[BurracoTris],
+                                listOfScale: List[BurracoScale]
                               ) {
-  def updateListOfTris(updatedListOfTris: List[Tris]): BurracoCardsOnTable = {
+  def updateListOfTris(updatedListOfTris: List[BurracoTris]): BurracoCardsOnTable = {
     this.copy( listOfTris = updatedListOfTris)
   }
 

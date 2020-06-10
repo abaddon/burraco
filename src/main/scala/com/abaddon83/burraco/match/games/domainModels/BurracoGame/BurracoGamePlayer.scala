@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels.BurracoGame
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoDeck, BurracoPlayerInGame, DiscardPile, PozzettoDeck, Scale, Tris}
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoDeck, BurracoPlayerInGame, DiscardPile, PozzettoDeck, Scale, BurracoTris}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -20,7 +20,7 @@ trait BurracoGamePlayer extends BurracoGame {
     }
   }
 
-  def playerTrisOnTable(playerIdentity: PlayerIdentity): List[Tris] = {
+  def playerTrisOnTable(playerIdentity: PlayerIdentity): List[BurracoTris] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
       case Some(player) => player.cardsOnTable.listOfTris
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")

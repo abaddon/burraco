@@ -15,15 +15,15 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
 
 
   test("player drop a tris using 0 cards, should fail"){
-    val tris = Tris(TrisId(),Ace,List.empty)
+    val tris = BurracoTris(TrisId(),Ace,List.empty)
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithTris(PlayerIdentity(playerIdentityUUID1),tris)
     assertThrows[AssertionError]{
-      game.dropOnTableATris(PlayerIdentity(playerIdentityUUID1),Tris(List.empty))
+      game.dropOnTableATris(PlayerIdentity(playerIdentityUUID1),BurracoTris(List.empty))
     }
   }
 
   test("player drop a tris using 3 cards"){
-    val tris = Tris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
+    val tris = BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithTris(PlayerIdentity(playerIdentityUUID1),tris)
     val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
 
@@ -111,7 +111,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
   }
 
   private def createBurracoGamePlayerTurnExecutionWithATrisDropped(playerIdentity: PlayerIdentity): BurracoGamePlayerTurnExecution ={
-    val tris = Tris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
+    val tris = BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity,tris)
 
     game.dropOnTableATris(playerIdentity,tris)
@@ -124,7 +124,6 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
     game.dropOnTableAScale(playerIdentity,scale)
   }
 
-
   private def createBurracoGamePlayerTurnExecution(): BurracoGamePlayerTurnExecution = {
     val game = BurracoGame.BurracoGame.createNewBurracoGame()
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID1)))
@@ -133,7 +132,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
     gameStart.pickUpACardFromDeck(PlayerIdentity(playerIdentityUUID1))
   }
 
-  private def createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity: PlayerIdentity, tris: Tris): BurracoGamePlayerTurnExecution = {
+  private def createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity: PlayerIdentity, tris: BurracoTris): BurracoGamePlayerTurnExecution = {
     val game = createBurracoGamePlayerTurnExecution()
     game.copy(players = addTrisInThePlayerCards(game,playerIdentity,tris))
   }
@@ -155,7 +154,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
     )
   }
 
-  private def addTrisInThePlayerCards(game: BurracoGamePlayerTurnExecution, playerIdentity: PlayerIdentity, tris: Tris): List[BurracoPlayerInGame] ={
+  private def addTrisInThePlayerCards(game: BurracoGamePlayerTurnExecution, playerIdentity: PlayerIdentity, tris: BurracoTris): List[BurracoPlayerInGame] ={
     game.listOfPlayers().map(bp =>
       if(bp.playerIdentity == playerIdentity){
         val cardsWithTris = List(game.playerCards(bp.playerIdentity).drop(tris.showCards.size+1), tris.showCards,List(Card(Tile,Ace))).flatten
