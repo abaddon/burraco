@@ -3,7 +3,7 @@ package com.abaddon83.burraco.`match`.games.domainModels
 import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}
 import org.scalatest.funsuite.AnyFunSuite
 
-class ScaleTest extends AnyFunSuite{
+class BurracoScaleTest extends AnyFunSuite{
 
 
   test("sort a valid scale") {
@@ -14,7 +14,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Ten),
       Card(Suits.Heart, Ranks.Nine),
     )
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
     assert(sortedScale.showCards.head.rank == Ranks.King)
     assert(sortedScale.showCards(2).rank == Ranks.Jack)
     assert(sortedScale.showCards.last.rank == Ranks.Nine)
@@ -28,7 +28,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Ten),
       Card(Suits.Heart, Ranks.Nine),
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.King)
     assert(sortedScale.showCards(2).rank == Ranks.Jack)
@@ -44,7 +44,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Eight),
     ))
     assertThrows[Exception]{
-      Scale(cards)
+      BurracoScale(cards)
     }
   }
 
@@ -57,7 +57,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Jolly, Ranks.Jolly),
       Card(Suits.Heart, Ranks.Eight),
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
 
     assert(sortedScale.showCards.head.rank == Ranks.King)
@@ -76,7 +76,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Two),
       Card(Suits.Heart, Ranks.Ace),
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Seven)
     assert(sortedScale.showCards(2).rank == Ranks.Five)
@@ -94,7 +94,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Tile, Ranks.Two),
       Card(Suits.Heart, Ranks.Ace),
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
 
     assert(sortedScale.showCards.head.rank == Ranks.Seven)
@@ -113,7 +113,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Jolly, Ranks.Jolly),
       Card(Suits.Heart, Ranks.Eight)
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Ace)
     assert(sortedScale.showCards(2).rank == Ranks.Queen)
@@ -129,7 +129,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Jack),
       Card(Suits.Heart, Ranks.Ten)
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Ace)
     assert(sortedScale.showCards(2).rank == Ranks.Queen)
@@ -144,7 +144,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Ten)
     ))
     assertThrows[Exception] {
-      Scale(cards)
+      BurracoScale(cards)
     }
   }
 
@@ -158,7 +158,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Ace),
     ))
     assertThrows[Exception]{
-      Scale(cards)
+      BurracoScale(cards)
     }
   }
 
@@ -170,7 +170,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Two),
       Card(Suits.Heart, Ranks.Ace)
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
@@ -186,7 +186,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Two),
       Card(Suits.Heart, Ranks.Ace)
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
 
 
@@ -203,7 +203,7 @@ class ScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Jack),
       Card(Suits.Heart, Ranks.Ten)
     ))
-    val sortedScale = Scale(cards)
+    val sortedScale = BurracoScale(cards)
 
     assert(
       (sortedScale.showCards.head.rank == Ranks.Jolly && sortedScale.showCards.last.rank == Ranks.Ten) ||

@@ -5,10 +5,14 @@ import java.util.UUID
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.decks.Ranks.{Jolly, Rank, Two}
 
-case class Tris private(trisId: TrisId, private val rank: Rank, private val cards: List[Card]) {
+case class Tris private( protected val trisId: TrisId, private val rank: Rank, private val cards: List[Card]) {
 
   def showCards: List[Card]  = {
     cards
+  }
+
+  def getTrisId(): TrisId = {
+    trisId
   }
 
   def addCards(cardsToAdd: List[Card]): Tris = {

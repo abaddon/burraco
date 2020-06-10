@@ -32,7 +32,7 @@ case class BurracoGamePlayerTurnExecution private(
     )
   }
 
-  def dropOnTableAScale(playerIdentity: PlayerIdentity,scale: Scale): BurracoGamePlayerTurnExecution = {
+  def dropOnTableAScale(playerIdentity: PlayerIdentity,scale: BurracoScale): BurracoGamePlayerTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
@@ -49,16 +49,8 @@ case class BurracoGamePlayerTurnExecution private(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
+    val updatedPlayerCardsOnTable = player.cardsOnTable.updateScale(scaleId,cardsToAppend)
     val updatedPlayerCards = player.cards diff cardsToAppend
-    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfScale(
-      player.cardsOnTable.listOfScale.map(scale =>
-        if(scale.getScaleId == scaleId){
-          scale.addCards(cardsToAppend)
-        }else {
-          scale
-        }
-      )
-    )
 
     UpdatePlayers(player
       .updateCards(updatedPlayerCards)
@@ -71,15 +63,7 @@ case class BurracoGamePlayerTurnExecution private(
     validatePlayerTurn(playerIdentity)
 
     val updatedPlayerCards = player.cards diff cardsToAppend
-    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfTris(
-      player.cardsOnTable.listOfTris.map(tris =>
-        if(tris.trisId == trisId){
-          tris.addCards(cardsToAppend)
-        }else {
-          tris
-        }
-      )
-    )
+    val updatedPlayerCardsOnTable = player.cardsOnTable.updateTris(trisId,cardsToAppend)
 
     UpdatePlayers(player
       .updateCards(updatedPlayerCards)
@@ -97,9 +81,6 @@ case class BurracoGamePlayerTurnExecution private(
 
     this.copy(players = updatedPlayers).testInvariants()
   }
-
-  //validation
-
 
 }
 
