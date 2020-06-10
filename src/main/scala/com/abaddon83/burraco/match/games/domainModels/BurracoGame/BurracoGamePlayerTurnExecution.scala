@@ -52,7 +52,7 @@ case class BurracoGamePlayerTurnExecution private(
     val updatedPlayerCards = player.cards diff cardsToAppend
     val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfScale(
       player.cardsOnTable.listOfScale.map(scale =>
-        if(scale.scaleId == scaleId){
+        if(scale.getScaleId == scaleId){
           scale.addCards(cardsToAppend)
         }else {
           scale

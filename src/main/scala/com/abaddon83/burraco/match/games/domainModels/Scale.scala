@@ -2,9 +2,9 @@ package com.abaddon83.burraco.`match`.games.domainModels
 
 import java.util.UUID
 
-import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 import com.abaddon83.burraco.shares.decks.Ranks.Two
-import com.abaddon83.burraco.shares.decks.Suits.{Jolly, Suit}
+import com.abaddon83.burraco.shares.decks.Suits.Suit
+import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 
 import scala.collection.mutable.ListBuffer
 
@@ -14,144 +14,192 @@ object ScaleId{
   def apply(): ScaleId = new ScaleId(UUID.randomUUID())
 }
 
-case class Scale private(scaleId: ScaleId, private val suit: Suit, private val cards: List[Card]) {
 
-  def showCards: List[Card]  = {
-    cards
-  }
+trait ScaleOrdered {
 
-  def addCards(cardsToAdd: List[Card]): Scale = {
-    val updatedCards = List(cards,cardsToAdd).flatten
-    Scale.validateScale(updatedCards)
-    copy(cards = updatedCards)
-  }
-
-}
-
-object Scale {
-  val scaleOrder = List( //13
-    //Ranks.Ace,
+  private val scaleOrder = List(
     Ranks.King,
     Ranks.Queen,
     Ranks.Jack,
     Ranks.Ten,
-    Ranks.Nine,  //4
+    Ranks.Nine,
     Ranks.Eight,
     Ranks.Seven,
     Ranks.Six,
     Ranks.Five,
     Ranks.Four,
     Ranks.Three,
-    Ranks.Two,
-    Ranks.Ace
+    Ranks.Two
   )
-  def apply(cards: List[Card]): Scale = {
-    validateScale(cards)
-    val suit = cards.filterNot(c => c.suit == Jolly).head.suit
-    sortScale(cards,suit)
 
-    new Scale(ScaleId(),suit,cards)
+  private def addJolly(jollyCards: ListBuffer[Card], twoCards:ListBuffer[Card], suit:Suit) ={
+    if(!jollyCards.isEmpty){  //prendo un jolly o un 2 dando priorita' al jolly
+      jollyCards.remove(0)
+    }else if(!twoCards.isEmpty){
+      twoCards.find(c => c.suit != suit) match {
+        case Some(card) => twoCards.remove(twoCards.indexOf(card))
+        case None => twoCards.remove(0)
+      }
+    }else
+      throw new Exception("The scale sequence is broken")
   }
 
-  def sortScale(cards: List[Card], scaleSuit: Suit): List[Card] ={
+  private def getTheScaleOrderSubset(cards: List[Card]) ={
+    val idxHead=findTheCardPosition(cards.head)
+    val idxLast = scaleOrder.size - (findTheCardPosition(cards.last)+1)    //13 - 5
+    scaleOrder.drop(idxHead).dropRight(idxLast)
+  }
+
+  private def findTheCardPosition(card: Card): Int ={
+    scaleOrder.indexOf(card.rank)
+  }
+
+
+  private def sortByRank(card: Card, cardNext: Card ) = {
+    val idx = findTheCardPosition(card)
+    scaleOrder.drop(idx+1).contains(cardNext.rank)
+  }
+
+  private def sortCards(cards: List[Card]): List[Card] ={
+    cards.sortWith(sortByRank)
+    //moveAceOnHead(cards.sortWith(sortByRank))
+  }
+
+  private def appendAce(cardsSorted: List[Card], aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] ={
+    if(aceCards.isEmpty){
+      return cardsSorted
+    }
+    val cardHead = cardsSorted.head
+    val cardLast = cardsSorted.last
+
+    val cardsToAppendOnHead = if(!aceCards.isEmpty){
+      cardHead.rank match {
+        case Ranks.King => List(aceCards.remove(0))
+        case Ranks.Queen => {
+          if(!jollyCards.isEmpty){
+            List(aceCards.remove(0),jollyCards.remove(0))
+          } else if(!twoCards.isEmpty){
+            List(aceCards.remove(0),twoCards.remove(0))
+          }else{
+            List().empty
+          }
+        }
+        case _ => List().empty
+      }
+    } else {List().empty}
+
+    val cardsToAppendOnTail = if(!aceCards.isEmpty){
+      cardLast.rank match {
+        case Ranks.Two => List(aceCards.remove(0)) //List(List(aceCards.remove(0)), cardsSorted).flatten
+        case Ranks.Three => {
+          if(!jollyCards.isEmpty){
+            List(jollyCards.remove(0), aceCards.remove(0))
+          } else if(!twoCards.isEmpty){
+            List(twoCards.remove(0), aceCards.remove(0))
+          }else{
+            List().empty
+          }
+        }
+        case Ranks.Four => {
+          twoCards.find(c => c.suit == cardsSorted.head.suit) match {
+            case Some(cardTwoWithSameSuit) => {
+              twoCards -= cardTwoWithSameSuit
+              if(!jollyCards.isEmpty){
+                List(jollyCards.remove(0), cardTwoWithSameSuit, aceCards.remove(0))
+              } else if(!twoCards.isEmpty){
+                List(twoCards.remove(0), cardTwoWithSameSuit, aceCards.remove(0))
+              }else{
+                List().empty
+              }
+            }
+            case None => throw new Exception("The scale sequence is broken")
+          }
+        }
+        case _ => List().empty
+      }
+    }else {List().empty}
+
+    if(!aceCards.isEmpty) {
+      throw new Exception("The scale sequence is broken")
+    }
+
+    List(
+      cardsToAppendOnHead,
+      cardsSorted,
+      cardsToAppendOnTail
+    ).flatten
+
+
+  }
+
+
+
+
+  protected def sortScale(cards: List[Card], suit: Suit): List[Card]  ={
+    val aceCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Ace))
     val jollyCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Jolly))
-    val twoCards = ListBuffer.from(cards.filter(c => c.rank == Two))
+    val twoCards = ListBuffer.from(cards.filter(c => c.rank == Ranks.Two))
     val cardsWithoutJolly = (cards diff jollyCards) diff twoCards
+    val sortedCardsWithoutJollyAndAce = cardsWithoutJolly diff aceCards
 
-    println("sortScale START ")
-    println("jollyCards")
-    jollyCards.foreach(c => println(c))
-    println("twoCards")
-    twoCards.foreach(c => println(c))
-    println("cardsWithoutJolly")
-    cardsWithoutJolly.foreach(c => println(c))
-    println("sortScale END ")
+    val sortedCardsWithoutJolly = sortCards(sortedCardsWithoutJollyAndAce)
 
-    val sortedCardsWithoutJolly = cardsWithoutJolly.sortWith(sortByRank)
-    sortedCardsWithoutJolly.foreach(println(_))
-    //check if sequence has holes..
     val rightScaleOrder = getTheScaleOrderSubset(sortedCardsWithoutJolly)
-    var sortedList = rightScaleOrder.map( rank =>
+
+    val sortedList = rightScaleOrder.map( rank =>
       sortedCardsWithoutJolly.find(card => card.rank == rank) match {
         case Some(card) => card
         case None => { //controllo tra i jolly
           rank match {
             case Ranks.Two => {
-              twoCards.find(card => card.rank == rank && card.suit  == scaleSuit) match {
+              twoCards.find(card => card.rank == rank && card.suit  == suit) match {
                 case Some(card) => twoCards.remove(twoCards.indexOf(card)) //2 appartenente alla scala non e' un jolly
-                case None => {
-                  if(jollyCards.isEmpty){  //prendo un jolly o un 2 dando priorita' al jolly
-                    jollyCards.remove(0)
-                  }else if(!twoCards.isEmpty){
-                    twoCards.find(c => c.suit != scaleSuit) match {
-                      case Some(card) => twoCards.remove(twoCards.indexOf(card))
-                      case None => twoCards.remove(0)
-                    }
-                  }else
-                    throw new Exception("The scale sequence is broken")
-                }
+                case None => addJolly(jollyCards,twoCards,suit)
               }
             }
             case _ => {
-              println(rank)
               sortedCardsWithoutJolly.find(card => card.rank == rank) match {
                 case Some(card) => card
-                case None => {
-                  if(!jollyCards.isEmpty){  //prendo un jolly o un 2 dando priorita' al jolly
-                    jollyCards.remove(0)
-                  }else if(!twoCards.isEmpty){
-                    twoCards.find(c => c.suit != scaleSuit) match {
-                      case Some(card) => twoCards.remove(twoCards.indexOf(card))
-                      case None => twoCards.remove(0)
-                    }
-
-                  }else
-                    throw new Exception("The scale sequence is broken")
-                }
+                case None => addJolly(jollyCards,twoCards,suit)
               }
-
             }
           }
         }
       }
     )
-
-    List(sortedList, jollyCards.toList, twoCards.toList).flatten
+    List(appendAce(sortedList, aceCards, jollyCards, twoCards),jollyCards,twoCards).flatten
   }
 
+}
 
 
 
-  def getTheScaleOrderSubset(cards: List[Card]) ={
-    val idxHead=findTheCardPosition(cards.head)
-    val idxLast = scaleOrder.size - (findTheCardPosition(cards.last)+1)    //13 - 5
-    scaleOrder.drop(idxHead).dropRight(idxLast)
-    //println("getTheScaleOrderSubset START")
-    //println(s"idxHead: ${idxHead} idxLast: ${idxLast}")
-    //scaleOrderSubset.foreach(r => println(r))
-    //println("getTheScaleOrderSubset END")
-    //scaleOrderSubset
+case class Scale protected(
+                  protected val scaleId: ScaleId,
+                  protected val cards: List[Card],
+                  protected val suit: Suit) extends ScaleOrdered{
+
+  def showCards: List[Card]  = {
+    cards
   }
 
-  def findTheCardPosition(card: Card): Int ={
-    scaleOrder.indexOf(card.rank)
+  def getScaleId: ScaleId ={
+    scaleId
   }
 
+  def addCards(cardsToAdd: List[Card]): Scale = {
+    val updatedCards = List(cards,cardsToAdd).flatten
+    this.copy(cards =updatedCards).sort()
 
-  def sortByRank(card: Card, cardNext: Card ) = {
-
-    val idx = findTheCardPosition(card)
-    scaleOrder.drop(idx+1).contains(cardNext.rank)
-    //cardNext.rank == scaleOrder(idx + 1)
   }
 
-    //val nextCard = cards(index)
-    //)
+  def sort(): Scale ={
+    validateScale()
+    val cardsSorted=this.sortScale(cards,suit)
+    this.copy(cards = cardsSorted)
+  }
 
-    //val index=scaleOrderAccepted.indexOf(card.rank)
-    //val nextIndex = Math.min(index+1,scaleOrderAccepted.size)
-
-  private def validateScale(cards: List[Card]): Unit ={
+  private def validateScale() ={
     assert(cards.size >=3, "A Scale is composed by 3 or more cards")
     val jollyCards = cards.filter(c => c.rank == Ranks.Jolly)
     val twoCards = cards.filter(c => c.rank == Two)
@@ -159,11 +207,26 @@ object Scale {
 
     assert(jollyCards.size <=1,"A scale can have at least 1 Jolly")
     assert(twoCards.size <=2,"A scale can have at least 1 Jolly")
-    if(cardsWithoutJollies.exists(_.suit != cards.head.suit)){
+
+    if(cardsWithoutJollies.exists(c => c.suit != suit)){
       throw new IllegalArgumentException("A Scale is composed by cards with the same suit")
     }
-    //TODO add the check regarding the card sequence
 
   }
+
+}
+
+object Scale {
+
+
+  def apply(cards: List[Card]): Scale = {
+    Scale(ScaleId(),cards,scaleSuit(cards)).sort
+  }
+
+  private def scaleSuit(cards: List[Card]):Suit ={
+    val list=cards.filter(c => c.rank != Ranks.Jolly).filter(c =>c.rank != Ranks.Two)
+    list.head.suit
+  }
+
 }
 

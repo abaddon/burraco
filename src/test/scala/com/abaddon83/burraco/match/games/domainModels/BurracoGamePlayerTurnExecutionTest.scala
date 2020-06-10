@@ -33,7 +33,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
   }
 
   test("player drop a scale using 0 cards, should fail"){
-    val scale = Scale(ScaleId(),Heart,List.empty)
+    val scale = Scale(List.empty)
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithScale(PlayerIdentity(playerIdentityUUID1),scale)
     assertThrows[AssertionError]{
       game.dropOnTableATris(PlayerIdentity(playerIdentityUUID1),Tris(List.empty))
@@ -41,7 +41,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
   }
 
   test("player drop a scale using 3 cards"){
-    val scale = Scale(ScaleId(),Heart, List(Card(Heart,Seven),Card(Heart,Eight),Card(Heart,Nine)))
+    val scale = Scale(List(Card(Heart,Seven),Card(Heart,Eight),Card(Heart,Nine)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithScale(PlayerIdentity(playerIdentityUUID1),scale)
     val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
 
@@ -87,10 +87,10 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
     val cardsToAppend = List(Card(Heart,Ten))
     val scala = game.playerScalesOnTable(playerIdentity).head
 
-    val gameActual = game.appendCardsOnAScaleDropped(playerIdentity,cardsToAppend,scala.scaleId)
+    val gameActual = game.appendCardsOnAScaleDropped(playerIdentity,cardsToAppend,scala.getScaleId)
 
     assert(playerCards.size - cardsToAppend.size == gameActual.playerCards(PlayerIdentity(playerIdentityUUID1)).size)
-    assert(scala.showCards.size + cardsToAppend.size == gameActual.playerScalesOnTable(playerIdentity).find(s => s.scaleId == scala.scaleId).get.showCards.size)
+    assert(scala.showCards.size + cardsToAppend.size == gameActual.playerScalesOnTable(playerIdentity).find(s => s.getScaleId == scala.getScaleId).get.showCards.size)
 
   }
 
@@ -105,7 +105,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
     val scala = game.playerScalesOnTable(playerIdentity).head
 
     assertThrows[IllegalArgumentException]{
-      game.appendCardsOnAScaleDropped(playerIdentity,cardsToAppend,scala.scaleId)
+      game.appendCardsOnAScaleDropped(playerIdentity,cardsToAppend,scala.getScaleId)
     }
 
   }
@@ -120,7 +120,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
   }
 
   private def createBurracoGamePlayerTurnExecutionWithAScalaDropped(playerIdentity: PlayerIdentity): BurracoGamePlayerTurnExecution ={
-    val scale = Scale(ScaleId(),Heart, List(Card(Heart,Seven),Card(Heart,Eight),Card(Heart,Nine)))
+    val scale = Scale(List(Card(Heart,Seven),Card(Heart,Eight),Card(Heart,Nine)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithScale(playerIdentity,scale)
 
     game.dropOnTableAScale(playerIdentity,scale)
