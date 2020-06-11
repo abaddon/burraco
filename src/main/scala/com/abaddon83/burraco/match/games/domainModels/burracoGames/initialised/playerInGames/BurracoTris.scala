@@ -1,5 +1,6 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
+import com.abaddon83.burraco.`match`.games.domainModels.{Tris, TrisId}
 import com.abaddon83.burraco.shares.decks.Ranks.Rank
 import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 

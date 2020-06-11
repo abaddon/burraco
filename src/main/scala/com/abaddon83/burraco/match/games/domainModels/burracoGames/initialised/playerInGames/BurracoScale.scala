@@ -1,8 +1,9 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
+import com.abaddon83.burraco.`match`.games.domainModels.{Scale, ScaleId}
 import com.abaddon83.burraco.shares.decks.Ranks.Rank
-import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 import com.abaddon83.burraco.shares.decks.Suits.Suit
+import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 
 import scala.collection.mutable.ListBuffer
 

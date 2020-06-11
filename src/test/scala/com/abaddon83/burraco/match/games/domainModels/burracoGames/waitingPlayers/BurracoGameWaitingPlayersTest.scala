@@ -1,6 +1,7 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers
 
-import com.abaddon83.burraco.`match`.games.domainModels.BurracoGame.BurracoGameWaitingPlayers
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.{BurracoCardsDealt, BurracoGameWaitingPlayers}
+import com.abaddon83.burraco.`match`.games.domainModels.{PlayerNotAssigned, burracoGames}
 import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
@@ -8,13 +9,13 @@ import org.scalatest.funsuite.AnyFunSuite
 class BurracoGameWaitingPlayersTest extends AnyFunSuite{
 
   test("create a Burraco match") {
-    val game = BurracoGame.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame()
     assert(game.isInstanceOf[BurracoGameWaitingPlayers])
     assert(game.numPlayers == 0)
   }
 
   test("add a player"){
-    val game = BurracoGame.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame()
 
     val newGame = game.addPlayer(PlayerNotAssigned(PlayerIdentity()))
 
@@ -23,7 +24,7 @@ class BurracoGameWaitingPlayersTest extends AnyFunSuite{
   }
 
   test("add 4 players"){
-    val game = BurracoGame.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame()
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
@@ -36,7 +37,7 @@ class BurracoGameWaitingPlayersTest extends AnyFunSuite{
   test("add 5 players should fail"){
 
     assertThrows[AssertionError]{
-      BurracoGame.BurracoGame.createNewBurracoGame()
+      burracoGames.BurracoGame.createNewBurracoGame()
         .addPlayer(PlayerNotAssigned(PlayerIdentity()))
         .addPlayer(PlayerNotAssigned(PlayerIdentity()))
         .addPlayer(PlayerNotAssigned(PlayerIdentity()))
@@ -48,7 +49,7 @@ class BurracoGameWaitingPlayersTest extends AnyFunSuite{
   test("add 2 times the same player should fail"){
     val player = PlayerNotAssigned(PlayerIdentity())
     assertThrows[AssertionError]{
-      BurracoGame.BurracoGame.createNewBurracoGame()
+      burracoGames.BurracoGame.createNewBurracoGame()
         .addPlayer(player)
         .addPlayer(PlayerNotAssigned(PlayerIdentity()))
         .addPlayer(player)
@@ -58,7 +59,7 @@ class BurracoGameWaitingPlayersTest extends AnyFunSuite{
   test("initialise a game with 2 players"){
     val totalCardsInGameExpected= 108
 
-    val game = BurracoGame.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame()
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
 

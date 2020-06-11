@@ -1,6 +1,8 @@
 package com.abaddon83.burraco.`match`.games.services
 
-import com.abaddon83.burraco.`match`.games.domainModels.BurracoGame.{BurracoGame, BurracoGamePlayerTurnStart, BurracoGameWaitingPlayers}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
 import com.abaddon83.burraco.`match`.games.ports.{BurracoGameRepositoryPort, PlayerPort}
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
@@ -31,7 +33,7 @@ class BurracoGameService(
     } yield burracoGameRepositoryPort.save(burracoGameWaitingPlayers.addPlayer(player))
   }
 
-  def initialiseGame(gameIdentity: GameIdentity /*,playerIdentity: PlayerIdentity*/): Future[BurracoGamePlayerTurnStart] ={
+  def initialiseGame(gameIdentity: GameIdentity /*,playerIdentity: PlayerIdentity*/): Future[BurracoGameInitiatedTurnStart] ={
     for{
       burracoGameWaitingPlayers <- burracoGameRepositoryPort.findBurracoGameWaitingPlayersBy(gameIdentity)
       burracoCardsDealt = BurracoDealerFactory(burracoGameWaitingPlayers).dealBurracoCards()

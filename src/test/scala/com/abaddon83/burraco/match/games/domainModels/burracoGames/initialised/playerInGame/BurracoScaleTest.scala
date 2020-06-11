@@ -1,5 +1,6 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.initialised.playerInGame
 
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.BurracoScale
 import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}
 import org.scalatest.funsuite.AnyFunSuite
 

@@ -1,11 +1,14 @@
-package com.abaddon83.burraco.`match`.games.domainModels.BurracoGame
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoDeck, BurracoPlayerInGame, DiscardPile, PozzettoDeck, Scale, BurracoTris}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
+import com.abaddon83.burraco.`match`.games.domainModels._
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoTris, PlayerInGame}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.PozzettoDeck
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
-trait BurracoGamePlayer extends BurracoGame {
-  override protected val players: List[BurracoPlayerInGame]
+trait BurracoGameInitiated extends BurracoGame {
+  override protected val players: List[PlayerInGame]
   protected val playerTurn: PlayerIdentity
   protected val burracoDeck: BurracoDeck
   protected val firstPozzettoDeck: PozzettoDeck
@@ -39,7 +42,7 @@ trait BurracoGamePlayer extends BurracoGame {
   }
 
   //WRITE Methods
-  protected def playerCardsOrdered(playerIdentity: PlayerIdentity, orderedCards: List[Card]): List[BurracoPlayerInGame] = {
+  protected def playerCardsOrdered(playerIdentity: PlayerIdentity, orderedCards: List[Card]): List[PlayerInGame] = {
     validatePlayerId(playerIdentity)
 
     val playersUpdated = players.map(playerInGame =>
@@ -55,7 +58,7 @@ trait BurracoGamePlayer extends BurracoGame {
   }
 
   //validation
-  protected def validatePlayerId(playerIdentity: PlayerIdentity): BurracoPlayerInGame = {
+  protected def validatePlayerId(playerIdentity: PlayerIdentity): PlayerInGame = {
     players.find(p => p.playerIdentity == playerIdentity) match {
       case Some(playerInGame) => playerInGame
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")

@@ -1,5 +1,7 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers
 
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.PozzettoDeck
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoDeck, DiscardPile}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 

@@ -1,14 +1,17 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.initialised
 
-import com.abaddon83.burraco.`match`.games.domainModels.BurracoGame.BurracoGamePlayerTurnExecution
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiatedTurnExecution, playerInGames}
+import com.abaddon83.burraco.`match`.games.domainModels.{PlayerNotAssigned, Scale, TrisId, burracoGames}
 import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
-import com.abaddon83.burraco.shares.decks.Ranks.{Ace, Eight, Jolly, Nine, Seven, Ten, Two}
+import com.abaddon83.burraco.shares.decks.Ranks._
 import com.abaddon83.burraco.shares.decks.Suits.{Heart, Tile}
 import com.abaddon83.burraco.shares.decks.{Card, Suits}
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
-class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
+class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
 
   private val playerIdentityUUID1 = "061b71f7-a308-4015-9bf2-42bac1c4f6a0"
   private val playerIdentityUUID2 = "ca65f040-eaea-4b9a-8082-c110f4640a15"
@@ -23,7 +26,7 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
   }
 
   test("player drop a tris using 3 cards"){
-    val tris = BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
+    val tris = playerInGames.BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithTris(PlayerIdentity(playerIdentityUUID1),tris)
     val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
 
@@ -110,58 +113,58 @@ class BurracoGamePlayerTurnExecutionTest extends AnyFunSuite{
 
   }
 
-  private def createBurracoGamePlayerTurnExecutionWithATrisDropped(playerIdentity: PlayerIdentity): BurracoGamePlayerTurnExecution ={
-    val tris = BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
+  private def createBurracoGamePlayerTurnExecutionWithATrisDropped(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution ={
+    val tris = initialised.playerInGames.BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity,tris)
 
     game.dropOnTableATris(playerIdentity,tris)
   }
 
-  private def createBurracoGamePlayerTurnExecutionWithAScalaDropped(playerIdentity: PlayerIdentity): BurracoGamePlayerTurnExecution ={
+  private def createBurracoGamePlayerTurnExecutionWithAScalaDropped(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution ={
     val scale = BurracoScale(List(Card(Heart,Seven),Card(Heart,Eight),Card(Heart,Nine)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithScale(playerIdentity,scale)
 
     game.dropOnTableAScale(playerIdentity,scale)
   }
 
-  private def createBurracoGamePlayerTurnExecution(): BurracoGamePlayerTurnExecution = {
-    val game = BurracoGame.BurracoGame.createNewBurracoGame()
+  private def createBurracoGamePlayerTurnExecution(): BurracoGameInitiatedTurnExecution = {
+    val game = burracoGames.BurracoGame.createNewBurracoGame()
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID1)))
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID2)))
     val gameStart=game.initiate(BurracoDealerFactory(game).dealBurracoCards())
     gameStart.pickUpACardFromDeck(PlayerIdentity(playerIdentityUUID1))
   }
 
-  private def createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity: PlayerIdentity, tris: BurracoTris): BurracoGamePlayerTurnExecution = {
+  private def createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity: PlayerIdentity, tris: BurracoTris): BurracoGameInitiatedTurnExecution = {
     val game = createBurracoGamePlayerTurnExecution()
     game.copy(players = addTrisInThePlayerCards(game,playerIdentity,tris))
   }
 
-  private def createBurracoGamePlayerTurnExecutionWithPlayerWithScale(playerIdentity: PlayerIdentity, scale: Scale): BurracoGamePlayerTurnExecution = {
+  private def createBurracoGamePlayerTurnExecutionWithPlayerWithScale(playerIdentity: PlayerIdentity, scale: Scale): BurracoGameInitiatedTurnExecution = {
     val game = createBurracoGamePlayerTurnExecution()
     game.copy(players = addScaleInThePlayerCards(game,playerIdentity,scale))
   }
 
-  private def addScaleInThePlayerCards(game: BurracoGamePlayerTurnExecution, playerIdentity: PlayerIdentity, scale: Scale): List[BurracoPlayerInGame] ={
+  private def addScaleInThePlayerCards(game: BurracoGameInitiatedTurnExecution, playerIdentity: PlayerIdentity, scale: Scale): List[PlayerInGame] ={
     game.listOfPlayers().map(bp =>
       if(bp.playerIdentity == playerIdentity){
         val cardsWithScale = List(game.playerCards(bp.playerIdentity).drop(scale.showCards.size+1), scale.showCards,List(Card(Heart,Ten))).flatten
         assert(cardsWithScale.containsSlice(scale.showCards))
-        BurracoPlayerInGame(bp.playerIdentity,cardsWithScale)
+        PlayerInGame(bp.playerIdentity,cardsWithScale)
       }else {
-        BurracoPlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
   }
 
-  private def addTrisInThePlayerCards(game: BurracoGamePlayerTurnExecution, playerIdentity: PlayerIdentity, tris: BurracoTris): List[BurracoPlayerInGame] ={
+  private def addTrisInThePlayerCards(game: BurracoGameInitiatedTurnExecution, playerIdentity: PlayerIdentity, tris: BurracoTris): List[PlayerInGame] ={
     game.listOfPlayers().map(bp =>
       if(bp.playerIdentity == playerIdentity){
         val cardsWithTris = List(game.playerCards(bp.playerIdentity).drop(tris.showCards.size+1), tris.showCards,List(Card(Tile,Ace))).flatten
         assert(cardsWithTris.containsSlice(tris.showCards))
-        BurracoPlayerInGame(bp.playerIdentity,cardsWithTris)
+        PlayerInGame(bp.playerIdentity,cardsWithTris)
       }else {
-        BurracoPlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
   }

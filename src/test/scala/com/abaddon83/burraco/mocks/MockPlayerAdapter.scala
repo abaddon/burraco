@@ -1,6 +1,7 @@
 package com.abaddon83.burraco.mocks
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer, BurracoPlayerAssigned, BurracoPlayerInGame, PlayerNotAssigned}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer, BurracoPlayerAssigned, PlayerNotAssigned}
 import com.abaddon83.burraco.`match`.games.ports.PlayerPort
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -31,10 +32,10 @@ trait MockPlayerAdapter {
       }
     }
 
-    override def findBurracoPlayerInGameBy(playerIdentity: PlayerIdentity): Future[BurracoPlayerInGame] = {
+    override def findBurracoPlayerInGameBy(playerIdentity: PlayerIdentity): Future[PlayerInGame] = {
       Future {
         PlayerDB.search().find(player => player.playerIdentity == playerIdentity) match {
-          case Some(value: BurracoPlayerInGame) => value
+          case Some(value: PlayerInGame) => value
           case Some(value) => throw new NoSuchElementException()
           case None => throw new NoSuchElementException()
         }

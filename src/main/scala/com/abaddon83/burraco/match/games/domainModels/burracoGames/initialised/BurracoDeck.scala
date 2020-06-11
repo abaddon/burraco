@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.shares.decks.Ranks.Jolly
 import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}

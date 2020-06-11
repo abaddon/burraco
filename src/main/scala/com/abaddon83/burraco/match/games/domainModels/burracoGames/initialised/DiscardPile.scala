@@ -1,10 +1,12 @@
-package com.abaddon83.burraco.`match`.games.domainModels
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.shares.decks.{Card, Deck}
 
 import scala.collection.mutable.ListBuffer
 
-case class DiscardPile private(override protected val cards: ListBuffer[Card]) extends Deck{
+case class DiscardPile private(
+                                override protected val cards: ListBuffer[Card]
+                              ) extends Deck{
 
   override def grabAllCards(): List[Card] ={
     assert(cards.size >0,"The DiscardPile is empty, you can't grab a card from here")
