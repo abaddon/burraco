@@ -6,7 +6,7 @@ case class Pozzettos protected (protected val list: List[PozzettoDeck]){
 
   def firstPozzettoAvailable(): List[Card] = {
     list.find(p => p.numCards() > 0) match {
-      case Some(value) => value.grabAllCards()
+      case Some(pozzettoDeck) => pozzettoDeck.grabAllCards()
       case None => throw new NoSuchElementException("No pottezzi available")
     }
   }

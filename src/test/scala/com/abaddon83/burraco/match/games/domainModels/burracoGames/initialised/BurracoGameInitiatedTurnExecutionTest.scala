@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels.initialised
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
@@ -7,7 +7,7 @@ import com.abaddon83.burraco.`match`.games.domainModels.{PlayerNotAssigned, Scal
 import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.decks.Ranks._
 import com.abaddon83.burraco.shares.decks.Suits.{Heart, Tile}
-import com.abaddon83.burraco.shares.decks.{Card, Suits}
+import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -113,6 +113,39 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
 
   }
 
+  test("pick up the pozzetto"){
+    val playerIdentity = PlayerIdentity(playerIdentityUUID1)
+    val tris1 = BurracoTris(List(Card(Suits.Heart,Ranks.Four), Card(Suits.Heart,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Clover,Ranks.Four), Card(Suits.Clover,Ranks.Four)))
+    val tris2 = BurracoTris(List(Card(Suits.Heart,Ranks.Four), Card(Suits.Heart,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Clover,Ranks.Four), Card(Suits.Clover,Ranks.Four)))
+
+    val game = createBurracoInitiatedPlayerTurnExecution(playerIdentity,tris1.showCards ++ tris2.showCards)
+
+    val gameWithTrisDropped = game.dropOnTableATris(playerIdentity,tris1).dropOnTableATris(playerIdentity,tris2)
+    assert(gameWithTrisDropped.playerCards(playerIdentity).isEmpty)
+
+    val gameWithPozzetto1 = gameWithTrisDropped.pickupPozzetto(playerIdentity)
+    assert(gameWithPozzetto1.playerCards(playerIdentity).size == 11)
+
+  }
+
+  test("pick up the pozzetto 2 times, should fail"){
+    val playerIdentity = PlayerIdentity(playerIdentityUUID1)
+    val tris1 = BurracoTris(List(Card(Suits.Heart,Ranks.Four), Card(Suits.Heart,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Clover,Ranks.Four), Card(Suits.Clover,Ranks.Four)))
+    val tris2 = BurracoTris(List(Card(Suits.Heart,Ranks.Four), Card(Suits.Heart,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Tile,Ranks.Four), Card(Suits.Clover,Ranks.Four), Card(Suits.Clover,Ranks.Four)))
+
+    val game = createBurracoInitiatedPlayerTurnExecution(playerIdentity,tris1.showCards ++ tris2.showCards)
+
+    val gameWithTrisDropped = game.dropOnTableATris(playerIdentity,tris1).dropOnTableATris(playerIdentity,tris2)
+    assert(gameWithTrisDropped.playerCards(playerIdentity).isEmpty)
+
+    val gameWithPozzetto1 = gameWithTrisDropped.pickupPozzetto(playerIdentity)
+    assert(gameWithPozzetto1.playerCards(playerIdentity).size == 11)
+    assertThrows[AssertionError] {
+      gameWithTrisDropped.pickupPozzetto(playerIdentity)
+    }
+
+  }
+
   private def createBurracoGamePlayerTurnExecutionWithATrisDropped(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution ={
     val tris = initialised.playerInGames.BurracoTris(TrisId(),Ace,List(Card(Heart,Ace),Card(Heart,Ace),Card(Suits.Clover,Ace)))
     val game = createBurracoGamePlayerTurnExecutionWithPlayerWithTris(playerIdentity,tris)
@@ -168,5 +201,20 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
       }
     )
   }
+
+  private def createBurracoInitiatedPlayerTurnExecution(playerIdentity:PlayerIdentity, newPlayerCards: List[Card]): BurracoGameInitiatedTurnExecution ={
+
+    val game = createBurracoGamePlayerTurnExecution()
+    val updatedPlayers = game.listOfPlayers.map(bp =>
+      if(bp.playerIdentity == playerIdentity){
+        PlayerInGame(bp.playerIdentity,newPlayerCards)
+      }else {
+        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+      }
+    )
+    game.copy(players = updatedPlayers)
+  }
+
+
 
 }

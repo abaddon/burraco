@@ -25,38 +25,22 @@ case class BurracoGameInitiatedTurnExecution private(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    val updatedPlayerCards = player.cards diff tris.showCards
-    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfTris(tris :: player.cardsOnTable.listOfTris)
-
-    UpdatePlayers(player
-      .updateCards(updatedPlayerCards)
-      .updateCardsOnTable(updatedPlayerCardsOnTable)
-    )
+    UpdatePlayers(player.dropATris(tris))
   }
 
   def dropOnTableAScale(playerIdentity: PlayerIdentity,scale: BurracoScale): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    val updatedPlayerCards = player.cards diff scale.showCards
-    val updatedPlayerCardsOnTable = player.cardsOnTable.updateListOfScale(scale :: player.cardsOnTable.listOfScale)
-
-    UpdatePlayers(player
-      .updateCards(updatedPlayerCards)
-      .updateCardsOnTable(updatedPlayerCardsOnTable)
-    )
+    UpdatePlayers(player.dropAScale(scale))
   }
 
   def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],scaleId:ScaleId): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    val updatedPlayerCardsOnTable = player.cardsOnTable.updateScale(scaleId,cardsToAppend)
-    val updatedPlayerCards = player.cards diff cardsToAppend
-
-    UpdatePlayers(player
-      .updateCards(updatedPlayerCards)
-      .updateCardsOnTable(updatedPlayerCardsOnTable)
+    UpdatePlayers(
+      player.appendACardOnScaleDropped(scaleId,cardsToAppend)
     )
   }
 
@@ -64,12 +48,21 @@ case class BurracoGameInitiatedTurnExecution private(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    val updatedPlayerCards = player.cards diff cardsToAppend
-    val updatedPlayerCardsOnTable = player.cardsOnTable.updateTris(trisId,cardsToAppend)
+    UpdatePlayers(
+      player.appendACardOnTrisDropped(trisId,cardsToAppend)
+    )
+  }
 
-    UpdatePlayers(player
-      .updateCards(updatedPlayerCards)
-      .updateCardsOnTable(updatedPlayerCardsOnTable)
+  def pickupPozzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
+    val player = validatePlayerId(playerIdentity)
+    validatePlayerTurn(playerIdentity)
+    assert(player.cards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
+    assert(player.pozzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
+
+    UpdatePlayers(
+      player.addPozzettoOnMyCard(
+        pozzettos.firstPozzettoAvailable()
+      )
     )
   }
 

@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels.initialised
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.DiscardPile
 import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}

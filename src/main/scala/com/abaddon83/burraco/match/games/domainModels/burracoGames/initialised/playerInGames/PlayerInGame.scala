@@ -1,14 +1,49 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
-import com.abaddon83.burraco.`match`.games.domainModels.BurracoPlayer
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer, ScaleId, TrisId}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
 case class PlayerInGame(
                                 playerIdentity: PlayerIdentity,
                                 cards: List[Card],
-                                cardsOnTable: BurracoCardsOnTable
+                                cardsOnTable: BurracoCardsOnTable,
+                                pozzettoTaken: Boolean = false
                               ) extends BurracoPlayer {
+//pickup
+  def addPozzettoOnMyCard(pozzetto: List[Card]):PlayerInGame = {
+    copy(pozzettoTaken = true, cards = this.cards ++ pozzetto)
+  }
+
+  def dropATris(tris: BurracoTris): PlayerInGame = {
+    val updatedPlayerCards = cards diff tris.showCards
+    val updatedPlayerCardsOnTable = cardsOnTable.updateListOfTris(tris :: cardsOnTable.listOfTris)
+
+    this.copy( cards = updatedPlayerCards,cardsOnTable = updatedPlayerCardsOnTable)
+
+  }
+
+  def dropAScale(scale: BurracoScale): PlayerInGame = {
+    val updatedPlayerCards = cards diff scale.showCards
+    val updatedPlayerCardsOnTable = cardsOnTable.updateListOfScale(scale :: cardsOnTable.listOfScale)
+
+    this.copy( cards = updatedPlayerCards,cardsOnTable = updatedPlayerCardsOnTable)
+
+  }
+
+  def appendACardOnScaleDropped(scaleId: ScaleId,cardsToAppend: List[Card]): PlayerInGame ={
+    val updatedPlayerCardsOnTable = cardsOnTable.updateScale(scaleId,cardsToAppend)
+    val updatedPlayerCards = cards diff cardsToAppend
+
+    this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
+  }
+
+  def appendACardOnTrisDropped(trisId: TrisId,cardsToAppend: List[Card]): PlayerInGame ={
+    val updatedPlayerCardsOnTable = cardsOnTable.updateTris(trisId,cardsToAppend)
+    val updatedPlayerCards = cards diff cardsToAppend
+
+    this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
+  }
 
   def updateCards(updatedCards: List[Card]): PlayerInGame = {
     this.copy( cards = updatedCards)

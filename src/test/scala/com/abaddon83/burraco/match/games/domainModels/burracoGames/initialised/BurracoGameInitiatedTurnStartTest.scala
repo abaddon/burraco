@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels.initialised
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
 import com.abaddon83.burraco.`match`.games.domainModels.{PlayerNotAssigned, burracoGames}
