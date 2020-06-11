@@ -1,9 +1,9 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiated
 import com.abaddon83.burraco.`match`.games.domainModels._
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiated
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.PozzettoDeck
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
@@ -12,8 +12,7 @@ case class BurracoGameInitiatedTurnExecution private(
                                                       override val gameIdentity: GameIdentity,
                                                       override protected val players: List[PlayerInGame],
                                                       override protected val burracoDeck: BurracoDeck,
-                                                      override protected val firstPozzettoDeck: PozzettoDeck,
-                                                      override protected val secondPozzettoDeck: PozzettoDeck,
+                                                      override protected val pozzettos: Pozzettos,
                                                       override protected val discardPile: DiscardPile,
                                                       override protected val playerTurn: PlayerIdentity
                         ) extends BurracoGameInitiated{
@@ -74,8 +73,6 @@ case class BurracoGameInitiatedTurnExecution private(
     )
   }
 
-  //def pickupPozzetto()
-
   private def UpdatePlayers(burracoPlayerInGame: PlayerInGame): BurracoGameInitiatedTurnExecution ={
     val updatedPlayers = players.map( playerInGame =>
       if(playerInGame.playerIdentity == burracoPlayerInGame.playerIdentity){
@@ -94,8 +91,7 @@ object BurracoGameInitiatedTurnExecution{
              burracoGame: BurracoGameInitiatedTurnStart,
              players: List[PlayerInGame],
              burracoDeck: BurracoDeck,
-             firstPozzettoDeck: PozzettoDeck,
-             secondPozzettoDeck: PozzettoDeck,
+             pozzettos: Pozzettos,
              discardPile: DiscardPile,
              playerTurn: PlayerIdentity
              ): BurracoGameInitiatedTurnExecution = {
@@ -104,8 +100,7 @@ object BurracoGameInitiatedTurnExecution{
       gameIdentity = burracoGame.gameIdentity,
       players = players,
       burracoDeck = burracoDeck,
-      firstPozzettoDeck = firstPozzettoDeck,
-      secondPozzettoDeck = secondPozzettoDeck,
+      pozzettos = pozzettos,
       discardPile = discardPile,
       playerTurn = playerTurn
     ).testInvariants()

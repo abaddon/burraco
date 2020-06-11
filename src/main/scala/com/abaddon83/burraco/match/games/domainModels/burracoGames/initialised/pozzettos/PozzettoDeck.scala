@@ -6,6 +6,11 @@ import scala.collection.mutable.ListBuffer
 
 case class PozzettoDeck private(override protected val cards: ListBuffer[Card]) extends Deck{
 
+  override def grabFirstCard(): Card = {
+    throw new UnsupportedOperationException("You cannot grab only one card from the DiscardPile")
+  }
+
+
 }
 
 

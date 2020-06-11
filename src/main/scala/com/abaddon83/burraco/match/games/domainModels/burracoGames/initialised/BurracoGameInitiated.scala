@@ -1,9 +1,9 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels._
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.PozzettoDeck
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -11,8 +11,7 @@ trait BurracoGameInitiated extends BurracoGame {
   override protected val players: List[PlayerInGame]
   protected val playerTurn: PlayerIdentity
   protected val burracoDeck: BurracoDeck
-  protected val firstPozzettoDeck: PozzettoDeck
-  protected val secondPozzettoDeck: PozzettoDeck
+  protected val pozzettos: Pozzettos
   protected val discardPile: DiscardPile
 
   //READ Methods
@@ -78,7 +77,8 @@ trait BurracoGameInitiated extends BurracoGame {
         player.cardsOnTable.listOfTris.map( tris => tris.showCards.size).foldLeft(0)(_ + _) +
         player.cardsOnTable.listOfScale.map( scale => scale.showCards.size).foldLeft(0)(_ + _)
     ).foldLeft(0)(_ + _)
-    playersCardsTot + burracoDeck.numCards() + firstPozzettoDeck.numCards() + secondPozzettoDeck.numCards() + discardPile.numCards()
+
+    playersCardsTot + burracoDeck.numCards() + pozzettos.numCards() + discardPile.numCards()
   }
 
 
