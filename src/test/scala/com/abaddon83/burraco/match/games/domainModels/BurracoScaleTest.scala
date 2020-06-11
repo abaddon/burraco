@@ -5,7 +5,6 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoScaleTest extends AnyFunSuite{
 
-
   test("sort a valid scale") {
     val cards = List(
       Card(Suits.Heart, Ranks.King),
@@ -210,6 +209,41 @@ class BurracoScaleTest extends AnyFunSuite{
         (sortedScale.showCards.head.rank == Ranks.King && sortedScale.showCards.last.rank == Ranks.Jolly)
     )
 
+  }
+
+  test("sort a unsorted scale from Five to Ace with no hole and 1 Two and a jolly") {
+    val cards = scala.util.Random.shuffle(List(
+      Card(Suits.Jolly, Ranks.Jolly),
+      Card(Suits.Heart, Ranks.Five),
+      Card(Suits.Heart, Ranks.Four),
+      Card(Suits.Heart, Ranks.Three),
+      Card(Suits.Heart, Ranks.Two),
+      Card(Suits.Heart, Ranks.Ace)
+    ))
+    val sortedScale = BurracoScale(cards)
+
+    //debug(cards,sortedScale.showCards)
+
+    assert(sortedScale.showCards.head.rank == Ranks.Jolly)
+    assert(sortedScale.showCards(2).rank == Ranks.Four)
+    assert(sortedScale.showCards.last.rank == Ranks.Ace)
+  }
+
+  test("sort a unsorted scale from Six to Two with a jolly") {
+    val cards = scala.util.Random.shuffle(List(
+      Card(Suits.Jolly, Ranks.Jolly),
+      Card(Suits.Heart, Ranks.Six),
+      Card(Suits.Heart, Ranks.Five),
+      Card(Suits.Heart, Ranks.Four),
+      Card(Suits.Heart, Ranks.Two)
+    ))
+    val sortedScale = BurracoScale(cards)
+
+    //debug(cards,sortedScale.showCards)
+
+    assert(sortedScale.showCards.head.rank == Ranks.Six)
+    assert(sortedScale.showCards(2).rank == Ranks.Four)
+    assert(sortedScale.showCards.last.rank == Ranks.Two)
   }
 
 

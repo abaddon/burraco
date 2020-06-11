@@ -36,11 +36,16 @@ case class BurracoScale protected(
         case None => findAnAlternativeCard(rank,jollyCards,twoCards) //card not found, I try to use a Jolly or a Two as alternative
       }
     )
-    this.copy(cards = List(
-      appendAce(sortedList, aceCards, jollyCards, twoCards) //The sequence previously calculated did't include the Ace. Now I try to append them on the head of the sequence or at the end.
-      ,jollyCards, //I append at the end of the sequence the jollies not used
-      twoCards //I append at the end of the sequence the Two not used (as Jolly)
-    ).flatten)
+
+    val sortedListWithAce = appendAce(sortedList, aceCards, jollyCards, twoCards) //The sequence previously calculated did't include the Ace. Now I try to append them on the head of the sequence or at the end.
+
+    val sortedListWithTwoAsNormalCard = appendTwoAsNormalCard(sortedListWithAce,twoCards,jollyCards)
+
+    val sortedListWithAllCards = appendRemainingJolly(sortedListWithTwoAsNormalCard,jollyCards.toList ++ twoCards.toList)
+
+    assert(sortedListWithAllCards.size == cards.size)
+
+    this.copy(cards = sortedListWithAllCards)
   }
 
   private def findAnAlternativeCard(rank: Rank,jollyCards: ListBuffer[Card], twoCards:ListBuffer[Card] ) = {
@@ -101,9 +106,8 @@ case class BurracoScale protected(
     scaleOrder.drop(idx+1).contains(cardNext.rank)
   }
 
+  private def appendCardAceOnHead(cardHead: Card, aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] = {
 
-
-  private def appendCardOnHead(cardHead: Card, aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] = {
     if(!aceCards.isEmpty){
       cardHead.rank match {
         case Ranks.King => List(aceCards.remove(0))
@@ -121,15 +125,16 @@ case class BurracoScale protected(
     } else List()
   }
 
-  private def appendCardOnTail(cardLast: Card, aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] = {
+  private def appendCardAceOnTail(cardLast: Card, aceCards: ListBuffer[Card],jollyCards: ListBuffer[Card], twoCards: ListBuffer[Card]): List[Card] = {
+
     if(!aceCards.isEmpty){
       cardLast.rank match {
-        case Ranks.Two => List(aceCards.remove(0)) //List(List(aceCards.remove(0)), cardsSorted).flatten
+        case Ranks.Two => List(aceCards.remove(0))
         case Ranks.Three => {
-          if(!jollyCards.isEmpty){
-            List(jollyCards.remove(0), aceCards.remove(0))
-          } else if(!twoCards.isEmpty){
+          if(!twoCards.isEmpty){
             List(twoCards.remove(0), aceCards.remove(0))
+          } else if(!jollyCards.isEmpty){
+            List(jollyCards.remove(0), aceCards.remove(0))
           }else{
             List()
           }
@@ -160,9 +165,9 @@ case class BurracoScale protected(
     }
 
    val  cardsSortedWithAce = List(
-      appendCardOnHead(cardsSorted.head,aceCards,jollyCards,twoCards),
+     appendCardAceOnHead(cardsSorted.head,aceCards,jollyCards,twoCards),
       cardsSorted,
-      appendCardOnTail(cardsSorted.last,aceCards,jollyCards,twoCards)
+     appendCardAceOnTail(cardsSorted.last,aceCards,jollyCards,twoCards)
     ).flatten
 
     if(!aceCards.isEmpty) {
@@ -171,6 +176,51 @@ case class BurracoScale protected(
 
     cardsSortedWithAce
   }
+
+  private def appendTwoAsNormalCard(cardsSorted: List[Card],twoCards: ListBuffer[Card],jollyCards: ListBuffer[Card]): List[Card] ={
+    if(twoCards.isEmpty){
+      return cardsSorted
+    }
+
+    val cardTwoList = if(!twoCards.isEmpty){
+      cardsSorted.last.rank match {
+        case Ranks.Three => List(twoCards.remove(0))
+        case Ranks.Four => {
+          if(!jollyCards.isEmpty){
+            List(jollyCards.remove(0), twoCards.remove(0))
+          }else{
+            List()
+          }
+        }
+        case _ => List()
+      }
+    }else List()
+
+    cardsSorted ++ cardTwoList
+  }
+
+  private def appendRemainingJolly(cardsSorted: List[Card],jollyList: List[Card]): List[Card] ={
+
+    if (jollyList.isEmpty){
+      return cardsSorted
+    }
+    cardsSorted.head.rank match {
+      case Ranks.Ace => {
+        cardsSorted.last.rank match {
+          case Ranks.Ace => throw new IllegalArgumentException("The scale is not valid")
+          case _ => {
+            val card = jollyList.last
+            appendRemainingJolly(cardsSorted ++ List(card),jollyList diff List(card))
+          }
+        }
+      }
+      case _ => {
+        val card = jollyList.last
+        appendRemainingJolly(List(card) ++ cardsSorted,jollyList diff List(card))
+      }
+    }
+  }
+
 }
 
 
