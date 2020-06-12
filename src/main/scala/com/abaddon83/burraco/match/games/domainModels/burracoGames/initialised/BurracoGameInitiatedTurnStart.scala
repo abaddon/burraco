@@ -20,25 +20,20 @@ case class BurracoGameInitiatedTurnStart private(
   //WRITE Methods
   //all players can order cards when they want to
   def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnStart = {
-    this.copy(players = playerCardsOrdered(playerIdentity,orderedCards)).testInvariants()
+    val player = validatePlayerId(playerIdentity)
+    this.copy(
+      players = UpdatePlayers(player.copy(cards = orderedCards))
+    ).testInvariants
   }
 
   //When the turn start the player can pickUp a card from the Deck
   def pickUpACardFromDeck(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
-    validatePlayerId(playerIdentity)
+    val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
-
-    val playersUpdated = players.map(playerInGame =>
-      if(playerInGame.playerIdentity == playerIdentity){
-        playerInGame.copy(cards = burracoDeck.grabFirstCard() :: playerInGame.cards)
-      }else {
-        playerInGame
-      }
-    )
 
     BurracoGameInitiatedTurnExecution(
       this,
-      playersUpdated,
+      UpdatePlayers(player.copy(cards = burracoDeck.grabFirstCard() :: player.cards)),
       this.burracoDeck,
       this.pozzettos,
       this.discardPile,
@@ -48,21 +43,12 @@ case class BurracoGameInitiatedTurnStart private(
 
   //When the turn start the player can pickUp all cards from the DiscardPile if it's not empty
   def pickUpCardsFromDiscardPile(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
-    validatePlayerId(playerIdentity)
+    val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
-
-    val playersUpdated = players.map(playerInGame =>
-      if(playerInGame.playerIdentity == playerIdentity){
-        playerInGame.copy(cards = List(discardPile.grabAllCards(), playerInGame.cards).flatten)
-        //new BurracoPlayerInGame(playerIdentity, )
-      }else {
-        playerInGame
-      }
-    )
 
     BurracoGameInitiatedTurnExecution(
       this,
-      playersUpdated,
+      UpdatePlayers(player.copy(cards = discardPile.grabAllCards() ++ player.cards)),
       this.burracoDeck,
       this.pozzettos,
       this.discardPile,

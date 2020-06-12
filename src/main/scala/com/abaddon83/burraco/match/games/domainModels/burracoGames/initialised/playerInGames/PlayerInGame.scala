@@ -31,6 +31,11 @@ case class PlayerInGame(
 
   }
 
+  def dropACard(card:Card): PlayerInGame = {
+    assert(cards.exists( c => c == card),s"This card ${card} is not a card of the player ${this}")
+    this.copy(cards = cards diff List(card))
+  }
+
   def appendACardOnScaleDropped(scaleId: ScaleId,cardsToAppend: List[Card]): PlayerInGame ={
     val updatedPlayerCardsOnTable = cardsOnTable.updateScale(scaleId,cardsToAppend)
     val updatedPlayerCards = cards diff cardsToAppend

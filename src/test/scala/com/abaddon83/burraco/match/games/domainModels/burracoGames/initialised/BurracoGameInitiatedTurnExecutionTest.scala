@@ -141,8 +141,17 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val gameWithPozzetto1 = gameWithTrisDropped.pickupPozzetto(playerIdentity)
     assert(gameWithPozzetto1.playerCards(playerIdentity).size == 11)
     assertThrows[AssertionError] {
-      gameWithTrisDropped.pickupPozzetto(playerIdentity)
+      gameWithPozzetto1.pickupPozzetto(playerIdentity)
     }
+  }
+
+  test("drop a card on the discard pile") {
+    val playerIdentity = PlayerIdentity(playerIdentityUUID1)
+    val game = createBurracoGamePlayerTurnExecution()
+    val card = game.playerCards(playerIdentity).head
+    val gameEnd = game.dropCardOnDiscardPile(playerIdentity,card)
+    assert(gameEnd.isInstanceOf[BurracoGameInitiatedTurnEnd])
+    assert(gameEnd.playerCards(playerIdentity).exists( c=> c == card) == false)
 
   }
 

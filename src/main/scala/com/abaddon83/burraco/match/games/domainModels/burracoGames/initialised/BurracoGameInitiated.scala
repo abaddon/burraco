@@ -40,20 +40,14 @@ trait BurracoGameInitiated extends BurracoGame {
     discardPile.showCards
   }
 
-  //WRITE Methods
-  protected def playerCardsOrdered(playerIdentity: PlayerIdentity, orderedCards: List[Card]): List[PlayerInGame] = {
-    validatePlayerId(playerIdentity)
-
-    val playersUpdated = players.map(playerInGame =>
-      if(playerInGame.playerIdentity == playerIdentity){
-        playerInGame.copy(cards = orderedCards)
-        //new BurracoPlayerInGame(playerIdentity,orderedCards)
-      }else {
+// write
+  protected def UpdatePlayers(burracoPlayerInGame: PlayerInGame):  List[PlayerInGame] ={
+    players.map( playerInGame =>
+      if(playerInGame.playerIdentity == burracoPlayerInGame.playerIdentity){
+        burracoPlayerInGame
+      }else
         playerInGame
-      }
     )
-    assert(playersUpdated.size == players.size)
-    playersUpdated
   }
 
   //validation
