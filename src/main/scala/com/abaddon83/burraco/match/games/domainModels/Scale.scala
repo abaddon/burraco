@@ -1,19 +1,11 @@
 package com.abaddon83.burraco.`match`.games.domainModels
 
-import java.util.UUID
-
 import com.abaddon83.burraco.shares.decks.Ranks.Two
 import com.abaddon83.burraco.shares.decks.Suits.Suit
 import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 
-case class ScaleId(id: UUID)
-
-object ScaleId{
-  def apply(): ScaleId = new ScaleId(UUID.randomUUID())
-}
 
 trait Scale {
-  protected val scaleId: ScaleId
   protected val cards: List[Card]
   protected val suit: Suit
 
@@ -21,13 +13,6 @@ trait Scale {
 
   def addCards(cardsToAdd: List[Card]): Scale
 
-  def showCards: List[Card]  = {
-    cards
-  }
-
-  def getScaleId: ScaleId ={
-    scaleId
-  }
 
   protected def validateScale(cards: List[Card]) ={
     assert(cards.size >=3, "A Scale is composed by 3 or more cards")

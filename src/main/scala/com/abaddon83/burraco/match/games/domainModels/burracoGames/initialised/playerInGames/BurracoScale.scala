@@ -1,21 +1,32 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
-import com.abaddon83.burraco.`match`.games.domainModels.{Scale, ScaleId}
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, Scale}
 import com.abaddon83.burraco.shares.decks.Ranks.Rank
 import com.abaddon83.burraco.shares.decks.Suits.Suit
 import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 
 import scala.collection.mutable.ListBuffer
 
+
+
 case class BurracoScale protected(
-                                   override protected val scaleId: ScaleId,
+                                   override protected val burracoId: BurracoId,
                                    override protected val cards: List[Card],
                                    override protected val suit: Suit
-                                 ) extends Scale{
+                                 ) extends Burraco with Scale {
 
   override def addCards(cardsToAdd: List[Card]): BurracoScale = {
     val updatedCards = validateScale(List(cards,cardsToAdd).flatten)
     this.copy(cards =updatedCards).sort()
+  }
+
+
+  def isBurraco(): Boolean = {
+    if(cards.size < 7) {
+      false
+    }else{
+      true
+    }
   }
 
 
@@ -229,7 +240,7 @@ object BurracoScale {
 
   def apply(cards: List[Card]): BurracoScale = {
     assert(cards.size >=3, "A Scale is composed by 3 or more cards")
-    BurracoScale(ScaleId(),cards,scaleSuit(cards)).sort
+    BurracoScale(BurracoId(),cards,scaleSuit(cards)).sort
   }
 
   private def scaleSuit(cards: List[Card]):Suit ={

@@ -18,7 +18,7 @@ case class Card (suit: Suit, rank: Rank) {
 object Ranks {
 
   val noFiguresRanks: Seq[Rank] = Seq(Ace,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten)
-  val fullRanks: Seq[Rank] = Seq(noFiguresRanks,Seq(Jack,Queen,King)).flatten
+  val fullRanks: Seq[Rank] = noFiguresRanks ++ Seq(Jack,Queen,King)
 
   sealed trait Rank {
     val label: String

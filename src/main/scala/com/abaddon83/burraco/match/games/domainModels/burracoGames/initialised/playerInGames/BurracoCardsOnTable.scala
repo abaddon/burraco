@@ -1,12 +1,17 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
-import com.abaddon83.burraco.`match`.games.domainModels.{ScaleId, TrisId}
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId}
 import com.abaddon83.burraco.shares.decks.Card
 
 case class BurracoCardsOnTable(
                                 listOfTris: List[BurracoTris],
                                 listOfScale: List[BurracoScale]
                               ) {
+  def burracoList(): List[Burraco] ={
+    listOfTris.filter(t => t.isBurraco()) ++
+    listOfScale.filter(s => s.isBurraco())
+  }
+
   def updateListOfTris(updatedListOfTris: List[BurracoTris]): BurracoCardsOnTable = {
     this.copy( listOfTris = updatedListOfTris)
   }
@@ -15,9 +20,9 @@ case class BurracoCardsOnTable(
     this.copy( listOfScale = updatedListOfScale)
   }
 
-  def updateScale(scaleId: ScaleId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
+  def updateScale(burracoId: BurracoId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
     val listOfBurracoScale= listOfScale.map(scale =>
-      if(scale.getScaleId == scaleId){
+      if(scale.getBurracoId() == burracoId){
         scale.addCards(cardsToAppend)
       }else {
         scale
@@ -26,9 +31,9 @@ case class BurracoCardsOnTable(
     copy(listOfScale = listOfBurracoScale)
   }
 
-  def updateTris(trisId: TrisId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
+  def updateTris(burracoId: BurracoId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
     val listOfBurracoTris= listOfTris.map(tris =>
-      if(tris.getTrisId() == trisId){
+      if(tris.getBurracoId() == burracoId){
         tris.addCards(cardsToAppend)
       }else {
         tris
@@ -37,10 +42,5 @@ case class BurracoCardsOnTable(
     copy(listOfTris = listOfBurracoTris)
   }
 
-  /*
-  /*
-  player.cardsOnTable.
-   */
-   */
 }
 

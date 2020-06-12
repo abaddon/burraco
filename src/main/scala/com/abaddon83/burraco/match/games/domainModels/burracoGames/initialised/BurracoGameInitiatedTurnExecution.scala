@@ -42,21 +42,21 @@ case class BurracoGameInitiatedTurnExecution private(
     ).testInvariants()
   }
 
-  def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],scaleId:ScaleId): BurracoGameInitiatedTurnExecution = {
+  def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
     copy(
-      players = UpdatePlayers(player.appendACardOnScaleDropped(scaleId,cardsToAppend))
+      players = UpdatePlayers(player.appendACardOnScaleDropped(burracoId,cardsToAppend))
     ).testInvariants()
   }
 
-  def appendCardsOnATrisDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],trisId:TrisId): BurracoGameInitiatedTurnExecution = {
+  def appendCardsOnATrisDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
     copy(
-      players = UpdatePlayers(player.appendACardOnTrisDropped(trisId,cardsToAppend))
+      players = UpdatePlayers(player.appendACardOnTrisDropped(burracoId,cardsToAppend))
     ).testInvariants()
   }
 

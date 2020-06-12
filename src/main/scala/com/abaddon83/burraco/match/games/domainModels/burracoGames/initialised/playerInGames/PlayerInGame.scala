@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer, ScaleId, TrisId}
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, BurracoPlayer}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -36,15 +36,15 @@ case class PlayerInGame(
     this.copy(cards = cards diff List(card))
   }
 
-  def appendACardOnScaleDropped(scaleId: ScaleId,cardsToAppend: List[Card]): PlayerInGame ={
-    val updatedPlayerCardsOnTable = cardsOnTable.updateScale(scaleId,cardsToAppend)
+  def appendACardOnScaleDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
+    val updatedPlayerCardsOnTable = cardsOnTable.updateScale(burracoId,cardsToAppend)
     val updatedPlayerCards = cards diff cardsToAppend
 
     this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
   }
 
-  def appendACardOnTrisDropped(trisId: TrisId,cardsToAppend: List[Card]): PlayerInGame ={
-    val updatedPlayerCardsOnTable = cardsOnTable.updateTris(trisId,cardsToAppend)
+  def appendACardOnTrisDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
+    val updatedPlayerCardsOnTable = cardsOnTable.updateTris(burracoId,cardsToAppend)
     val updatedPlayerCards = cards diff cardsToAppend
 
     this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)

@@ -18,8 +18,6 @@ trait Deck{
   }
 
   def grabFirstCard(): Card ={
-    //assert(numCards > 0)
-    //println(s"cards.size: ${cards.size}")
     cards.remove(0)
   }
 
