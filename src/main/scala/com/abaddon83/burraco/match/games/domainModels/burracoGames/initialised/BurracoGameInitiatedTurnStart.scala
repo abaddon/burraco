@@ -31,7 +31,7 @@ case class BurracoGameInitiatedTurnStart private(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    BurracoGameInitiatedTurnExecution(
+    BurracoGameInitiatedTurnExecution.build(
       this,
       UpdatePlayers(player.copy(cards = burracoDeck.grabFirstCard() :: player.cards)),
       this.burracoDeck,
@@ -46,7 +46,7 @@ case class BurracoGameInitiatedTurnStart private(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
-    BurracoGameInitiatedTurnExecution(
+    BurracoGameInitiatedTurnExecution.build(
       this,
       UpdatePlayers(player.copy(cards = discardPile.grabAllCards() ++ player.cards)),
       this.burracoDeck,
@@ -58,7 +58,7 @@ case class BurracoGameInitiatedTurnStart private(
 }
 
 object BurracoGameInitiatedTurnStart{
-  def apply(burracoGameWaitingPlayers: BurracoGameWaitingPlayers, burracoCardsDealt: BurracoCardsDealt): BurracoGameInitiatedTurnStart = {
+  def build(burracoGameWaitingPlayers: BurracoGameWaitingPlayers, burracoCardsDealt: BurracoCardsDealt): BurracoGameInitiatedTurnStart = {
     assert(burracoGameWaitingPlayers.listOfPlayers.exists(player => burracoCardsDealt.playersCards.keys.exists(p => p == player.playerIdentity)),s"One or more players doesn't have their cards")
 
     val burracoPlayersInGame =burracoGameWaitingPlayers.listOfPlayers.map(player =>
@@ -68,14 +68,32 @@ object BurracoGameInitiatedTurnStart{
       )
     )
 
-    val burracoGameInitialised = BurracoGameInitiatedTurnStart(
+    BurracoGameInitiatedTurnStart(
       burracoGameWaitingPlayers.gameIdentity,
       burracoPlayersInGame,
       burracoCardsDealt.burracoDeck,
       Pozzettos.build(List(burracoCardsDealt.firstPozzettoDeck,burracoCardsDealt.secondPozzettoDeck)),
       burracoCardsDealt.discardPile,
       burracoPlayersInGame(0).playerIdentity
-    )
-    burracoGameInitialised.testInvariants()
+    ).testInvariants()
+  }
+
+  def build(
+             gameIdentity: GameIdentity,
+             players: List[PlayerInGame],
+             burracoDeck: BurracoDeck,
+             pozzettos: Pozzettos,
+             discardPile: DiscardPile,
+             playerTurn: PlayerIdentity
+           ): BurracoGameInitiatedTurnStart ={
+
+    BurracoGameInitiatedTurnStart(
+      gameIdentity,
+      players,
+      burracoDeck,
+      pozzettos,
+      discardPile,
+      playerTurn
+    ).testInvariants()
   }
 }

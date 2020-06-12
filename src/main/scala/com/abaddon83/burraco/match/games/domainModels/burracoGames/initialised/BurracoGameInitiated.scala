@@ -58,10 +58,11 @@ trait BurracoGameInitiated extends BurracoGame {
 
   }
 
-  protected  def validatePlayerTurn(playerIdentity: PlayerIdentity) = {
+  def validatePlayerTurn(playerIdentity: PlayerIdentity) = {
     if(playerTurn != playerIdentity){
       throw new UnsupportedOperationException(s"It's not the turn of the player ${playerIdentity}")
     }
+    playerIdentity
   }
 
   protected def numCardsInGame: Int = {

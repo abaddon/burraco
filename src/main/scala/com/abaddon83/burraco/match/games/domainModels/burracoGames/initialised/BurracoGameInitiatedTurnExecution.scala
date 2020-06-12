@@ -89,7 +89,7 @@ case class BurracoGameInitiatedTurnExecution private(
 }
 
 object BurracoGameInitiatedTurnExecution{
-  def apply(
+  def build(
              burracoGame: BurracoGameInitiatedTurnStart,
              players: List[PlayerInGame],
              burracoDeck: BurracoDeck,
