@@ -1,7 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
 import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, Scale}
-import com.abaddon83.burraco.shares.decks.Ranks.Rank
 import com.abaddon83.burraco.shares.decks.Suits.Suit
 import com.abaddon83.burraco.shares.decks.{Card, Ranks}
 
@@ -45,7 +44,7 @@ case class BurracoScale protected(
     val sortedList = rankSequence.map( rank =>
       sortedCardsWithoutJollyAndAce.find(card => card.rank == rank) match {
         case Some(card) => card  //card found, I use it
-        case None => findAnAlternativeCard(rank,jollyCards,twoCards) //card not found, I try to use a Jolly or a Two as alternative
+        case None => addJolly(jollyCards,twoCards,suit) //findAnAlternativeCard(rank,jollyCards,twoCards) //card not found, I try to use a Jolly or a Two as alternative
       }
     )
 
@@ -60,7 +59,7 @@ case class BurracoScale protected(
     this.copy(cards = sortedListWithAllCards)
   }
 
-  private def findAnAlternativeCard(rank: Rank,jollyCards: ListBuffer[Card], twoCards:ListBuffer[Card] ) = {
+  /*private def findAnAlternativeCard(rank: Rank,jollyCards: ListBuffer[Card], twoCards:ListBuffer[Card] ) = {
     {
       rank match {
         case Ranks.Two => { //if the rank missing in the sequence is the two then I try to use a two with the same scale suit
@@ -72,7 +71,7 @@ case class BurracoScale protected(
         case _ => addJolly(jollyCards,twoCards,suit) //I try to find an alternative to cover any other position missing
       }
     }
-  }
+  }*/
 
   private val scaleOrder = List(
     Ranks.Ace,

@@ -66,6 +66,42 @@ class BurracoScaleTest extends AnyFunSuite{
     assert(sortedScale.showCards.last.rank == Ranks.Eight)
   }
 
+  test("sort a unsorted scale with missing cards and a Two as Jolly and same suit") {
+    val cards = scala.util.Random.shuffle(List(
+      Card(Suits.Heart, Ranks.Five),
+      Card(Suits.Heart, Ranks.Four),
+      Card(Suits.Heart, Ranks.Three),
+      Card(Suits.Heart, Ranks.Two),
+      Card(Suits.Heart, Ranks.Ace),
+    ))
+    val sortedScale = BurracoScale(cards)
+
+    debug(cards,sortedScale.showCards)
+
+    assert(sortedScale.showCards.head.rank == Ranks.Five)
+    assert(sortedScale.showCards(2).rank == Ranks.Three)
+    assert(sortedScale.showCards(3).rank == Ranks.Two)
+    assert(sortedScale.showCards.last.rank == Ranks.Ace)
+  }
+
+  test("sort a unsorted scale with missing cards and a Two as Jolly and different suit") {
+    val cards = scala.util.Random.shuffle(List(
+      Card(Suits.Heart, Ranks.Five),
+      Card(Suits.Heart, Ranks.Four),
+      Card(Suits.Heart, Ranks.Three),
+      Card(Suits.Tile, Ranks.Two),
+      Card(Suits.Heart, Ranks.Ace),
+    ))
+    val sortedScale = BurracoScale(cards)
+
+    debug(cards,sortedScale.showCards)
+
+    assert(sortedScale.showCards.head.rank == Ranks.Five)
+    assert(sortedScale.showCards(2).rank == Ranks.Three)
+    assert(sortedScale.showCards(3).rank == Ranks.Two)
+    assert(sortedScale.showCards.last.rank == Ranks.Ace)
+  }
+
   test("sort a unsorted scale with missing cards a Jolly and a Two as normal card") {
     val cards = scala.util.Random.shuffle(List(
       Card(Suits.Heart, Ranks.Seven),
