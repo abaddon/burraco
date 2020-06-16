@@ -21,11 +21,8 @@ case class BurracoScale protected(
 
 
   def isBurraco(): Boolean = {
-    if(cards.size < 7) {
-      false
-    }else{
-      true
-    }
+    if(cards.size < 7) false
+    else true
   }
 
 
@@ -73,7 +70,7 @@ case class BurracoScale protected(
     }
   }*/
 
-  private val scaleOrder = List(
+  override protected val scaleOrder = List(
     Ranks.Ace,
     Ranks.King,
     Ranks.Queen,

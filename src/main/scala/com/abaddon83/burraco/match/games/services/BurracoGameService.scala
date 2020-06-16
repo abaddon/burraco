@@ -33,13 +33,16 @@ class BurracoGameService(
     } yield burracoGameRepositoryPort.save(burracoGameWaitingPlayers.addPlayer(player))
   }
 
-  def initialiseGame(gameIdentity: GameIdentity /*,playerIdentity: PlayerIdentity*/): Future[BurracoGameInitiatedTurnStart] ={
-    for{
+  def initialiseGame(gameIdentity: GameIdentity /*,playerIdentity: PlayerIdentity*/): Future[BurracoGameInitiatedTurnStart] = {
+    for {
       burracoGameWaitingPlayers <- burracoGameRepositoryPort.findBurracoGameWaitingPlayersBy(gameIdentity)
       burracoCardsDealt = BurracoDealerFactory(burracoGameWaitingPlayers).dealBurracoCards()
       burracoGameInitialised = burracoGameWaitingPlayers.initiate(burracoCardsDealt)
     } yield burracoGameRepositoryPort.save(burracoGameInitialised)
   }
+
+  
+
 
 
 }

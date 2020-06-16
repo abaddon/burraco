@@ -11,7 +11,9 @@ case class BurracoGameCompleted(
                                 override protected val players: List[PlayerScore],
                                 pozzettoMissed: Boolean
                               ) extends BurracoGame {
+
 }
+
 
 object BurracoGameCompleted {
   def build(gameIdentity: GameIdentity, players: List[PlayerInGame], pozzettos: Pozzettos, playerTurn: PlayerIdentity): BurracoGameCompleted = {
