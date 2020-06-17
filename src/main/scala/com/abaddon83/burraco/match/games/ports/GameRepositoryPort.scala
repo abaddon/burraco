@@ -6,7 +6,7 @@ import com.abaddon83.burraco.shares.games.GameIdentity
 
 import scala.concurrent.Future
 
-trait BurracoGameRepositoryPort {
+trait GameRepositoryPort {
 
   def save(burracoGame: BurracoGameWaitingPlayers): BurracoGameWaitingPlayers
   def save(burracoGame: BurracoGameInitiatedTurnStart): BurracoGameInitiatedTurnStart

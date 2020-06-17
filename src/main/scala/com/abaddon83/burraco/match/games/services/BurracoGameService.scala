@@ -3,7 +3,7 @@ package com.abaddon83.burraco.`match`.games.services
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
-import com.abaddon83.burraco.`match`.games.ports.{BurracoGameRepositoryPort, PlayerPort}
+import com.abaddon83.burraco.`match`.games.ports.{GameRepositoryPort, PlayerPort}
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -11,8 +11,8 @@ import scala.concurrent.Future
 
 
 class BurracoGameService(
-                    burracoGameRepositoryPort: BurracoGameRepositoryPort,
-                    playerPort: PlayerPort,
+                          burracoGameRepositoryPort: GameRepositoryPort,
+                          playerPort: PlayerPort,
                   )(implicit val ec: scala.concurrent.ExecutionContext/* = scala.concurrent.ExecutionContext.global*/){
 
   def allBurracoGamesWaitingPlayers(): Future[List[BurracoGameWaitingPlayers]] = {
@@ -41,7 +41,7 @@ class BurracoGameService(
     } yield burracoGameRepositoryPort.save(burracoGameInitialised)
   }
 
-  
+
 
 
 
