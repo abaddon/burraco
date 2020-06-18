@@ -1,5 +1,7 @@
-package com.abaddon83.burraco.`match`.games.commands.games
+package com.abaddon83.burraco.`match`.games.commands.burracoGames
 
+import com.abaddon83.burraco.`match`.games.commands.burracoGames.{AddPlayer, AddPlayerHandler}
+import com.abaddon83.burraco.`match`.games.commands.games.{CreateNewGame, CreateNewGameHandler}
 import com.abaddon83.burraco.mocks.{MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.burraco.shares.games.{GameIdentity, GameTypes}
 import com.abaddon83.burraco.shares.players.PlayerIdentity

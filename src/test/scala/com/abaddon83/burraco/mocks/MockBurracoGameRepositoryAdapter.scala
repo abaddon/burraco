@@ -73,7 +73,7 @@ protected object BurracoGameDB{
     }else{
       add(burracoGame)
     }
-    search().find(game => game.identity() == burracoGame.identity()).get
+    burracoGame
   }
 
   def search(): ListBuffer[BurracoGame] = db;

@@ -35,7 +35,8 @@ class BurracoGameServiceTest extends AnyFunSuite
     assert(gameService.createNewBurracoGame(playerIdentity).failed.futureValue.isInstanceOf[NoSuchElementException])
   }
 
-  test("list of all BurracoGamesWaitingPlayers") {
+ /*
+ test("list of all BurracoGamesWaitingPlayers") {
     val list = gameService.allBurracoGamesWaitingPlayers().futureValue
     assert(list.size == 1)
   }
@@ -48,7 +49,7 @@ class BurracoGameServiceTest extends AnyFunSuite
 
     assert(gameResult.numPlayers == 1)
   }
-
+*/
   test("add the same player to the game") {
     val list = gameService.allBurracoGamesWaitingPlayers().futureValue
     val gameIdentity = list(0).gameIdentity
@@ -67,16 +68,16 @@ class BurracoGameServiceTest extends AnyFunSuite
     }
   }
 
-  test("initialise the game with 2 player"){
+  /*test("initialise the game with 2 player"){
     val list = gameService.allBurracoGamesWaitingPlayers().futureValue
     val gameIdentity = list(0).gameIdentity
-    val playerIdentity = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")
+    val playerIdentity = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff731")
     gameService.addPlayer(gameIdentity,playerIdentity).futureValue
     val gameInit = gameService.initialiseGame(gameIdentity).futureValue
 
     assert(gameInit.gameIdentity == gameIdentity)
     assert(gameService.allBurracoGamesWaitingPlayers().futureValue.size == 0)
-  }
+  }*/
 }
 
 

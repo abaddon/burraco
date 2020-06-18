@@ -19,8 +19,6 @@ class BurracoGameService(
     burracoGameRepositoryPort.findAllBurracoGameWaitingPlayers()
   }
 
-
-
   def createNewBurracoGame(playerIdentity: PlayerIdentity): Future[BurracoGameWaitingPlayers] = {
     for {
       player <- playerPort.findPlayerNotAssignedBy(playerIdentity)

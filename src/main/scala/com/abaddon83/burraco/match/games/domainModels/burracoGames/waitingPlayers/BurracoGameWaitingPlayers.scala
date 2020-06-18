@@ -22,7 +22,6 @@ case class BurracoGameWaitingPlayers(
   }
 
   def initiate(burracoCardsDealt: BurracoCardsDealt): BurracoGameInitiatedTurnStart = {
-
     assert(players.size >1, s"Not enough players to initiate the game, ( Min: ${minPlayers})")
     BurracoGameInitiatedTurnStart.build(this,burracoCardsDealt).testInvariants()
   }
