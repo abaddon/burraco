@@ -48,6 +48,6 @@ class BurracoGameInitiatedTest extends AnyFunSuite{
     (0 to 10).foreach(i =>
       assert(cardsOrdered1(i) == expectedCardsOrdered1(i) && cards2(i) == expectedCards2(i))
     )
-    assert(gameUpdated.gameIdentity == game.gameIdentity)
+    assert(gameUpdated.identity() == game.identity())
   }
 }

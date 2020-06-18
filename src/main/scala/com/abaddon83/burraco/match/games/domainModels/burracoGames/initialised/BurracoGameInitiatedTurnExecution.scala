@@ -9,7 +9,7 @@ import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
 case class BurracoGameInitiatedTurnExecution private(
-                                                      override val gameIdentity: GameIdentity,
+                                                      override protected val gameIdentity: GameIdentity,
                                                       override protected val players: List[PlayerInGame],
                                                       override protected val burracoDeck: BurracoDeck,
                                                       override protected val pozzettos: Pozzettos,
@@ -99,7 +99,7 @@ object BurracoGameInitiatedTurnExecution{
              ): BurracoGameInitiatedTurnExecution = {
 
     val burracoGamePlayerTurnExecution =new BurracoGameInitiatedTurnExecution(
-      gameIdentity = burracoGame.gameIdentity,
+      gameIdentity = burracoGame.identity(),
       players = players,
       burracoDeck = burracoDeck,
       pozzettos = pozzettos,

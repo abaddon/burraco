@@ -2,7 +2,7 @@ package com.abaddon83.burraco.mocks
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.burraco.`match`.games.ports.GameRepositoryPort
 import com.abaddon83.burraco.shares.games.{Game, GameIdentity}
 
@@ -12,7 +12,7 @@ import scala.concurrent.Future
 trait MockBurracoGameRepositoryAdapter {
 implicit val ec: scala.concurrent.ExecutionContext
 
-val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
+  val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
 
     override def save(burracoGame: BurracoGameWaitingPlayers): BurracoGameWaitingPlayers = {
       BurracoGameDB.persist(burracoGame) match {
@@ -24,6 +24,19 @@ val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
     override def save(burracoGame: BurracoGameInitiatedTurnStart): BurracoGameInitiatedTurnStart = {
       BurracoGameDB.persist(burracoGame) match {
         case game: BurracoGameInitiatedTurnStart =>  game
+        case _ => throw new NoSuchElementException()
+      }
+    }
+    override def save(burracoGame: BurracoGameInitiatedTurnExecution): BurracoGameInitiatedTurnExecution = {
+      BurracoGameDB.persist(burracoGame) match {
+        case game: BurracoGameInitiatedTurnExecution =>  game
+        case _ => throw new NoSuchElementException()
+      }
+    }
+
+    override def save(burracoGame: BurracoGameInitiatedTurnEnd): BurracoGameInitiatedTurnEnd = {
+      BurracoGameDB.persist(burracoGame) match {
+        case game: BurracoGameInitiatedTurnEnd =>  game
         case _ => throw new NoSuchElementException()
       }
     }
@@ -41,10 +54,28 @@ val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
       }
     }
 
-    override def findBurracoGameInitialisedBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnStart] = {
+    override def findBurracoGameInitialisedTurnStartBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnStart] = {
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameInitiatedTurnStart) => value
+          case None => throw new NoSuchElementException()
+        }
+      }
+    }
+
+    override def findBurracoGameInitiatedTurnExecutionBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnExecution] = {
+      Future{
+        BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
+          case Some(value: BurracoGameInitiatedTurnExecution) => value
+          case None => throw new NoSuchElementException()
+        }
+      }
+    }
+
+    override def findBurracoGameInitiatedTurnEndBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnEnd] = {
+      Future{
+        BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
+          case Some(value: BurracoGameInitiatedTurnEnd) => value
           case None => throw new NoSuchElementException()
         }
       }
@@ -60,8 +91,7 @@ val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
       }
     }
 
-
-}
+  }
 }
 
 protected object BurracoGameDB{

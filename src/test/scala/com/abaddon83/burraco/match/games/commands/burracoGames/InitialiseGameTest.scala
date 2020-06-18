@@ -55,8 +55,8 @@ class InitialiseGameTest extends AnyFunSuite
     val command = InitialiseGame(gameIdentity = gameIdentity)
 
     handler.handleAsync(command)
-    mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedBy(gameIdentity) map { result =>
-      assert(result.gameIdentity == gameIdentity)
+    mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnStartBy(gameIdentity) map { result =>
+      assert(result.identity() == gameIdentity)
     }
   }
 
@@ -94,8 +94,8 @@ class InitialiseGameTest extends AnyFunSuite
     val command = InitialiseGame(gameIdentity = gameIdentity)
 
     handler.handle(command)
-    mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedBy(gameIdentity) map { result =>
-      assert(result.gameIdentity == gameIdentity)
+    mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnStartBy(gameIdentity) map { result =>
+      assert(result.identity() == gameIdentity)
     }
   }
 }

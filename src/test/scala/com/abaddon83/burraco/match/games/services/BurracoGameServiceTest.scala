@@ -17,13 +17,13 @@ class BurracoGameServiceTest extends AnyFunSuite
 
   val gameService = new BurracoGameService(mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
 
-  test("create a new Burraco game with a valid user"){
+  /*test("create a new Burraco game with a valid user"){
 
     val playerIdentity = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")
 
     val burracoGameWaitingPlayers = gameService.createNewBurracoGame(playerIdentity).futureValue
     assert(burracoGameWaitingPlayers.listOfPlayers.size == 0)
-  }
+  }*/
 
   test("create a new Burraco game with a not existing user, should fail"){
     val playerIdentity = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532fe")
@@ -49,7 +49,7 @@ class BurracoGameServiceTest extends AnyFunSuite
 
     assert(gameResult.numPlayers == 1)
   }
-*/
+
   test("add the same player to the game") {
     val list = gameService.allBurracoGamesWaitingPlayers().futureValue
     val gameIdentity = list(0).gameIdentity
@@ -68,7 +68,7 @@ class BurracoGameServiceTest extends AnyFunSuite
     }
   }
 
-  /*test("initialise the game with 2 player"){
+  test("initialise the game with 2 player"){
     val list = gameService.allBurracoGamesWaitingPlayers().futureValue
     val gameIdentity = list(0).gameIdentity
     val playerIdentity = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff731")

@@ -11,10 +11,10 @@ class CreateNewGameTest extends AnyFunSuite
   with MockExecutionContext {
 
   val handler = CreateNewGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
-  val globalGameIdentity = GameIdentity()
+
 
   test("async, create new game") {
-    val gameIdentity = globalGameIdentity
+    val gameIdentity = GameIdentity()
     val burracoGameType = GameTypes.Burraco
     val command = CreateNewGame(gameIdentity = gameIdentity,burracoGameType)
     assert(handler.handleAsync(command).futureValue.isInstanceOf[Unit])
@@ -34,18 +34,20 @@ class CreateNewGameTest extends AnyFunSuite
   }
 
   test("async, create a new game with the same gameIdentity") {
-    val gameIdentity = globalGameIdentity
+    val gameIdentity = GameIdentity()
     val burracoGameType = GameTypes.Burraco
     val command = CreateNewGame(gameIdentity = gameIdentity,burracoGameType)
+    handler.handle(command)
     assertThrows[AssertionError]{
       handler.handleAsync(command)
     }
   }
 
   test("sync, create a new game with the same gameIdentity") {
-    val gameIdentity = globalGameIdentity
+    val gameIdentity = GameIdentity()
     val burracoGameType = GameTypes.Burraco
     val command = CreateNewGame(gameIdentity = gameIdentity,burracoGameType)
+    handler.handle(command)
     assertThrows[AssertionError]{
       handler.handle(command)
     }

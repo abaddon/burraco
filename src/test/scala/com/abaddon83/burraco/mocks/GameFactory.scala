@@ -19,7 +19,7 @@ case class GameFactory(
     this
   }
 
-  def initialise(playerIdentity: PlayerIdentity): GameFactory = {
+  def initialise(): GameFactory = {
     InitialiseGameHandler(gameRepositoryPort = gameRepositoryPort).handle(
       InitialiseGame(gameIdentity = gameIdentity)
     )
