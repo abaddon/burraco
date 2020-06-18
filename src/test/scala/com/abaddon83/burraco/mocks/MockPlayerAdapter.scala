@@ -16,8 +16,8 @@ trait MockPlayerAdapter {
       Future {
         PlayerDB.search().find(player => player.playerIdentity == playerIdentity) match {
           case Some(value: PlayerNotAssigned) => value
-          case Some(value) => throw new NoSuchElementException()
-          case None => throw new NoSuchElementException()
+          case Some(value) => throw new NoSuchElementException(s"${playerIdentity} not found in status PlayerNotAssigned")
+          case None => throw new NoSuchElementException(s"${playerIdentity} not found")
         }
       }
     }
@@ -40,6 +40,13 @@ trait MockPlayerAdapter {
           case None => throw new NoSuchElementException()
         }
       }
+    }
+
+    def updatePlayerStatusToPlayerAssigned(playerIdentity: PlayerIdentity): Unit = {
+      val idx = PlayerDB.search().indexWhere(p => p.playerIdentity== playerIdentity)
+      assert(idx != -1)
+      PlayerDB.search().remove(idx)
+      PlayerDB.search().addOne(BurracoPlayerAssigned(playerIdentity).asInstanceOf[BurracoPlayer])
     }
   }
 }

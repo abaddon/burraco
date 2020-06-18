@@ -9,7 +9,6 @@ class GameCommandDispatcher(context: Context) extends CommandDispatcher{
   override def dispatchAsync[TCommand](command: TCommand): Future[Unit] = {
     val handler = context.resolve[CommandHandler[TCommand]]
     handler.handleAsync(command)
-
   }
 
   override def dispatch[TCommand](command: TCommand): Unit = {

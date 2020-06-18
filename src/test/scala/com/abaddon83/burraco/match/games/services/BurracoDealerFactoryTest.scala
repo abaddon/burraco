@@ -2,6 +2,7 @@ package com.abaddon83.burraco.`match`.games.services
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.PlayerNotAssigned
+import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -15,7 +16,7 @@ class BurracoDealerFactoryTest extends AnyFunSuite{
     val expectedPlayerCards = 11
     val expectedPlayers = 2
 
-    val game = BurracoGame.createNewBurracoGame()
+    val game = BurracoGame.createNewBurracoGame(GameIdentity())
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
 
@@ -40,7 +41,7 @@ class BurracoDealerFactoryTest extends AnyFunSuite{
     val expectedPlayerCards = 11
     val expectedPlayers = 3
 
-    val game = BurracoGame.createNewBurracoGame()
+    val game = BurracoGame.createNewBurracoGame(GameIdentity())
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
@@ -66,7 +67,7 @@ class BurracoDealerFactoryTest extends AnyFunSuite{
     val expectedPlayerCards = 11
     val expectedPlayers = 4
 
-    val game = BurracoGame.createNewBurracoGame()
+    val game = BurracoGame.createNewBurracoGame(GameIdentity())
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))
       .addPlayer(PlayerNotAssigned(PlayerIdentity()))

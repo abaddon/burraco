@@ -4,6 +4,7 @@ import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
 import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer, PlayerNotAssigned}
 import com.abaddon83.burraco.shares.games.GameIdentity
+import com.abaddon83.burraco.shares.players.PlayerIdentity
 
 case class BurracoGameWaitingPlayers(
                                       override val gameIdentity: GameIdentity,
@@ -12,12 +13,12 @@ case class BurracoGameWaitingPlayers(
 
   def addPlayer(player: PlayerNotAssigned): BurracoGameWaitingPlayers ={
     assert(players.size < maxPlayers,s"Maximum number of players reached, (Max: ${maxPlayers})")
-    assert(isAlreadyAPlayer(player) == false, s"The player ${player.playerIdentity.toString()} is already a player of game ${this.gameIdentity.toString()}")
+    assert(isAlreadyAPlayer(player.playerIdentity) == false, s"The player ${player.playerIdentity.toString()} is already a player of game ${this.gameIdentity.toString()}")
     BurracoGameWaitingPlayers(gameIdentity,players ++ List(player))
   }
 
-  def isAlreadyAPlayer(player: BurracoPlayer): Boolean = {
-    players.exists(p => p == player)
+  def isAlreadyAPlayer(playerIdentity: PlayerIdentity): Boolean = {
+    players.exists(p => p.playerIdentity == playerIdentity)
   }
 
   def initiate(burracoCardsDealt: BurracoCardsDealt): BurracoGameInitiatedTurnStart = {

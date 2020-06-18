@@ -8,6 +8,7 @@ import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.decks.Ranks._
 import com.abaddon83.burraco.shares.decks.Suits.{Heart, Tile}
 import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}
+import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -170,7 +171,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
   }
 
   private def createBurracoGamePlayerTurnExecution(): BurracoGameInitiatedTurnExecution = {
-    val game = burracoGames.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame(GameIdentity())
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID1)))
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID2)))
     val gameStart=game.initiate(BurracoDealerFactory(game).dealBurracoCards())

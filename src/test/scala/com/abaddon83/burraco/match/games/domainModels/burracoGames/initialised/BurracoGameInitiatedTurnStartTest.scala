@@ -4,6 +4,7 @@ import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 import com.abaddon83.burraco.`match`.games.domainModels.{PlayerNotAssigned, burracoGames}
 import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.decks.Card
+import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -13,7 +14,7 @@ class BurracoGameInitiatedTurnStartTest extends AnyFunSuite{
   private val playerIdentityUUID2 = "ca65f040-eaea-4b9a-8082-c110f4640a15"
 
   def createBurracoGamePlayerTurnStart(): BurracoGameInitiatedTurnStart = {
-    val game = burracoGames.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame(GameIdentity())
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID1)))
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID2)))
 

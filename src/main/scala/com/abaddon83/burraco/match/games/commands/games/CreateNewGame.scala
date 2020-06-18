@@ -4,13 +4,15 @@ import java.util.UUID
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.ports.GameRepositoryPort
-import com.abaddon83.burraco.shares.games.GameTypes
+import com.abaddon83.burraco.shares.games.{GameIdentity, GameTypes}
 import com.abaddon83.burraco.shares.games.GameTypes.GameType
+import com.abaddon83.libs.cqs.Context
 import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.Future
 
 case class CreateNewGame(
+                        gameIdentity: GameIdentity,
                         gameType: GameType
                         ) extends Command {
   override protected val requestId: UUID = UUID.randomUUID()
@@ -22,16 +24,22 @@ case class CreateNewGameHandler(
                                )
                                (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[CreateNewGame]{
 
-
    override def handleAsync(command: CreateNewGame): Future[Unit] = {
+    assert(!gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} already exist")
+
     command.gameType match {
       case GameTypes.Burraco =>
         for {
-          burracoGameWaitingPlayer <- Future{BurracoGame.createNewBurracoGame()}
+          burracoGameWaitingPlayer <- Future{BurracoGame.createNewBurracoGame(command.gameIdentity)}
         } yield gameRepositoryPort.save(burracoGameWaitingPlayer)
       }
   }
 
-  override def handle(command: CreateNewGame): Unit = ???
+  override def handle(command: CreateNewGame): Unit = {
+    assert(!gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} already exist")
+
+    val burracoGameWaitingPlayer = BurracoGame.createNewBurracoGame(command.gameIdentity)
+    gameRepositoryPort.save(burracoGameWaitingPlayer)
+  }
 
 }

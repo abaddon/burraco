@@ -4,6 +4,7 @@ import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, PlayerNotAssigned, burracoGames}
 import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}
+import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -102,7 +103,7 @@ class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
   }
 
   private def createGame :BurracoGameInitiatedTurnEnd ={
-    val game = burracoGames.BurracoGame.createNewBurracoGame()
+    val game = burracoGames.BurracoGame.createNewBurracoGame(GameIdentity())
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID1)))
       .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID2)))
     val gameExecution = game

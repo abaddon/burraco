@@ -18,8 +18,8 @@ trait BurracoGame extends Game {
 }
 
 object BurracoGame {
-  def createNewBurracoGame(): BurracoGameWaitingPlayers ={
-    BurracoGameWaitingPlayers(GameIdentity(),List.empty)
+  def createNewBurracoGame(gameIdentity: GameIdentity): BurracoGameWaitingPlayers ={
+    BurracoGameWaitingPlayers(gameIdentity,List.empty)
   }
 }
 

@@ -4,7 +4,7 @@ import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlay
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
 import com.abaddon83.burraco.`match`.games.ports.GameRepositoryPort
-import com.abaddon83.burraco.shares.games.GameIdentity
+import com.abaddon83.burraco.shares.games.{Game, GameIdentity}
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
@@ -27,6 +27,10 @@ val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
         case _ => throw new NoSuchElementException()
       }
     }
+
+  override def exists(gameIdentity: GameIdentity): Boolean = {
+    BurracoGameDB.search().exists(game => game.identity() == gameIdentity)
+  }
 
     override def findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): Future[BurracoGameWaitingPlayers] = {
       Future{
@@ -56,7 +60,8 @@ val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
       }
     }
 
-  }
+
+}
 }
 
 protected object BurracoGameDB{
