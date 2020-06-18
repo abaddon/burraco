@@ -17,17 +17,19 @@ class CreateNewGameTest extends AnyFunSuite
     val gameIdentity = GameIdentity()
     val burracoGameType = GameTypes.Burraco
     val command = CreateNewGame(gameIdentity = gameIdentity,burracoGameType)
-    assert(handler.handleAsync(command).futureValue.isInstanceOf[Unit])
+    //assert(handler.handleAsync(command).futureValue.isInstanceOf[Unit])
+    handler.handleAsync(command).foreach{ r =>
+      val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
+      assert(game.gameIdentity == gameIdentity)
+    }
 
-    val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
-    assert(game.gameIdentity == gameIdentity)
   }
 
   test("sync, create new game") {
     val gameIdentity = GameIdentity()
     val burracoGameType = GameTypes.Burraco
     val command = CreateNewGame(gameIdentity = gameIdentity,burracoGameType)
-    assert(handler.handle(command).isInstanceOf[Unit])
+    handler.handle(command)
 
     val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
     assert(game.gameIdentity == gameIdentity)

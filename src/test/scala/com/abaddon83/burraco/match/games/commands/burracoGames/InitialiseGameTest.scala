@@ -1,5 +1,6 @@
 package com.abaddon83.burraco.`match`.games.commands.burracoGames
 
+import com.abaddon83.burraco.`match`.games.domainModels.PlayerNotAssigned
 import com.abaddon83.burraco.mocks.{GameFactory, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
@@ -13,8 +14,8 @@ class InitialiseGameTest extends AnyFunSuite
   with MockPlayerAdapter{
 
   val handler = InitialiseGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
-  val player1 = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")
-  val player2 = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")
+  //val player1 = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")
+  //val player2 = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")
 
 
   test("async, initialise the game with no player, should fail") {
@@ -32,6 +33,8 @@ class InitialiseGameTest extends AnyFunSuite
 
   test("async, initialise the game with a player, should fail") {
     val gameIdentity = GameIdentity()
+    val player1 = PlayerIdentity()
+    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player1))
     GameFactory
       .build(gameIdentity,mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
       .addPlayer(player1)
@@ -47,6 +50,11 @@ class InitialiseGameTest extends AnyFunSuite
 
   test("async, initialise the game with two players") {
     val gameIdentity = GameIdentity()
+    val player1 = PlayerIdentity()
+    val player2 = PlayerIdentity()
+    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player1))
+    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player2))
+
     GameFactory
       .build(gameIdentity,mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
       .addPlayer(player1)
@@ -54,10 +62,12 @@ class InitialiseGameTest extends AnyFunSuite
 
     val command = InitialiseGame(gameIdentity = gameIdentity)
 
-    handler.handleAsync(command)
-    mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnStartBy(gameIdentity) map { result =>
-      assert(result.identity() == gameIdentity)
+    handler.handleAsync(command) foreach { r =>
+      mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnStartBy(gameIdentity) map { result =>
+        assert(result.identity() == gameIdentity)
+      }
     }
+
   }
 
   test("sync, initialise the game with no player, should fail") {
@@ -73,6 +83,9 @@ class InitialiseGameTest extends AnyFunSuite
 
   test("sync, initialise the game with a player, should fail") {
     val gameIdentity = GameIdentity()
+    val player1 = PlayerIdentity()
+    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player1))
+
     GameFactory
       .build(gameIdentity,mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
       .addPlayer(player1)
@@ -86,6 +99,11 @@ class InitialiseGameTest extends AnyFunSuite
 
   test("sync, initialise the game with two players") {
     val gameIdentity = GameIdentity()
+    val player1 = PlayerIdentity()
+    val player2 = PlayerIdentity()
+    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player1))
+    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player2))
+
     GameFactory
       .build(gameIdentity,mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
       .addPlayer(player1)

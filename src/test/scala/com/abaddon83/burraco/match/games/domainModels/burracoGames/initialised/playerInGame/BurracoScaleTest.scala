@@ -76,7 +76,7 @@ class BurracoScaleTest extends AnyFunSuite{
     ))
     val sortedScale = BurracoScale(cards)
 
-    debug(cards,sortedScale.showCards)
+    //debug(cards,sortedScale.showCards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
     assert(sortedScale.showCards(2).rank == Ranks.Three)
@@ -94,7 +94,7 @@ class BurracoScaleTest extends AnyFunSuite{
     ))
     val sortedScale = BurracoScale(cards)
 
-    debug(cards,sortedScale.showCards)
+    //debug(cards,sortedScale.showCards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
     assert(sortedScale.showCards(2).rank == Ranks.Three)

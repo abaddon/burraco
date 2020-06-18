@@ -48,6 +48,10 @@ trait MockPlayerAdapter {
       PlayerDB.search().remove(idx)
       PlayerDB.search().addOne(BurracoPlayerAssigned(playerIdentity).asInstanceOf[BurracoPlayer])
     }
+
+    def mockPlayer():ListBuffer[BurracoPlayer] = {
+      PlayerDB.search()
+    }
   }
 }
 
