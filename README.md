@@ -1,2 +1,2 @@
 # burraco
-![Scala CI](https://github.com/abaddon/burraco/workflows/Scala%20CI/badge.svg?branch=master&event=push)(https://codecov.io/gh/abaddon/burraco)
+![Scala CI](https://github.com/abaddon/burraco/workflows/Scala%20CI/badge.svg?branch=master&event=push) [![codecov](https://codecov.io/gh/abaddon/burraco/branch/master/graph/badge.svg?token=I5MUK1OLTQ)](https://codecov.io/gh/abaddon/burraco)
