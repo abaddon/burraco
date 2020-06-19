@@ -18,7 +18,7 @@ case class PickUpACardFromDeck(
   override protected val requestId: UUID = UUID.randomUUID()
 }
 
-case class PickUpACardFromDeckHandler(
+class PickUpACardFromDeckHandler(
                                  gameRepositoryPort: GameRepositoryPort
                                )
                                (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[PickUpACardFromDeck]{

@@ -13,7 +13,7 @@ class InitialiseGameTest extends AnyFunSuite
   with MockExecutionContext
   with MockPlayerAdapter{
 
-  val handler = InitialiseGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
+  val handler = new InitialiseGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
   //val player1 = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")
   //val player2 = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")
 

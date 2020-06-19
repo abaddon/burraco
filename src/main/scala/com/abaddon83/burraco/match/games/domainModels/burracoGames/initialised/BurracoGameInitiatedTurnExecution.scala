@@ -42,7 +42,15 @@ case class BurracoGameInitiatedTurnExecution private(
     ).testInvariants()
   }
 
-  def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
+  def appendCardsOnABurracoDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
+    val player = validatePlayerId(playerIdentity)
+    validatePlayerTurn(playerIdentity)
+    copy(
+      players = UpdatePlayers(player.appendACardOnBurracoDropped(burracoId,cardsToAppend))
+    ).testInvariants()
+  }
+
+  /*def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
 
@@ -58,7 +66,7 @@ case class BurracoGameInitiatedTurnExecution private(
     copy(
       players = UpdatePlayers(player.appendACardOnTrisDropped(burracoId,cardsToAppend))
     ).testInvariants()
-  }
+  }*/
 
   def pickupPozzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)

@@ -18,7 +18,7 @@ case class PickUpCardsFromDiscardPile(
   override protected val requestId: UUID = UUID.randomUUID()
 }
 
-case class PickUpCardsFromDiscardPileHandler(
+class PickUpCardsFromDiscardPileHandler(
                                        gameRepositoryPort: GameRepositoryPort
                                      )
                                      (implicit val ec: scala.concurrent.ExecutionContext)

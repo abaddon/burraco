@@ -10,7 +10,7 @@ class CreateNewGameTest extends AnyFunSuite
   with MockBurracoGameRepositoryAdapter
   with MockExecutionContext {
 
-  val handler = CreateNewGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
+  val handler = new CreateNewGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
 
 
   test("async, create new game") {

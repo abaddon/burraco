@@ -46,7 +46,7 @@ class TestModule extends AbstractModule with ScalaModule with MockBurracoGameRep
   implicit val ec: scala.concurrent.ExecutionContext= scala.concurrent.ExecutionContext.global
   override def configure(): Unit = {
 
-    bind[CommandHandler[CreateNewGame]].toInstance(CreateNewGameHandler(mockBurracoGameRepositoryAdapter))
+    bind[CommandHandler[CreateNewGame]].toInstance(new CreateNewGameHandler(mockBurracoGameRepositoryAdapter))
     bind[CommandHandler[UpdateGame]].toInstance(UpdateGameHandler())
 
 

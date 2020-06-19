@@ -2,7 +2,7 @@ package com.abaddon83.burraco.mocks
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.burraco.`match`.games.ports.GameRepositoryPort
 import com.abaddon83.burraco.shares.games.{Game, GameIdentity}
 
@@ -41,6 +41,16 @@ implicit val ec: scala.concurrent.ExecutionContext
       }
     }
 
+    override def save(burracoGame: BurracoGameInitiated): BurracoGameInitiated = {
+
+      BurracoGameDB.persist(burracoGame) match {
+        case game: BurracoGameInitiated =>  game
+        case _ => throw new NoSuchElementException()
+      }
+    }
+
+
+
   override def exists(gameIdentity: GameIdentity): Boolean = {
     BurracoGameDB.search().exists(game => game.identity() == gameIdentity)
   }
@@ -49,6 +59,18 @@ implicit val ec: scala.concurrent.ExecutionContext
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameWaitingPlayers) => value
+          case Some(_) => throw new NoSuchElementException()
+          case None => throw new NoSuchElementException()
+        }
+      }
+    }
+
+    override def findBurracoGameInitialisedBy(gameIdentity: GameIdentity): Future[BurracoGameInitiated] = {
+      Future {
+        BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
+          case Some(game: BurracoGameInitiatedTurnStart) => game
+          case Some(game: BurracoGameInitiatedTurnEnd) => game
+          case Some(game: BurracoGameInitiatedTurnExecution) => game
           case Some(_) => throw new NoSuchElementException()
           case None => throw new NoSuchElementException()
         }
@@ -65,7 +87,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       }
     }
 
-    override def findBurracoGameInitiatedTurnExecutionBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnExecution] = {
+    override def findBurracoGameInitialisedTurnExecutionBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnExecution] = {
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameInitiatedTurnExecution) => value
@@ -75,7 +97,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       }
     }
 
-    override def findBurracoGameInitiatedTurnEndBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnEnd] = {
+    override def findBurracoGameInitialisedTurnEndBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnEnd] = {
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameInitiatedTurnEnd) => value

@@ -13,7 +13,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
   with MockExecutionContext
   with MockPlayerAdapter{
 
-  val handler = PickUpCardsFromDiscardPileHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
+  val handler = new PickUpCardsFromDiscardPileHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
 
   test("async, during the player turn, pick up the discard pile") {
     val gameIdentity = GameIdentity()
@@ -30,7 +30,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
 
     val command = PickUpCardsFromDiscardPile(gameIdentity = gameIdentity, playerIdentity = player1)
     handler.handleAsync(command).foreach{r =>
-      val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitiatedTurnExecutionBy(gameIdentity).futureValue
+      val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnExecutionBy(gameIdentity).futureValue
       assert(gameTurnExecution.identity() == gameIdentity)
     }
   }
@@ -71,7 +71,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
 
     val command = PickUpCardsFromDiscardPile(gameIdentity = gameIdentity, playerIdentity = player1)
     handler.handle(command)
-    val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitiatedTurnExecutionBy(gameIdentity).futureValue
+    val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnExecutionBy(gameIdentity).futureValue
     assert(gameTurnExecution.identity() == gameIdentity)
 
   }

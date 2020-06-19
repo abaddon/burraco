@@ -16,7 +16,7 @@ class AddPlayerTest extends AnyFunSuite
   with MockExecutionContext
   with MockPlayerAdapter{
 
-  val handler = AddPlayerHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter,playerPort = mockPlayerAdapter )
+  val handler = new AddPlayerHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter,playerPort = mockPlayerAdapter )
 
 
 

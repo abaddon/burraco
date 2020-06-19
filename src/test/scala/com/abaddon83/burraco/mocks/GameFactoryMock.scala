@@ -35,6 +35,20 @@ case class GameFactoryMock(
     )
   }
 
+  def pickUpACardFromDeck(playerIdentity: PlayerIdentity): GameFactoryMock = {
+    val gameStarted = game.asInstanceOf[BurracoGameInitiatedTurnStart]
+    this.copy(
+      game = gameStarted.pickUpACardFromDeck(playerIdentity = playerIdentity)
+    )
+  }
+  def dropCardOnDiscardPile(playerIdentity: PlayerIdentity): GameFactoryMock = {
+    val gameExecution = game.asInstanceOf[BurracoGameInitiatedTurnExecution]
+    this.copy(
+      game = gameExecution.dropCardOnDiscardPile(playerIdentity = playerIdentity ,card = gameExecution.playerCards(playerIdentity).head)
+    )
+  }
+
+
   def persist() = {
     game match {
       //case game: BurracoGameCompleted => mockBurracoGameRepositoryAdapter.save(game)
@@ -44,7 +58,6 @@ case class GameFactoryMock(
       case game: BurracoGameWaitingPlayers => mockBurracoGameRepositoryAdapter.save(game)
       case _ => throw new Exception("GameFactory mockUp failed to persist the game")
     }
-    ()
   }
 }
 

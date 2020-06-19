@@ -36,14 +36,24 @@ case class PlayerInGame(
     this.copy(cards = cards diff List(card))
   }
 
-  def appendACardOnScaleDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
+  def appendACardOnBurracoDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
+    if(cardsOnTable.listOfScale.find(s => s.getBurracoId() == burracoId).isDefined){
+      appendACardOnScaleDropped(burracoId,cardsToAppend)
+    }else if(cardsOnTable.listOfTris.find(t => t.getBurracoId() == burracoId).isDefined){
+      appendACardOnTrisDropped(burracoId,cardsToAppend)
+    }else{
+      throw new NoSuchElementException(s"The ${burracoId} doesn't exist")
+    }
+  }
+
+  private def appendACardOnScaleDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
     val updatedPlayerCardsOnTable = cardsOnTable.updateScale(burracoId,cardsToAppend)
     val updatedPlayerCards = cards diff cardsToAppend
 
     this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
   }
 
-  def appendACardOnTrisDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
+  private def appendACardOnTrisDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
     val updatedPlayerCardsOnTable = cardsOnTable.updateTris(burracoId,cardsToAppend)
     val updatedPlayerCards = cards diff cardsToAppend
 

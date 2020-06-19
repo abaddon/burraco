@@ -19,7 +19,7 @@ case class CreateNewGame(
 }
 
 
-case class CreateNewGameHandler(
+class CreateNewGameHandler(
                                  gameRepositoryPort: GameRepositoryPort
                                )
                                (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[CreateNewGame]{

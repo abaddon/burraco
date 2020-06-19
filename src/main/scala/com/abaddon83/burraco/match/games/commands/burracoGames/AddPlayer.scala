@@ -17,7 +17,7 @@ case class AddPlayer(
 }
 
 
-case class AddPlayerHandler(
+class AddPlayerHandler(
                                  gameRepositoryPort: GameRepositoryPort,
                                  playerPort: PlayerPort
                                )

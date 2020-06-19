@@ -62,7 +62,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val cardToAppend = List(Card(Tile,Ace))
     val tris = game.playerTrisOnTable(playerIdentity).head
 
-    val gameActual = game.appendCardsOnATrisDropped(playerIdentity,cardToAppend,tris.getBurracoId())
+    val gameActual = game.appendCardsOnABurracoDropped(playerIdentity,cardToAppend,tris.getBurracoId())
 
     assert(playerCards.size - cardToAppend.size == gameActual.playerCards(PlayerIdentity(playerIdentityUUID1)).size)
     assert(tris.showCards.size + cardToAppend.size == gameActual.playerTrisOnTable(playerIdentity).find(t => t.getBurracoId() == tris.getBurracoId()).get.showCards.size)
@@ -79,7 +79,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val tris = game.playerTrisOnTable(playerIdentity).head
 
     assertThrows[IllegalArgumentException]{
-      game.appendCardsOnATrisDropped(playerIdentity,cardToAppend,tris.getBurracoId())
+      game.appendCardsOnABurracoDropped(playerIdentity,cardToAppend,tris.getBurracoId())
     }
   }
 
@@ -91,7 +91,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val cardsToAppend = List(Card(Heart,Ten))
     val scala = game.playerScalesOnTable(playerIdentity).head
 
-    val gameActual = game.appendCardsOnAScaleDropped(playerIdentity,cardsToAppend,scala.getBurracoId())
+    val gameActual = game.appendCardsOnABurracoDropped(playerIdentity,cardsToAppend,scala.getBurracoId())
 
     assert(playerCards.size - cardsToAppend.size == gameActual.playerCards(PlayerIdentity(playerIdentityUUID1)).size)
     assert(scala.showCards.size + cardsToAppend.size == gameActual.playerScalesOnTable(playerIdentity).find(s => s.getBurracoId == scala.getBurracoId).get.showCards.size)
@@ -109,7 +109,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val scala = game.playerScalesOnTable(playerIdentity).head
 
     assertThrows[IllegalArgumentException]{ //AssertionError
-      game.appendCardsOnAScaleDropped(playerIdentity,cardsToAppend,scala.getBurracoId)
+      game.appendCardsOnABurracoDropped(playerIdentity,cardsToAppend,scala.getBurracoId)
     }
 
   }
