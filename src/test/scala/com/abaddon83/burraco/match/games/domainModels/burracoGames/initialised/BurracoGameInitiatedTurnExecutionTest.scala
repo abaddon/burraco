@@ -150,9 +150,10 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val playerIdentity = PlayerIdentity(playerIdentityUUID1)
     val game = createBurracoGamePlayerTurnExecution()
     val card = game.playerCards(playerIdentity).head
+    val cardSize= game.playerCards(playerIdentity).size
     val gameEnd = game.dropCardOnDiscardPile(playerIdentity,card)
     assert(gameEnd.isInstanceOf[BurracoGameInitiatedTurnEnd])
-    assert(gameEnd.playerCards(playerIdentity).exists( c=> c == card) == false)
+    assert(gameEnd.playerCards(playerIdentity).size < cardSize)
 
   }
 

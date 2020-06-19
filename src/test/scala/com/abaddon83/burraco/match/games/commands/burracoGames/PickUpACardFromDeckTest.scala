@@ -1,7 +1,7 @@
 package com.abaddon83.burraco.`match`.games.commands.burracoGames
 
 import com.abaddon83.burraco.`match`.games.domainModels.PlayerNotAssigned
-import com.abaddon83.burraco.mocks.{GameFactory, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
+import com.abaddon83.burraco.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.concurrent.ScalaFutures
@@ -19,14 +19,13 @@ class PickUpACardFromDeckTest extends AnyFunSuite
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
     val player2 = PlayerIdentity()
-    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player1))
-    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player2))
 
-    GameFactory
-      .build(gameIdentity,mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
-      .addPlayer(player1)
-      .addPlayer(player2)
+    GameFactoryMock
+      .build(gameIdentity)
+      .addPlayerNotAssigned(player1)
+      .addPlayerNotAssigned(player2)
       .initialise()
+      .persist()
 
     val command = PickUpACardFromDeck(gameIdentity = gameIdentity, playerIdentity = player1)
     handler.handleAsync(command).foreach{r =>
@@ -39,14 +38,13 @@ class PickUpACardFromDeckTest extends AnyFunSuite
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
     val player2 = PlayerIdentity()
-    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player1))
-    mockPlayerAdapter.mockPlayer().addOne(PlayerNotAssigned(player2))
 
-    GameFactory
-      .build(gameIdentity,mockBurracoGameRepositoryAdapter,mockPlayerAdapter)
-      .addPlayer(player1)
-      .addPlayer(player2)
+    GameFactoryMock
+      .build(gameIdentity)
+      .addPlayerNotAssigned(player1)
+      .addPlayerNotAssigned(player2)
       .initialise()
+      .persist()
 
     val command = PickUpACardFromDeck(gameIdentity = gameIdentity, playerIdentity = player2)
     handler.handleAsync(command).foreach { result =>

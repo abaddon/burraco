@@ -26,20 +26,25 @@ case class CreateNewGameHandler(
 
    override def handleAsync(command: CreateNewGame): Future[Unit] = {
     assert(!gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} already exist")
-
-    command.gameType match {
-      case GameTypes.Burraco =>
-        for {
-          burracoGameWaitingPlayer <- Future{BurracoGame.createNewBurracoGame(command.gameIdentity)}
-        } yield gameRepositoryPort.save(burracoGameWaitingPlayer)
+    Future{
+      command.gameType match {
+        case GameTypes.Burraco => {
+          val burracoGameWaitingPlayer = BurracoGame.createNewBurracoGame(command.gameIdentity)
+          gameRepositoryPort.save(burracoGameWaitingPlayer)
+        }
       }
+      ()
+    }
   }
 
   override def handle(command: CreateNewGame): Unit = {
     assert(!gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} already exist")
-
-    val burracoGameWaitingPlayer = BurracoGame.createNewBurracoGame(command.gameIdentity)
-    gameRepositoryPort.save(burracoGameWaitingPlayer)
+    command.gameType match {
+      case GameTypes.Burraco => {
+        val burracoGameWaitingPlayer = BurracoGame.createNewBurracoGame(command.gameIdentity)
+        gameRepositoryPort.save(burracoGameWaitingPlayer)
+      }
+    }
   }
 
 }

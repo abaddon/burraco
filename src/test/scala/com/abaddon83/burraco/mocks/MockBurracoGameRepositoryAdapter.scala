@@ -49,6 +49,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameWaitingPlayers) => value
+          case Some(_) => throw new NoSuchElementException()
           case None => throw new NoSuchElementException()
         }
       }
@@ -58,6 +59,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameInitiatedTurnStart) => value
+          case Some(_) => throw new NoSuchElementException()
           case None => throw new NoSuchElementException()
         }
       }
@@ -67,6 +69,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameInitiatedTurnExecution) => value
+          case Some(_) => throw new NoSuchElementException()
           case None => throw new NoSuchElementException()
         }
       }
@@ -76,6 +79,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       Future{
         BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
           case Some(value: BurracoGameInitiatedTurnEnd) => value
+          case Some(_) => throw new NoSuchElementException()
           case None => throw new NoSuchElementException()
         }
       }
