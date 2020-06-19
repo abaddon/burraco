@@ -1,5 +1,6 @@
 package com.abaddon83.burraco.`match`.games.ports
 
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoGameCompleted
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.burraco.shares.games.{Game, GameIdentity}
@@ -13,6 +14,7 @@ trait GameRepositoryPort {
   def save(burracoGame: BurracoGameInitiatedTurnExecution): BurracoGameInitiatedTurnExecution
   def save(burracoGame: BurracoGameInitiatedTurnEnd): BurracoGameInitiatedTurnEnd
   def save(burracoGame: BurracoGameInitiated): BurracoGameInitiated
+  def save(burracoGame: BurracoGameCompleted): BurracoGameCompleted
   def exists(gameIdentity: GameIdentity): Boolean
   def findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): Future[BurracoGameWaitingPlayers]
   def findBurracoGameInitialisedBy(gameIdentity: GameIdentity): Future[BurracoGameInitiated]

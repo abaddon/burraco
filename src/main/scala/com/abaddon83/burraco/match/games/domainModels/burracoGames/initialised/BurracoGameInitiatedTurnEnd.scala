@@ -26,7 +26,9 @@ case class BurracoGameInitiatedTurnEnd protected(
 
   }
 
-  def nextPlayerTurn() : BurracoGameInitiatedTurnStart = {
+  def nextPlayerTurn(playerIdentity: PlayerIdentity) : BurracoGameInitiatedTurnStart = {
+    validatePlayerId(playerIdentity)
+    validatePlayerTurn(playerIdentity)
     val list = players.map(_.playerIdentity)
     val nextPlayerTurn=list((list.indexOf(playerTurn)+1)%list.size)
 
@@ -42,8 +44,9 @@ case class BurracoGameInitiatedTurnEnd protected(
 
   def completeGame(playerIdentity: PlayerIdentity): BurracoGameCompleted = {
     val player = validatePlayerId(playerIdentity)
-    assert(player.cards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
-    assert(player.pozzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
+    validatePlayerTurn(playerIdentity)
+    assert(player.cards.size == 0,s"The player cannot complete the game with ${player.cards.size} cards on hand")
+    assert(player.pozzettoTaken,s"The player cannot complete the game if the small deck is taken ${player.pozzettoTaken}")
     assert(player.cardsOnTable.burracoList().size >0, "The player doesn't have a burraco")
     //TODO add the logic to check if the squad taken the pozzetto
 

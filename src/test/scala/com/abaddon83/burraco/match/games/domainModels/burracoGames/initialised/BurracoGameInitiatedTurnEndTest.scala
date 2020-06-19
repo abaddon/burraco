@@ -28,7 +28,7 @@ class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
 
   test("next Player Turn") {
     val game = gameWithPlayerWithNoCards(PlayerIdentity(playerIdentityUUID1))
-    val newGame = game.nextPlayerTurn()
+    val newGame = game.nextPlayerTurn(PlayerIdentity(playerIdentityUUID1))
     assert(game.validatePlayerTurn(PlayerIdentity(playerIdentityUUID1)) == PlayerIdentity(playerIdentityUUID1))
     assert(newGame.validatePlayerTurn(PlayerIdentity(playerIdentityUUID2)) == PlayerIdentity(playerIdentityUUID2))
   }
@@ -72,7 +72,7 @@ class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
     )
     val playersUpdated = game.listOfPlayers().map(bp =>
       if(bp.playerIdentity == playerIdentity){
-        PlayerInGame(bp.playerIdentity,List(),burracoCardsOnTable)
+        PlayerInGame(bp.playerIdentity,List(),burracoCardsOnTable,true)
       }else {
         PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }

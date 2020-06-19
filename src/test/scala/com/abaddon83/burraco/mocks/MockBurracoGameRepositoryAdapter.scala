@@ -2,9 +2,10 @@ package com.abaddon83.burraco.mocks
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoGameCompleted
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.burraco.`match`.games.ports.GameRepositoryPort
-import com.abaddon83.burraco.shares.games.{Game, GameIdentity}
+import com.abaddon83.burraco.shares.games.{GameIdentity}
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
@@ -48,7 +49,13 @@ implicit val ec: scala.concurrent.ExecutionContext
         case _ => throw new NoSuchElementException()
       }
     }
+    override def save(burracoGame: BurracoGameCompleted): BurracoGameCompleted = {
 
+      BurracoGameDB.persist(burracoGame) match {
+        case game: BurracoGameCompleted =>  game
+        case _ => throw new NoSuchElementException()
+      }
+    }
 
 
   override def exists(gameIdentity: GameIdentity): Boolean = {
