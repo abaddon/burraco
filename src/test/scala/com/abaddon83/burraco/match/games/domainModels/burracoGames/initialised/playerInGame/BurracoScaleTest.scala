@@ -6,7 +6,18 @@ import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoScaleTest extends AnyFunSuite{
 
-  test("sort a valid scale") {
+  test("fffff"){
+    val cards = scala.util.Random.shuffle(List(
+      Card(Suits.Heart, Ranks.King),
+      Card(Suits.Heart, Ranks.Queen),
+      Card(Suits.Heart, Ranks.Jack),
+      Card(Suits.Heart, Ranks.Ten),
+      Card(Suits.Heart, Ranks.Nine),
+    ))
+
+  }
+
+  test("given a list of card when I sort them sort a valid scale") {
     val cards = List(
       Card(Suits.Heart, Ranks.King),
       Card(Suits.Heart, Ranks.Queen),
@@ -15,6 +26,7 @@ class BurracoScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Nine),
     )
     val sortedScale = BurracoScale(cards)
+
     assert(sortedScale.showCards.head.rank == Ranks.King)
     assert(sortedScale.showCards()(2).rank == Ranks.Jack)
     assert(sortedScale.showCards.last.rank == Ranks.Nine)
@@ -43,7 +55,7 @@ class BurracoScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Ten),
       Card(Suits.Heart, Ranks.Eight),
     ))
-    assertThrows[Exception]{
+    assertThrows[AssertionError]{
       BurracoScale(cards)
     }
   }
@@ -57,6 +69,7 @@ class BurracoScaleTest extends AnyFunSuite{
       Card(Suits.Jolly, Ranks.Jolly),
       Card(Suits.Heart, Ranks.Eight),
     ))
+
     val sortedScale = BurracoScale(cards)
 
 
@@ -179,7 +192,7 @@ class BurracoScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Jack),
       Card(Suits.Heart, Ranks.Ten)
     ))
-    assertThrows[Exception] {
+    assertThrows[AssertionError] {
       BurracoScale(cards)
     }
   }
@@ -193,7 +206,7 @@ class BurracoScaleTest extends AnyFunSuite{
       Card(Suits.Heart, Ranks.Three),
       Card(Suits.Heart, Ranks.Ace),
     ))
-    assertThrows[Exception]{
+    assertThrows[AssertionError]{
       BurracoScale(cards)
     }
   }
