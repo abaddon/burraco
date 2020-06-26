@@ -78,7 +78,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val cardToAppend = List(playerCards.find(c => c.rank != Ace && c.rank != Two && c.rank != Jolly ).get)
     val tris = game.playerTrisOnTable(playerIdentity).head
 
-    assertThrows[IllegalArgumentException]{
+    assertThrows[AssertionError]{
       game.appendCardsOnABurracoDropped(playerIdentity,cardToAppend,tris.getBurracoId())
     }
   }

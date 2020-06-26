@@ -16,7 +16,7 @@ class BurracoScaleTest extends AnyFunSuite{
     )
     val sortedScale = BurracoScale(cards)
     assert(sortedScale.showCards.head.rank == Ranks.King)
-    assert(sortedScale.showCards(2).rank == Ranks.Jack)
+    assert(sortedScale.showCards()(2).rank == Ranks.Jack)
     assert(sortedScale.showCards.last.rank == Ranks.Nine)
   }
 
@@ -31,7 +31,7 @@ class BurracoScaleTest extends AnyFunSuite{
     val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.King)
-    assert(sortedScale.showCards(2).rank == Ranks.Jack)
+    assert(sortedScale.showCards()(2).rank == Ranks.Jack)
     assert(sortedScale.showCards.last.rank == Ranks.Nine)
   }
 
@@ -61,8 +61,8 @@ class BurracoScaleTest extends AnyFunSuite{
 
 
     assert(sortedScale.showCards.head.rank == Ranks.King)
-    assert(sortedScale.showCards(2).rank == Ranks.Jack)
-    assert(sortedScale.showCards(4).rank == Ranks.Jolly)
+    assert(sortedScale.showCards()(2).rank == Ranks.Jack)
+    assert(sortedScale.showCards()(4).rank == Ranks.Jolly)
     assert(sortedScale.showCards.last.rank == Ranks.Eight)
   }
 
@@ -79,8 +79,8 @@ class BurracoScaleTest extends AnyFunSuite{
     //debug(cards,sortedScale.showCards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
-    assert(sortedScale.showCards(2).rank == Ranks.Three)
-    assert(sortedScale.showCards(3).rank == Ranks.Two)
+    assert(sortedScale.showCards()(2).rank == Ranks.Three)
+    assert(sortedScale.showCards()(3).rank == Ranks.Two)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -97,8 +97,8 @@ class BurracoScaleTest extends AnyFunSuite{
     //debug(cards,sortedScale.showCards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
-    assert(sortedScale.showCards(2).rank == Ranks.Three)
-    assert(sortedScale.showCards(3).rank == Ranks.Two)
+    assert(sortedScale.showCards()(2).rank == Ranks.Three)
+    assert(sortedScale.showCards()(3).rank == Ranks.Two)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -115,8 +115,8 @@ class BurracoScaleTest extends AnyFunSuite{
     val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Seven)
-    assert(sortedScale.showCards(2).rank == Ranks.Five)
-    assert(sortedScale.showCards(4).rank == Ranks.Three)
+    assert(sortedScale.showCards()(2).rank == Ranks.Five)
+    assert(sortedScale.showCards()(4).rank == Ranks.Three)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -134,8 +134,8 @@ class BurracoScaleTest extends AnyFunSuite{
 
 
     assert(sortedScale.showCards.head.rank == Ranks.Seven)
-    assert(sortedScale.showCards(2).rank == Ranks.Five)
-    assert(sortedScale.showCards(4).rank == Ranks.Three)
+    assert(sortedScale.showCards()(2).rank == Ranks.Five)
+    assert(sortedScale.showCards()(4).rank == Ranks.Three)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -152,8 +152,8 @@ class BurracoScaleTest extends AnyFunSuite{
     val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Ace)
-    assert(sortedScale.showCards(2).rank == Ranks.Queen)
-    assert(sortedScale.showCards(4).rank == Ranks.Ten)
+    assert(sortedScale.showCards()(2).rank == Ranks.Queen)
+    assert(sortedScale.showCards()(4).rank == Ranks.Ten)
     assert(sortedScale.showCards.last.rank == Ranks.Eight)
   }
 
@@ -168,7 +168,7 @@ class BurracoScaleTest extends AnyFunSuite{
     val sortedScale = BurracoScale(cards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Ace)
-    assert(sortedScale.showCards(2).rank == Ranks.Queen)
+    assert(sortedScale.showCards()(2).rank == Ranks.Queen)
     assert(sortedScale.showCards.last.rank == Ranks.Ten)
   }
 
@@ -210,7 +210,7 @@ class BurracoScaleTest extends AnyFunSuite{
 
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
-    assert(sortedScale.showCards(2).rank == Ranks.Two && sortedScale.showCards(2).suit == Suits.Tile)
+    assert(sortedScale.showCards()(2).rank == Ranks.Two && sortedScale.showCards()(2).suit == Suits.Tile)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -227,7 +227,7 @@ class BurracoScaleTest extends AnyFunSuite{
 
 
     assert(sortedScale.showCards.head.rank == Ranks.Five)
-    assert(sortedScale.showCards(2).rank == Ranks.Jolly && sortedScale.showCards(2).suit == Suits.Jolly)
+    assert(sortedScale.showCards()(2).rank == Ranks.Jolly && sortedScale.showCards()(2).suit == Suits.Jolly)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -262,7 +262,7 @@ class BurracoScaleTest extends AnyFunSuite{
     //debug(cards,sortedScale.showCards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Jolly)
-    assert(sortedScale.showCards(2).rank == Ranks.Four)
+    assert(sortedScale.showCards()(2).rank == Ranks.Four)
     assert(sortedScale.showCards.last.rank == Ranks.Ace)
   }
 
@@ -279,7 +279,7 @@ class BurracoScaleTest extends AnyFunSuite{
     //debug(cards,sortedScale.showCards)
 
     assert(sortedScale.showCards.head.rank == Ranks.Six)
-    assert(sortedScale.showCards(2).rank == Ranks.Four)
+    assert(sortedScale.showCards()(2).rank == Ranks.Four)
     assert(sortedScale.showCards.last.rank == Ranks.Two)
   }
 
