@@ -11,8 +11,6 @@ trait Burraco {
     burracoId
   }
 
-  def showCards: List[Card] = {
-    cards
-  }
+  def showCards(): List[Card] = cards
 
 }
