@@ -28,7 +28,6 @@ case class BurracoTris protected(
 
   protected def validateNewCards(cardsToAdd: List[Card]): BurracoTris = {
     val tmpCardList=cardsToAdd ++ this.cards
-    //assert(tmpCardList.size >=3, "A tris is composed by 3 or more cards")
     val cardsWithoutJolly = tmpCardList.filterNot(c => c.rank == Ranks.Jolly || c.rank == Ranks.Two)
     assert((tmpCardList diff cardsWithoutJolly).size <= 1, "A tris can contain at least 1 Jolly or Two")
     assert(cardsWithoutJolly.exists(_.rank != rank) == false,"A tris is composed cards with the same rank")
