@@ -6,7 +6,7 @@ import com.abaddon83.burraco.shares.decks.Ranks.Rank
 import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoTrisTest extends AnyFunSuite{
-  test("given I have 3 cards with the same rank, when I create a tris then I have a tris with the same rank") {
+  test("given I have 3 cards with the same rank, when I create a tris then I have a new tris") {
     val burracoTrisRank = Ranks.Five
     val burracoTrisSize= 3
     val cards = Deck.allRanksWithJollyCards().filter(c => c.rank == burracoTrisRank).take(burracoTrisSize)
@@ -40,7 +40,7 @@ class BurracoTrisTest extends AnyFunSuite{
     }
   }
 
-  test("given I have 3 cards with the same rank and a jolly, when I create a tris then I have a tris with the same rank") {
+  test("given I have 3 cards with the same rank and a jolly, when I create a tris then I have a new tris") {
     val burracoTrisRank = Ranks.Five
     val cards = List(
       Card(suit = Suits.Heart,rank = burracoTrisRank),
@@ -56,7 +56,7 @@ class BurracoTrisTest extends AnyFunSuite{
 
   }
 
-  test("given I have 3 cards with the same rank and a Two, when I create a tris then I have a tris with the same rank") {
+  test("given I have 3 cards with the same rank and a Two, when I create a tris then I have a new tris") {
     val burracoTrisRank = Ranks.Five
     val cards = List(
       Card(suit = Suits.Heart,rank = burracoTrisRank),
