@@ -4,23 +4,36 @@ import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId}
 import com.abaddon83.burraco.shares.decks.Card
 
 case class BurracoCardsOnTable(
-                                listOfTris: List[BurracoTris],
-                                listOfScale: List[BurracoScale]
+                                protected val listOfTris: List[BurracoTris],
+                                protected val listOfScale: List[BurracoScale]
                               ) {
   def burracoList(): List[Burraco] ={
     listOfTris.filter(t => t.isBurraco()) ++
     listOfScale.filter(s => s.isBurraco())
   }
 
-  def updateListOfTris(updatedListOfTris: List[BurracoTris]): BurracoCardsOnTable = {
-    this.copy( listOfTris = updatedListOfTris)
+  def numCardsOnTable():Int = {
+      listOfTris.map( tris => tris.showCards.size).foldLeft(0)(_ + _) +
+      listOfScale.map( scale => scale.showCards.size).foldLeft(0)(_ + _)
   }
 
-  def updateListOfScale(updatedListOfScale: List[BurracoScale]): BurracoCardsOnTable = {
-    this.copy( listOfScale = updatedListOfScale)
+  def addTris(trisToAdd: BurracoTris): BurracoCardsOnTable = {
+    this.copy( listOfTris = listOfTris ++ List(trisToAdd))
   }
 
-  def updateScale(burracoId: BurracoId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
+  def addScale(scaleToAdd: BurracoScale): BurracoCardsOnTable = {
+    this.copy( listOfScale = listOfScale ++ List(scaleToAdd))
+  }
+
+  def appendCardOnBurraco(burracoId: BurracoId,cardsToAppend: List[Card]): BurracoCardsOnTable ={
+    if(listOfScale.exists(s => s.getBurracoId() == burracoId)){
+      appendCardOnScale(burracoId,cardsToAppend)
+    }else if(listOfTris.exists(t => t.getBurracoId() == burracoId)){
+      appendCardOnTris(burracoId,cardsToAppend)
+    }else throw new NoSuchElementException(s"The ${burracoId} doesn't exist")
+  }
+
+  private def appendCardOnScale(burracoId: BurracoId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
     val listOfBurracoScale= listOfScale.map(scale =>
       if(scale.getBurracoId() == burracoId){
         scale.addCards(cardsToAppend)
@@ -31,7 +44,7 @@ case class BurracoCardsOnTable(
     copy(listOfScale = listOfBurracoScale)
   }
 
-  def updateTris(burracoId: BurracoId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
+  private def appendCardOnTris(burracoId: BurracoId, cardsToAppend: List[Card]): BurracoCardsOnTable = {
     val listOfBurracoTris= listOfTris.map(tris =>
       if(tris.getBurracoId() == burracoId){
         tris.addCards(cardsToAppend)

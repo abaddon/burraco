@@ -18,11 +18,6 @@ case class BurracoScale protected(
   }
 
 
-  def isBurraco(): Boolean = {
-    if (cards.size < 7) false
-    else true
-  }
-
   protected def validateNewCards(cardsToAdd: List[Card]) = {
     assert(!cardsToAdd.exists(c => c.suit!= suit && c.suit!=Suits.Jolly))
     this.copy(

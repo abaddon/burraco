@@ -1,6 +1,7 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoPoint
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
 import com.abaddon83.burraco.shares.decks.Card
@@ -23,14 +24,14 @@ trait BurracoGameInitiated extends BurracoGame {
 
   def playerTrisOnTable(playerIdentity: PlayerIdentity): List[BurracoTris] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(player) => player.cardsOnTable.listOfTris
+      case Some(player) => player.cardsOnTable.burracoList().filter(b => b.isInstanceOf[BurracoTris]).map(b => b.asInstanceOf[BurracoTris])
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
 
   def playerScalesOnTable(playerIdentity: PlayerIdentity): List[BurracoScale] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(player) => player.cardsOnTable.listOfScale
+      case Some(player) => player.cardsOnTable.burracoList().filter(b => b.isInstanceOf[BurracoScale]).map(b => b.asInstanceOf[BurracoScale])
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
@@ -39,12 +40,12 @@ trait BurracoGameInitiated extends BurracoGame {
     discardPile.showCards
   }
 
-// write
-  protected def UpdatePlayers(burracoPlayerInGame: PlayerInGame):  List[PlayerInGame] ={
-    players.map( playerInGame =>
-      if(playerInGame.playerIdentity == burracoPlayerInGame.playerIdentity){
+  // write
+  protected def UpdatePlayers(burracoPlayerInGame: PlayerInGame): List[PlayerInGame] = {
+    players.map(playerInGame =>
+      if (playerInGame.playerIdentity == burracoPlayerInGame.playerIdentity) {
         burracoPlayerInGame
-      }else
+      } else
         playerInGame
     )
   }
@@ -59,7 +60,7 @@ trait BurracoGameInitiated extends BurracoGame {
   }
 
   def validatePlayerTurn(playerIdentity: PlayerIdentity) = {
-    if(playerTurn != playerIdentity){
+    if (playerTurn != playerIdentity) {
       throw new UnsupportedOperationException(s"It's not the turn of the player ${playerIdentity}")
     }
     playerIdentity
@@ -67,9 +68,7 @@ trait BurracoGameInitiated extends BurracoGame {
 
   protected def numCardsInGame: Int = {
     val playersCardsTot = players.map(player =>
-      player.cards.size +
-        player.cardsOnTable.listOfTris.map( tris => tris.showCards.size).foldLeft(0)(_ + _) +
-        player.cardsOnTable.listOfScale.map( scale => scale.showCards.size).foldLeft(0)(_ + _)
+      player.totalPlayerCards()
     ).foldLeft(0)(_ + _)
 
     playersCardsTot + burracoDeck.numCards() + pozzettos.numCards() + discardPile.numCards()
@@ -82,7 +81,7 @@ trait BurracoGameInitiated extends BurracoGame {
   }
 
   private def invariantNumCardsInGame(): this.type = {
-    assert(totalCardsRequired == numCardsInGame,s"The cards in game are not ${totalCardsRequired}. Founds ${numCardsInGame}")
+    assert(totalCardsRequired == numCardsInGame, s"The cards in game are not ${totalCardsRequired}. Founds ${numCardsInGame}")
     this
   }
 

@@ -15,6 +15,10 @@ trait Tris {
 
   def addCards(cardsToAdd: List[Card]): Tris
 
+  def numCards():Int = {
+    cards.size
+  }
+
   protected def validateNewCards(cards: List[Card]): Tris
 
 }

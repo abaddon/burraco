@@ -13,4 +13,12 @@ trait Burraco {
 
   def showCards(): List[Card] = cards
 
+  def isBurraco(): Boolean = {
+    if(cards.size < 7) {
+      false
+    }else{
+      true
+    }
+  }
+
 }

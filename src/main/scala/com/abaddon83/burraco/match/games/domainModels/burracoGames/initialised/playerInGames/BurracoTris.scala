@@ -18,14 +18,6 @@ case class BurracoTris protected(
 
   override def showCards(): List[Card] = cards
 
-  def isBurraco(): Boolean = {
-    if(cards.size < 7) {
-      false
-    }else{
-      true
-    }
-  }
-
   protected def validateNewCards(cardsToAdd: List[Card]): BurracoTris = {
     val tmpCardList=cardsToAdd ++ this.cards
     val cardsWithoutJolly = tmpCardList.filterNot(c => c.rank == Ranks.Jolly || c.rank == Ranks.Two)

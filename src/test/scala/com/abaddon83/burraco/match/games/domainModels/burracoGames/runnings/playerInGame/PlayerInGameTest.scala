@@ -5,8 +5,7 @@ import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
-class PlayerInGameTest extends AnyFunSuite{
-
+class PlayerInGameTest extends AnyFunSuite {
 
 
   test("add the mazzetto cards on my cards") {
@@ -19,17 +18,18 @@ object PlayerInGameTestFactory {
   def apply(): PlayerInGameTestFactory = {
     apply(PlayerIdentity())
   }
-  def apply(playerIdentity: PlayerIdentity): PlayerInGameTestFactory ={
+
+  def apply(playerIdentity: PlayerIdentity): PlayerInGameTestFactory = {
     PlayerInGameTestFactory(
-      playerInGame = PlayerInGame(playerIdentity,List[Card]().empty)
+      playerInGame = PlayerInGame(playerIdentity, List[Card]().empty)
     )
   }
 
 }
 
-case class PlayerInGameTestFactory(private val playerInGame : PlayerInGame) {
+case class PlayerInGameTestFactory(private val playerInGame: PlayerInGame) {
 
-  def withCards(cards: List[Card]):PlayerInGameTestFactory = {
+  def withCards(cards: List[Card]): PlayerInGameTestFactory = {
     this.copy(
       playerInGame = playerInGame.copy(
         cards = cards
@@ -37,26 +37,17 @@ case class PlayerInGameTestFactory(private val playerInGame : PlayerInGame) {
     )
   }
 
-  def withTrisOnTable(burracoTris: BurracoTris):PlayerInGameTestFactory = {
-    val updatedList =playerInGame.cardsOnTable.listOfTris ++ List(burracoTris)
-
+  def withTrisOnTable(burracoTris: BurracoTris): PlayerInGameTestFactory = {
     this.copy(
-      playerInGame = playerInGame.copy(
-        cardsOnTable = playerInGame.cardsOnTable.copy(listOfTris = updatedList )
-      )
+      playerInGame = playerInGame.dropATris(burracoTris)
     )
   }
 
-  def withScalaOnTable(burracoScale: BurracoScale):PlayerInGameTestFactory = {
-    val updatedList =playerInGame.cardsOnTable.listOfScale ++ List(burracoScale)
-
+  def withScalaOnTable(burracoScale: BurracoScale): PlayerInGameTestFactory = {
     this.copy(
-      playerInGame = playerInGame.copy(
-        cardsOnTable = playerInGame.cardsOnTable.copy(listOfScale = updatedList )
-      )
+      playerInGame = playerInGame.dropAScale(burracoScale)
     )
   }
-
 
 
 }

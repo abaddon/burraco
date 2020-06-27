@@ -17,7 +17,7 @@ case class PlayerInGame(
 
   def dropATris(tris: BurracoTris): PlayerInGame = {
     val updatedPlayerCards = cards diff tris.showCards
-    val updatedPlayerCardsOnTable = cardsOnTable.updateListOfTris(tris :: cardsOnTable.listOfTris)
+    val updatedPlayerCardsOnTable = cardsOnTable.addTris(tris)
 
     this.copy( cards = updatedPlayerCards,cardsOnTable = updatedPlayerCardsOnTable)
 
@@ -25,7 +25,7 @@ case class PlayerInGame(
 
   def dropAScale(scale: BurracoScale): PlayerInGame = {
     val updatedPlayerCards = cards diff scale.showCards
-    val updatedPlayerCardsOnTable = cardsOnTable.updateListOfScale(scale :: cardsOnTable.listOfScale)
+    val updatedPlayerCardsOnTable = cardsOnTable.addScale(scale)
 
     this.copy( cards = updatedPlayerCards,cardsOnTable = updatedPlayerCardsOnTable)
 
@@ -37,35 +37,23 @@ case class PlayerInGame(
   }
 
   def appendACardOnBurracoDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
-    if(cardsOnTable.listOfScale.find(s => s.getBurracoId() == burracoId).isDefined){
-      appendACardOnScaleDropped(burracoId,cardsToAppend)
-    }else if(cardsOnTable.listOfTris.find(t => t.getBurracoId() == burracoId).isDefined){
-      appendACardOnTrisDropped(burracoId,cardsToAppend)
-    }else{
-      throw new NoSuchElementException(s"The ${burracoId} doesn't exist")
-    }
-  }
-
-  private def appendACardOnScaleDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
-    val updatedPlayerCardsOnTable = cardsOnTable.updateScale(burracoId,cardsToAppend)
+    //add the cards to an existing burraco
+    val updatedPlayerCardsOnTable =  cardsOnTable.appendCardOnBurraco(burracoId,cardsToAppend)
+    //remove the cards attached from thr player cards.
     val updatedPlayerCards = cards diff cardsToAppend
-
     this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
   }
 
-  private def appendACardOnTrisDropped(burracoId: BurracoId,cardsToAppend: List[Card]): PlayerInGame ={
-    val updatedPlayerCardsOnTable = cardsOnTable.updateTris(burracoId,cardsToAppend)
-    val updatedPlayerCards = cards diff cardsToAppend
-
-    this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
+  def addNewCardsOnMyCard(newCards: List[Card]): PlayerInGame = {
+    this.copy( cards = cards ++ newCards)
   }
 
-  def updateCards(updatedCards: List[Card]): PlayerInGame = {
-    this.copy( cards = updatedCards)
-  }
+  //def updateCardsOnTable(updatedCardsOnTable: BurracoCardsOnTable): PlayerInGame = {
+  //  this.copy( cardsOnTable = updatedCardsOnTable)
+  //}
 
-  def updateCardsOnTable(updatedCardsOnTable: BurracoCardsOnTable): PlayerInGame = {
-    this.copy( cardsOnTable = updatedCardsOnTable)
+  def totalPlayerCards(): Int = {
+    cards.size + cardsOnTable.numCardsOnTable()
   }
 
 }
