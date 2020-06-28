@@ -54,7 +54,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     assert(playerCards.size-scale.showCards.size == gameActual.playerCards(PlayerIdentity(playerIdentityUUID1)).size)
   }
 
-  test("player append a card on a Tris on the table"){
+  /*test("player append a card on a Tris on the table"){
 
     val playerIdentity = PlayerIdentity(playerIdentityUUID1)
     val game = createBurracoGamePlayerTurnExecutionWithATrisDropped(playerIdentity)
@@ -68,9 +68,9 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     assert(tris.showCards.size + cardToAppend.size == gameActual.playerTrisOnTable(playerIdentity).find(t => t.getBurracoId() == tris.getBurracoId()).get.showCards.size)
 
     //assert(playerCards.size-scale.showCards.size == gameActual.playerCards(PlayerIdentity(playerIdentityUUID1)).size)
-  }
+  }*/
 
-  test("player append a wrong card on a Tris on the table"){
+ /* test("player append a wrong card on a Tris on the table"){
 
     val playerIdentity = PlayerIdentity(playerIdentityUUID1)
     val game = createBurracoGamePlayerTurnExecutionWithATrisDropped(playerIdentity)
@@ -82,8 +82,8 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
       game.appendCardsOnABurracoDropped(playerIdentity,cardToAppend,tris.getBurracoId())
     }
   }
-
-  test("player append a card on a Scala on the table"){
+*/
+  /*test("player append a card on a Scala on the table"){
 
     val playerIdentity = PlayerIdentity(playerIdentityUUID1)
     val game = createBurracoGamePlayerTurnExecutionWithAScalaDropped(playerIdentity)
@@ -96,7 +96,7 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     assert(playerCards.size - cardsToAppend.size == gameActual.playerCards(PlayerIdentity(playerIdentityUUID1)).size)
     assert(scala.showCards.size + cardsToAppend.size == gameActual.playerScalesOnTable(playerIdentity).find(s => s.getBurracoId == scala.getBurracoId).get.showCards.size)
 
-  }
+  }*/
 
   /*test("player append a wrong card on a Scala on the table, should fail"){
 
