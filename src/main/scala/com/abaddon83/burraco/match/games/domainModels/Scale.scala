@@ -11,8 +11,8 @@ trait Scale {
 
   def addCards(cardsToAdd: List[Card]): Scale
 
-  def numCards:Int = {
-  cards.size
+  def numCards():Int = {
+    cards.size
   }
 
   protected def validateNewCards(cards: List[Card]): Scale

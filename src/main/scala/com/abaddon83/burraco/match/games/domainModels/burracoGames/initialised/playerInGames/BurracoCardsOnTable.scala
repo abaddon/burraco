@@ -17,6 +17,14 @@ case class BurracoCardsOnTable(
       listOfScale.map( scale => scale.showCards.size).foldLeft(0)(_ + _)
   }
 
+  def showTris(): List[BurracoTris] = {
+    listOfTris
+  }
+
+  def showScale(): List[BurracoScale] = {
+    listOfScale
+  }
+
   def addTris(trisToAdd: BurracoTris): BurracoCardsOnTable = {
     this.copy( listOfTris = listOfTris ++ List(trisToAdd))
   }
