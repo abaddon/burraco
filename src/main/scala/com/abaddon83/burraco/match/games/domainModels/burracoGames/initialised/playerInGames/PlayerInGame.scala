@@ -1,18 +1,37 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDeck
 import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, BurracoPlayer}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
 case class PlayerInGame(
-                                playerIdentity: PlayerIdentity,
-                                cards: List[Card],
-                                cardsOnTable: BurracoCardsOnTable,
-                                pozzettoTaken: Boolean = false
+                         playerIdentity: PlayerIdentity,
+                         cards: List[Card],
+                         cardsOnTable: BurracoCardsOnTable,
+                         mazzettoTaken: Boolean = false
                               ) extends BurracoPlayer {
-//pickup
-  def addPozzettoOnMyCard(pozzetto: List[Card]):PlayerInGame = {
-    copy(pozzettoTaken = true, cards = this.cards ++ pozzetto)
+
+  def showMyCards() : List[Card] ={
+    cards
+  }
+
+  def showTrisOnTable(): List[BurracoTris] = {
+    cardsOnTable.showTris()
+  }
+
+  def showScalesOnTable(): List[BurracoScale] = {
+    cardsOnTable.showScale()
+  }
+
+  //pickup
+  def pickUpMazzetto(mazzetto: MazzettoDeck):PlayerInGame = {
+    assert(mazzettoTaken == false, MazzettoDeck)
+    addCardsOnMyCard(mazzetto.grabAllCards()).copy(mazzettoTaken = true)
+  }
+
+  def addCardsOnMyCard(newCards: List[Card]): PlayerInGame = {
+    this.copy( cards = cards ++ newCards)
   }
 
   def dropATris(tris: BurracoTris): PlayerInGame = {
@@ -44,9 +63,7 @@ case class PlayerInGame(
     this.copy(cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
   }
 
-  def addNewCardsOnMyCard(newCards: List[Card]): PlayerInGame = {
-    this.copy( cards = cards ++ newCards)
-  }
+
 
   //def updateCardsOnTable(updatedCardsOnTable: BurracoCardsOnTable): PlayerInGame = {
   //  this.copy( cardsOnTable = updatedCardsOnTable)

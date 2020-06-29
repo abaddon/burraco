@@ -7,7 +7,7 @@ class PozzettoDeckTest extends AnyFunSuite{
 
   test("Create a potezzetto Deck with 11 cards") {
     val cardList = Deck.allRanksWithJollyCards().slice(0,11)
-    val pozzettoDeck = PozzettoDeck.build(cardList)
+    val pozzettoDeck = MazzettoDeck.build(cardList)
 
     val pozzettoCardList = pozzettoDeck.grabAllCards()
 
@@ -18,7 +18,7 @@ class PozzettoDeckTest extends AnyFunSuite{
 
   test("Create a potezzetto Deck with 18 cards") {
     val cardList = Deck.allRanksWithJollyCards().slice(0,18)
-    val pozzettoDeck = PozzettoDeck.build(cardList)
+    val pozzettoDeck = MazzettoDeck.build(cardList)
 
     val pozzettoCardList = pozzettoDeck.grabAllCards()
 
@@ -30,13 +30,13 @@ class PozzettoDeckTest extends AnyFunSuite{
   test("Create a potezzetto Deck with 13 cards, should fail") {
     val cardList = Deck.allRanksWithJollyCards().slice(0,13)
     assertThrows[AssertionError] {
-      PozzettoDeck.build(cardList)
+      MazzettoDeck.build(cardList)
     }
   }
 
   test("try to grab a card from the deck, should fail") {
     val cardList = Deck.allRanksWithJollyCards().slice(0,11)
-    val pozzettoDeck = PozzettoDeck.build(cardList)
+    val pozzettoDeck = MazzettoDeck.build(cardList)
     assertThrows[UnsupportedOperationException] {
       pozzettoDeck.grabFirstCard()
     }

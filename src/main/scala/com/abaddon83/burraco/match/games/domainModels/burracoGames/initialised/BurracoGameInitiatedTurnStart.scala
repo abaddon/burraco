@@ -1,7 +1,7 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDecks
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnExecution}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.{BurracoCardsDealt, BurracoGameWaitingPlayers}
 import com.abaddon83.burraco.shares.decks.Card
@@ -12,7 +12,7 @@ case class BurracoGameInitiatedTurnStart private(
                                                   override protected val gameIdentity: GameIdentity,
                                                   override protected val players: List[PlayerInGame],
                                                   override protected val burracoDeck: BurracoDeck,
-                                                  override protected val pozzettos: Pozzettos,
+                                                  override protected val pozzettos: MazzettoDecks,
                                                   override protected val discardPile: DiscardPile,
                                                   override protected val playerTurn: PlayerIdentity
                                          ) extends BurracoGameInitiated{
@@ -72,7 +72,7 @@ object BurracoGameInitiatedTurnStart{
       burracoGameWaitingPlayers.gameIdentity,
       burracoPlayersInGame,
       burracoCardsDealt.burracoDeck,
-      Pozzettos.build(List(burracoCardsDealt.firstPozzettoDeck,burracoCardsDealt.secondPozzettoDeck)),
+      MazzettoDecks.build(List(burracoCardsDealt.firstPozzettoDeck,burracoCardsDealt.secondPozzettoDeck)),
       burracoCardsDealt.discardPile,
       burracoPlayersInGame(0).playerIdentity
     ).testInvariants()
@@ -82,7 +82,7 @@ object BurracoGameInitiatedTurnStart{
              gameIdentity: GameIdentity,
              players: List[PlayerInGame],
              burracoDeck: BurracoDeck,
-             pozzettos: Pozzettos,
+             pozzettos: MazzettoDecks,
              discardPile: DiscardPile,
              playerTurn: PlayerIdentity
            ): BurracoGameInitiatedTurnStart ={

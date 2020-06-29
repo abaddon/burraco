@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.`match`.games.services
 
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.PozzettoDeck
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDeck
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoDeck, DiscardPile}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPlayers.{BurracoCardsDealt, BurracoGameWaitingPlayers}
 import com.abaddon83.burraco.shares.decks.Card
@@ -31,12 +31,12 @@ case class BurracoDealerFactory private(private val burracoDeck: BurracoDeck, pr
     ).reduce(_++_)
   }
 
-  private def dealCardsToFirstPozzetto(): PozzettoDeck = {
-    PozzettoDeck.build(grabCards(numCardsPozzetto(burracoGame.listOfPlayers.size%2)))
+  private def dealCardsToFirstPozzetto(): MazzettoDeck = {
+    MazzettoDeck.build(grabCards(numCardsPozzetto(burracoGame.listOfPlayers.size%2)))
   }
 
-  private def dealCardsToSecondPozzetto(): PozzettoDeck = {
-    PozzettoDeck.build(grabCards(numCardsPozzetto(0)))
+  private def dealCardsToSecondPozzetto(): MazzettoDeck = {
+    MazzettoDeck.build(grabCards(numCardsPozzetto(0)))
   }
 
   private def dealCardToDiscardPile(): DiscardPile = {

@@ -3,7 +3,7 @@ package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialise
 import com.abaddon83.burraco.`match`.games.domainModels._
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiated
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDecks
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
@@ -12,7 +12,7 @@ case class BurracoGameInitiatedTurnExecution private(
                                                       override protected val gameIdentity: GameIdentity,
                                                       override protected val players: List[PlayerInGame],
                                                       override protected val burracoDeck: BurracoDeck,
-                                                      override protected val pozzettos: Pozzettos,
+                                                      override protected val pozzettos: MazzettoDecks,
                                                       override protected val discardPile: DiscardPile,
                                                       override protected val playerTurn: PlayerIdentity
                         ) extends BurracoGameInitiated{
@@ -72,10 +72,14 @@ case class BurracoGameInitiatedTurnExecution private(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
     assert(player.cards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
-    assert(player.pozzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
+    assert(player.mazzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
+
+    val mazzetto = pozzettos.firstMazzettoAvailable()
+    pozzettos.mazzettoTaken(mazzetto)
 
     copy(
-      players = UpdatePlayers(player.addPozzettoOnMyCard(pozzettos.firstPozzettoAvailable()))
+      players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
+      pozzettos = pozzettos.mazzettoTaken(mazzetto)
     ).testInvariants()
 
   }
@@ -101,7 +105,7 @@ object BurracoGameInitiatedTurnExecution{
              burracoGame: BurracoGameInitiatedTurnStart,
              players: List[PlayerInGame],
              burracoDeck: BurracoDeck,
-             pozzettos: Pozzettos,
+             pozzettos: MazzettoDecks,
              discardPile: DiscardPile,
              playerTurn: PlayerIdentity
              ): BurracoGameInitiatedTurnExecution = {

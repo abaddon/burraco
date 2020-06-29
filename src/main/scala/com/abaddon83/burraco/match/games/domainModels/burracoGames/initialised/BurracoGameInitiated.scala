@@ -3,7 +3,7 @@ package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialise
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoPoint
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDecks
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -11,7 +11,7 @@ trait BurracoGameInitiated extends BurracoGame {
   override protected val players: List[PlayerInGame]
   protected val playerTurn: PlayerIdentity
   protected val burracoDeck: BurracoDeck
-  protected val pozzettos: Pozzettos
+  protected val pozzettos: MazzettoDecks
   protected val discardPile: DiscardPile
 
   //READ Methods

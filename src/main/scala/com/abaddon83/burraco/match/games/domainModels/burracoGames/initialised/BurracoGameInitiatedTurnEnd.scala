@@ -1,27 +1,31 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoGameCompleted
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.Pozzettos
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDecks
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
 case class BurracoGameInitiatedTurnEnd protected(
-                                        override protected val players: List[PlayerInGame],
-                                        override protected val playerTurn: PlayerIdentity,
-                                        override protected val burracoDeck: BurracoDeck,
-                                        override protected val pozzettos: Pozzettos,
-                                        override protected val discardPile: DiscardPile,
-                                        override protected val gameIdentity: GameIdentity
+                                                  override protected val players: List[PlayerInGame],
+                                                  override protected val playerTurn: PlayerIdentity,
+                                                  override protected val burracoDeck: BurracoDeck,
+                                                  override protected val pozzettos: MazzettoDecks,
+                                                  override protected val discardPile: DiscardPile,
+                                                  override protected val gameIdentity: GameIdentity
                                       ) extends BurracoGameInitiated{
 
   def pickupPozzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnEnd = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
     assert(player.cards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
-    assert(player.pozzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
+    assert(player.mazzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
+
+    val mazzetto = pozzettos.firstMazzettoAvailable()
+    pozzettos.mazzettoTaken(mazzetto)
 
     copy(
-      players = UpdatePlayers(player.addPozzettoOnMyCard(pozzettos.firstPozzettoAvailable()))
+      players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
+      pozzettos = pozzettos.mazzettoTaken(mazzetto)
     ).testInvariants()
 
   }
@@ -46,7 +50,7 @@ case class BurracoGameInitiatedTurnEnd protected(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
     assert(player.cards.size == 0,s"The player cannot complete the game with ${player.cards.size} cards on hand")
-    assert(player.pozzettoTaken,s"The player cannot complete the game if the small deck is taken ${player.pozzettoTaken}")
+    assert(player.mazzettoTaken,s"The player cannot complete the game if the small deck is taken ${player.mazzettoTaken}")
     assert(player.cardsOnTable.burracoList().size >0, "The player doesn't have a burraco")
     //TODO add the logic to check if the squad taken the pozzetto
 
@@ -61,7 +65,7 @@ case class BurracoGameInitiatedTurnEnd protected(
 }
 
 object BurracoGameInitiatedTurnEnd{
-  def build(players: List[PlayerInGame], playerTurn: PlayerIdentity, burracoDeck: BurracoDeck, pozzettos: Pozzettos, discardPile: DiscardPile, gameIdentity: GameIdentity): BurracoGameInitiatedTurnEnd = {
+  def build(players: List[PlayerInGame], playerTurn: PlayerIdentity, burracoDeck: BurracoDeck, pozzettos: MazzettoDecks, discardPile: DiscardPile, gameIdentity: GameIdentity): BurracoGameInitiatedTurnEnd = {
     new BurracoGameInitiatedTurnEnd(players, playerTurn, burracoDeck, pozzettos, discardPile, gameIdentity)
   }
 }
