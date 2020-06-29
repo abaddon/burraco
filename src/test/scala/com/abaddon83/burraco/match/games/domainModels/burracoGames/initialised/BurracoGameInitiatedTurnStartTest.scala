@@ -21,7 +21,28 @@ class BurracoGameInitiatedTurnStartTest extends AnyFunSuite{
     game.initiate(BurracoDealerFactory(game).dealBurracoCards())
   }
 
-  test("player pickUp a card from the deck"){
+  test("Given a player in game, when update the cards order, the operation is executed"){
+    val game = createBurracoGamePlayerTurnStart()
+    val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
+    val orderedCards = playerCards.sorted
+
+    val acturalGame = game.updatePlayerCardsOrder(PlayerIdentity(playerIdentityUUID1),orderedCards)
+
+    assert(acturalGame.playerCards(PlayerIdentity(playerIdentityUUID1)) == orderedCards)
+    assert(acturalGame.playerCards(PlayerIdentity(playerIdentityUUID1)) != playerCards)
+  }
+
+  test("Given a player not in game, when update the cards order, I receive an error"){
+    val game = createBurracoGamePlayerTurnStart()
+    val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
+    val orderedCards = playerCards.sorted
+
+    assertThrows[NoSuchElementException]{
+      game.updatePlayerCardsOrder(PlayerIdentity(),orderedCards)
+    }
+  }
+
+  test("Given a player during his turn, when pickUps a card from the deck, then I have a card more"){
     val game = createBurracoGamePlayerTurnStart()
     val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
 
@@ -31,14 +52,14 @@ class BurracoGameInitiatedTurnStartTest extends AnyFunSuite{
     assert(playerCards.size+1 == playerCardsActual.size)
   }
 
-  test("player 2 pickUp cards from the deck during the player 1 turn, should fail"){
+  test("Given a player not during his turn, when pickUps a card from the deck, then I receive an error"){
     val game = createBurracoGamePlayerTurnStart()
     assertThrows[UnsupportedOperationException]{
       game.pickUpACardFromDeck(PlayerIdentity(playerIdentityUUID2))
     }
   }
 
-  test("player pickUp cards from DiscardPile"){
+  test("Given a player during his turn, when pickUps a card from the discard pile , then I have more cards"){
     val game = createBurracoGamePlayerTurnStart()
     val playerCards = game.playerCards(PlayerIdentity(playerIdentityUUID1))
     val discardPile: List[Card] = game.showDiscardPile()
@@ -50,7 +71,7 @@ class BurracoGameInitiatedTurnStartTest extends AnyFunSuite{
     assert(gameActual.showDiscardPile().isEmpty)
   }
 
-  test("player 2 pickUp cards from DiscardPile during the player 1 turn, should fail"){
+  test("Given a player during his turn, when pickUps a card from the discard pile , then I receive an error"){
     val game = createBurracoGamePlayerTurnStart()
     assertThrows[UnsupportedOperationException]{
       game.pickUpCardsFromDiscardPile(PlayerIdentity(playerIdentityUUID2))

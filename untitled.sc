@@ -1,3 +1,6 @@
-import com.abaddon83.burraco.shares.decks.{Deck, Ranks}
 
-(Deck.allRanksCards()++Deck.allRanksCards()).filter(c=>c.rank == Ranks.Queen)
+
+val l1 = List[String]("1","2","3").sorted
+val l2 = List[String]("1","3","2").sorted
+
+l1 == l2

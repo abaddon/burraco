@@ -28,6 +28,11 @@ case class PlayerInGame protected(
     cardsOnTable.burracoList()
   }
 
+  def orderPlayerCards(cardsOrdered: List[Card]): PlayerInGame ={
+    assert(cardsOrdered.sorted == cards.sorted,"The cardsOrdered doesn't contain the same player cards")
+    copy(cards = cardsOrdered)
+  }
+
   //pickup
   def pickUpMazzetto(mazzetto: MazzettoDeck):PlayerInGame = {
     assert(mazzettoTaken == false, MazzettoDeck)

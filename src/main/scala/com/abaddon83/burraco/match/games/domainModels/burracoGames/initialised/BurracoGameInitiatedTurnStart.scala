@@ -22,7 +22,7 @@ case class BurracoGameInitiatedTurnStart private(
   def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnStart = {
     val player = validatePlayerId(playerIdentity)
     this.copy(
-      players = UpdatePlayers(player.copy(cards = orderedCards))
+      players = UpdatePlayers(player.orderPlayerCards(orderedCards))
     ).testInvariants
   }
 
@@ -33,7 +33,7 @@ case class BurracoGameInitiatedTurnStart private(
 
     BurracoGameInitiatedTurnExecution.build(
       this,
-      UpdatePlayers(player.copy(cards = burracoDeck.grabFirstCard() :: player.showMyCards())),
+      UpdatePlayers(player.addCardsOnMyCard(List(burracoDeck.grabFirstCard()))),
       this.burracoDeck,
       this.pozzettos,
       this.discardPile,
@@ -48,7 +48,7 @@ case class BurracoGameInitiatedTurnStart private(
 
     BurracoGameInitiatedTurnExecution.build(
       this,
-      UpdatePlayers(player.copy(cards = discardPile.grabAllCards() ++ player.showMyCards)),
+      UpdatePlayers(player.addCardsOnMyCard(discardPile.grabAllCards())),
       this.burracoDeck,
       this.pozzettos,
       this.discardPile,
