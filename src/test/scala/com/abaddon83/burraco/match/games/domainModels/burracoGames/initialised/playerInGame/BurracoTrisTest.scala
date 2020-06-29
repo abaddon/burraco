@@ -1,8 +1,8 @@
-package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.runnings.playerInGame
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGame
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.BurracoTris
-import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}
 import com.abaddon83.burraco.shares.decks.Ranks.Rank
+import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}
 import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoTrisTest extends AnyFunSuite{

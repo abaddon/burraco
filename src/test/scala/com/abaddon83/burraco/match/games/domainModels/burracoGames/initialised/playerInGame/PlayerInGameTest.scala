@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.runnings.playerInGame
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGame
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDeck

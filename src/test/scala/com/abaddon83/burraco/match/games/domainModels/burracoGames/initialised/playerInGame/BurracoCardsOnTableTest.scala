@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.runnings.playerInGame
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGame
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoCardsOnTable, BurracoScale, BurracoTris}
 import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}
