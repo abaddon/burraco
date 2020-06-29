@@ -3,7 +3,7 @@ package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialise
 import com.abaddon83.burraco.`match`.games.domainModels._
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiated
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDecks
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.mazzettos.MazzettoDecks
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity

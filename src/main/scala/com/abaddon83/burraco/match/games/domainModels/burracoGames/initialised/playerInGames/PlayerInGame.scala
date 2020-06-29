@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames
 
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDeck
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.mazzettos.MazzettoDeck
 import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, BurracoPlayer}
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity

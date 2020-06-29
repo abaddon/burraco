@@ -9,7 +9,7 @@ import scala.collection.mutable.ListBuffer
 
 class BurracoDeckTest extends AnyFunSuite{
 
-  test("create a Burraco Deck") {
+  test("Given a Burraco Deck, when I count the carts, then the carts are 108") {
     val deck = BurracoDeck()
 
     assert(deck.numCards() == 108)
@@ -25,11 +25,29 @@ class BurracoDeckTest extends AnyFunSuite{
     Ranks.fullRanks.foreach( rank => assert(listOfAllCards.count(card => card.rank == rank) == 8,s"The card list doesn't contain 8 ${rank.label} cards"))
   }
 
-  test("grabAllCard from the Deck should fail") {
+  test("Given a Burraco Deck, when I shuffle it, then cards order is changed") {
+    val deck = BurracoDeck()
+    val firstCard = deck.grabFirstCard()
+
+    val actualDeck = deck.shuffle()
+    val actualFirstCard = deck.grabFirstCard()
+
+    assert(firstCard != actualFirstCard)
+  }
+
+  test("Given a Burraco Deck, when I grab all cards, then I receive an error") {
     val deck = BurracoDeck()
     assertThrows[UnsupportedOperationException]{
       deck.grabAllCards()
     }
+  }
+
+  test("Given a Burraco Deck, when I grab the first card, then I have a card") {
+    val deck = BurracoDeck()
+
+    deck.grabFirstCard()
+
+    assert(deck.numCards() == 107)
   }
 
 

@@ -6,6 +6,7 @@ import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}
 import scala.collection.mutable.ListBuffer
 
 case class BurracoDeck(override protected val cards: ListBuffer[Card]) extends Deck {
+
   def shuffle(): BurracoDeck ={
     BurracoDeck(scala.util.Random.shuffle(cards))
   }

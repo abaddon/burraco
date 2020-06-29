@@ -1,4 +1,4 @@
-package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos
+package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.mazzettos
 
 import com.abaddon83.burraco.shares.decks.{Card, Deck}
 
@@ -7,7 +7,15 @@ import scala.collection.mutable.ListBuffer
 case class MazzettoDeck private(override protected val cards: ListBuffer[Card]) extends Deck{
 
   override def grabFirstCard(): Card = {
-    throw new UnsupportedOperationException("You cannot grab only one card from the DiscardPile")
+    throw new UnsupportedOperationException("This method is not implemented in the Mazzetto")
+  }
+
+  override def grabAllCards(): List[Card] = {
+    throw new UnsupportedOperationException("This method is not implemented in the Mazzetto")
+  }
+
+  def getCards(): List[Card] = {
+    cards.toList
   }
 
 

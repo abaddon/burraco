@@ -1,7 +1,7 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoGameCompleted
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDecks
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.mazzettos.MazzettoDecks
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 

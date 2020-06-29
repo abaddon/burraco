@@ -1,7 +1,7 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGame
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.pozzettos.MazzettoDeck
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.mazzettos.MazzettoDeck
 import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
