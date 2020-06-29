@@ -64,7 +64,6 @@ case class PlayerInGame(
   }
 
 
-
   //def updateCardsOnTable(updatedCardsOnTable: BurracoCardsOnTable): PlayerInGame = {
   //  this.copy( cardsOnTable = updatedCardsOnTable)
   //}

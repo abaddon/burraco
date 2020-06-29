@@ -6,8 +6,6 @@ import com.abaddon83.burraco.shares.decks.{Card, Deck, Ranks, Suits}
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
-import scala.collection.mutable.ListBuffer
-
 class PlayerInGameTest extends AnyFunSuite {
 
   test("given a Mazzetto, when I take it  for the first time, then I have it on my cards") {
@@ -18,11 +16,13 @@ class PlayerInGameTest extends AnyFunSuite {
 
     val expectedMyCardsSize = mazzetto.numCards() + myCards.size
     val expectedMazzettoTaken = true
+    val expectedAllCardsSize = myCards.size + mazzetto.numCards()
 
     val actualPlayerInGame = playerInGame.pickUpMazzetto(mazzetto)
 
     assert(actualPlayerInGame.mazzettoTaken == expectedMazzettoTaken)
     assert(actualPlayerInGame.showMyCards().size == expectedMyCardsSize)
+    assert(actualPlayerInGame.totalPlayerCards() == expectedAllCardsSize)
   }
 
   test("given a Mazzetto, when I take it  for the second time, then I receive an error") {
@@ -44,11 +44,14 @@ class PlayerInGameTest extends AnyFunSuite {
 
     val expectedMyCardsSize = 5
     val expectedTrisOnTable = trisToDrop
+    val expectedAllCardsSize = myCards.size
 
     val actualPlayerInGame = playerInGame.dropATris(trisToDrop)
 
     assert(actualPlayerInGame.showMyCards().size == expectedMyCardsSize)
     assert(actualPlayerInGame.showTrisOnTable().head == expectedTrisOnTable)
+    assert(actualPlayerInGame.totalPlayerCards() == expectedAllCardsSize)
+
   }
 
   test("given a Scale on My cards, when I drop it, then I see it on the table"){
@@ -59,11 +62,14 @@ class PlayerInGameTest extends AnyFunSuite {
 
     val expectedMyCardsSize = 5
     val expectedScaleOnTable = scaleToDrop
+    val expectedAllCardsSize = myCards.size
 
     val actualPlayerInGame = playerInGame.dropAScale(scaleToDrop)
 
     assert(actualPlayerInGame.showMyCards().size == expectedMyCardsSize)
     assert(actualPlayerInGame.showScalesOnTable().head == expectedScaleOnTable)
+    assert(actualPlayerInGame.totalPlayerCards() == expectedAllCardsSize)
+
   }
 
   test("given some cards, when I drop one of them, then I have a card less on my hand"){
@@ -75,9 +81,11 @@ class PlayerInGameTest extends AnyFunSuite {
 
     val actualPlayerInGame = playerInGame.dropACard(cardToDrop.head)
     val expectedCardDropped = cardToDrop
+    val expectedAllCardsSize = myCards.size-1
 
     assert(actualPlayerInGame.showMyCards().size == expectedMyCardSize)
     assert(!actualPlayerInGame.showMyCards().contains(expectedCardDropped))
+    assert(actualPlayerInGame.totalPlayerCards() == expectedAllCardsSize)
   }
 
   test("given a card to append on a Scale on table, when I append the card, then the card is on the burraco"){
@@ -94,12 +102,14 @@ class PlayerInGameTest extends AnyFunSuite {
 
     val expectedScaleSize = burracoScale.showCards().size +1
     val expectedMyCardsSize = myCards.size -1
+    val expectedAllCardsSize = myCards.size + burracoScale.showCards().size
 
     val actualPlayerInGame = playerInGame.appendACardOnBurracoDropped(burracoScale.getBurracoId(),List(cardToDrop))
 
     assert(actualPlayerInGame.showScalesOnTable().head.showCards().contains(cardToDrop))
     assert(actualPlayerInGame.showScalesOnTable().head.showCards().size == expectedScaleSize)
     assert(actualPlayerInGame.showScalesOnTable().head.showCards().size == expectedMyCardsSize)
+    assert(actualPlayerInGame.totalPlayerCards() == expectedAllCardsSize)
   }
 
 
