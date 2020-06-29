@@ -142,7 +142,7 @@ object PlayerInGameTestFactory {
 
   def apply(playerIdentity: PlayerIdentity): PlayerInGameTestFactory = {
     PlayerInGameTestFactory(
-      playerInGame = PlayerInGame(playerIdentity, List[Card]().empty)
+      playerInGame = PlayerInGame.build(playerIdentity, List[Card]().empty)
     )
   }
 

@@ -17,21 +17,21 @@ trait BurracoGameInitiated extends BurracoGame {
   //READ Methods
   def playerCards(playerIdentity: PlayerIdentity): List[Card] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(value) => value.cards.toList
+      case Some(value) => value.showMyCards().toList
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
 
   def playerTrisOnTable(playerIdentity: PlayerIdentity): List[BurracoTris] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(player) => player.cardsOnTable.burracoList().filter(b => b.isInstanceOf[BurracoTris]).map(b => b.asInstanceOf[BurracoTris])
+      case Some(player) => player.burracoList().filter(b => b.isInstanceOf[BurracoTris]).map(b => b.asInstanceOf[BurracoTris])
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
 
   def playerScalesOnTable(playerIdentity: PlayerIdentity): List[BurracoScale] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(player) => player.cardsOnTable.burracoList().filter(b => b.isInstanceOf[BurracoScale]).map(b => b.asInstanceOf[BurracoScale])
+      case Some(player) => player.burracoList().filter(b => b.isInstanceOf[BurracoScale]).map(b => b.asInstanceOf[BurracoScale])
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }

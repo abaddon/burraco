@@ -74,7 +74,7 @@ class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
       if(bp.playerIdentity == playerIdentity){
         PlayerInGame(bp.playerIdentity,List(),burracoCardsOnTable,true)
       }else {
-        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
     game.copy(
@@ -89,9 +89,9 @@ class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
     val game = createGame
     val playersUpdated = game.listOfPlayers().map(bp =>
       if(bp.playerIdentity == playerIdentity){
-        PlayerInGame(bp.playerIdentity,List())
+        PlayerInGame.build(bp.playerIdentity,List())
       }else {
-        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
 

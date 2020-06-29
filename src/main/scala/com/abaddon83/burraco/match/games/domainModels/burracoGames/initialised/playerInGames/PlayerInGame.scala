@@ -5,10 +5,10 @@ import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, BurracoPlaye
 import com.abaddon83.burraco.shares.decks.Card
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
-case class PlayerInGame(
+case class PlayerInGame protected(
                          playerIdentity: PlayerIdentity,
-                         cards: List[Card],
-                         cardsOnTable: BurracoCardsOnTable,
+                         protected val cards: List[Card],
+                         protected val cardsOnTable: BurracoCardsOnTable,
                          mazzettoTaken: Boolean = false
                               ) extends BurracoPlayer {
 
@@ -22,6 +22,10 @@ case class PlayerInGame(
 
   def showScalesOnTable(): List[BurracoScale] = {
     cardsOnTable.showScale()
+  }
+
+  def burracoList(): List[Burraco] = {
+    cardsOnTable.burracoList()
   }
 
   //pickup
@@ -75,7 +79,7 @@ case class PlayerInGame(
 }
 
 object PlayerInGame{
-  def apply(playerIdentity: PlayerIdentity, cards: List[Card]): PlayerInGame = {
+  def build(playerIdentity: PlayerIdentity, cards: List[Card]): PlayerInGame = {
     new PlayerInGame(playerIdentity, cards,BurracoCardsOnTable(List.empty,List.empty))
   }
 }

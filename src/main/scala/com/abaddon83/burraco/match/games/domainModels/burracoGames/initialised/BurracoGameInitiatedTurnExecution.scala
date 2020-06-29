@@ -71,7 +71,7 @@ case class BurracoGameInitiatedTurnExecution private(
   def pickupPozzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
-    assert(player.cards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
+    assert(player.showMyCards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
     assert(player.mazzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
 
     val mazzetto = pozzettos.firstMazzettoAvailable()

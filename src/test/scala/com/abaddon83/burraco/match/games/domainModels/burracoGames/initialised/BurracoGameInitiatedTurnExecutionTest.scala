@@ -194,9 +194,9 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
       if(bp.playerIdentity == playerIdentity){
         val cardsWithScale = List(game.playerCards(bp.playerIdentity).drop(scale.showCards.size+1), scale.showCards,List(Card(Heart,Ten))).flatten
         assert(cardsWithScale.containsSlice(scale.showCards))
-        PlayerInGame(bp.playerIdentity,cardsWithScale)
+        PlayerInGame.build(bp.playerIdentity,cardsWithScale)
       }else {
-        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
   }
@@ -206,9 +206,9 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
       if(bp.playerIdentity == playerIdentity){
         val cardsWithTris = List(game.playerCards(bp.playerIdentity).drop(tris.showCards.size+1), tris.showCards,List(Card(Tile,Ace))).flatten
         assert(cardsWithTris.containsSlice(tris.showCards))
-        PlayerInGame(bp.playerIdentity,cardsWithTris)
+        PlayerInGame.build(bp.playerIdentity,cardsWithTris)
       }else {
-        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
   }
@@ -218,9 +218,9 @@ class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite{
     val game = createBurracoGamePlayerTurnExecution()
     val updatedPlayers = game.listOfPlayers.map(bp =>
       if(bp.playerIdentity == playerIdentity){
-        PlayerInGame(bp.playerIdentity,newPlayerCards)
+        PlayerInGame.build(bp.playerIdentity,newPlayerCards)
       }else {
-        PlayerInGame(bp.playerIdentity,game.playerCards(bp.playerIdentity))
+        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
       }
     )
     game.copy(players = updatedPlayers)

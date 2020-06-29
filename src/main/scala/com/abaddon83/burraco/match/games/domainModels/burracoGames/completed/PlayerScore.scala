@@ -19,8 +19,8 @@ object PlayerScore{
     PlayerScore(
     playerIdentity = player.playerIdentity,
     winner = winner,
-    burracoList = burracoList(player.cardsOnTable.burracoList()),
-    remainedCards = player.cards
+    burracoList = burracoList(player.burracoList()),
+    remainedCards = player.showMyCards()
     )
   }
 

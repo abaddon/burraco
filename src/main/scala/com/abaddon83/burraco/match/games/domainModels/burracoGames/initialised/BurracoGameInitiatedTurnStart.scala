@@ -33,7 +33,7 @@ case class BurracoGameInitiatedTurnStart private(
 
     BurracoGameInitiatedTurnExecution.build(
       this,
-      UpdatePlayers(player.copy(cards = burracoDeck.grabFirstCard() :: player.cards)),
+      UpdatePlayers(player.copy(cards = burracoDeck.grabFirstCard() :: player.showMyCards())),
       this.burracoDeck,
       this.pozzettos,
       this.discardPile,
@@ -48,7 +48,7 @@ case class BurracoGameInitiatedTurnStart private(
 
     BurracoGameInitiatedTurnExecution.build(
       this,
-      UpdatePlayers(player.copy(cards = discardPile.grabAllCards() ++ player.cards)),
+      UpdatePlayers(player.copy(cards = discardPile.grabAllCards() ++ player.showMyCards)),
       this.burracoDeck,
       this.pozzettos,
       this.discardPile,
@@ -62,7 +62,7 @@ object BurracoGameInitiatedTurnStart{
     assert(burracoGameWaitingPlayers.listOfPlayers.exists(player => burracoCardsDealt.playersCards.keys.exists(p => p == player.playerIdentity)),s"One or more players doesn't have their cards")
 
     val burracoPlayersInGame =burracoGameWaitingPlayers.listOfPlayers.map(player =>
-      PlayerInGame(
+      PlayerInGame.build(
         player.playerIdentity,
         burracoCardsDealt.playersCards.get(player.playerIdentity).get
       )
