@@ -27,7 +27,7 @@ case class PlayerInGame(
   //pickup
   def pickUpMazzetto(mazzetto: MazzettoDeck):PlayerInGame = {
     assert(mazzettoTaken == false, MazzettoDeck)
-    addCardsOnMyCard(mazzetto.grabAllCards()).copy(mazzettoTaken = true)
+    addCardsOnMyCard(mazzetto.getCards()).copy(mazzettoTaken = true)
   }
 
   def addCardsOnMyCard(newCards: List[Card]): PlayerInGame = {

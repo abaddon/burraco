@@ -55,7 +55,12 @@ class PlayerInGameTest extends AnyFunSuite {
   }
 
   test("given a Scale on My cards, when I drop it, then I see it on the table"){
-    val scaleCards = Deck.allRanksCards().filter(c => c.suit == Suits.Heart).take(4)
+    val scaleCards = List(
+      Card(Suits.Heart,Ranks.Four),
+      Card(Suits.Heart,Ranks.Five),
+      Card(Suits.Heart,Ranks.Six),
+      Card(Suits.Heart,Ranks.Seven)
+    )
     val myCards= Deck.allRanksCards().take(5) ++ scaleCards
     val playerInGame = PlayerInGameTestFactory().withCards(myCards).build()
     val scaleToDrop = BurracoScale(scaleCards)
@@ -89,22 +94,35 @@ class PlayerInGameTest extends AnyFunSuite {
   }
 
   test("given a card to append on a Scale on table, when I append the card, then the card is on the burraco"){
-    val cardsScale = Deck.allRanksCards().filter(c => c.suit == Suits.Heart).take(5)
-    val cardToDrop = cardsScale.last
-    val myCards= Deck.allRanksCards().filterNot( p=> p == cardToDrop).take(5) ++ List(cardToDrop)
-    val burracoScale = BurracoScale(cardsScale.take(4))
-    val burracoTris = BurracoTris(Deck.allRanksCards().filter(c => c.rank == Ranks.Seven).take(4))
+    val cardsScale = List(
+      Card(Suits.Heart,Ranks.Four),
+      Card(Suits.Heart,Ranks.Five),
+      Card(Suits.Heart,Ranks.Six),
+      Card(Suits.Heart,Ranks.Seven)
+    )
+    println(s"cardsScale: ${cardsScale.size}")
+    val cardToDrop = Card(Suits.Heart,Ranks.Eight)
+    var deck = (Deck.allRanksCards() diff cardsScale) diff List(cardToDrop)
+    val myCards= deck.take(5) ++ List(cardToDrop)
+    deck = deck diff myCards
+    println(s"myCards: ${myCards.size}")
+    val burracoScale = BurracoScale(cardsScale)
+    val burracoTris = BurracoTris(deck.filter(c => c.rank == Ranks.Seven).take(4))
+    deck = deck diff burracoTris.showCards()
+    println(s"burracoTris: ${burracoTris.numCards()}")
     val playerInGame = PlayerInGameTestFactory()
       .withCards(myCards)
       .withScalaOnTable(burracoScale)
       .withTrisOnTable(burracoTris)
       .build()
-
+println(s"totalPlayerCards(): ${playerInGame.totalPlayerCards()}")
     val expectedScaleSize = burracoScale.showCards().size +1
     val expectedMyCardsSize = myCards.size -1
-    val expectedAllCardsSize = myCards.size + burracoScale.showCards().size
+    val expectedAllCardsSize = myCards.size + burracoScale.showCards().size + burracoTris.showCards().size
 
     val actualPlayerInGame = playerInGame.appendACardOnBurracoDropped(burracoScale.getBurracoId(),List(cardToDrop))
+
+    println(s"totalPlayerCards() later: ${actualPlayerInGame.totalPlayerCards()}")
 
     assert(actualPlayerInGame.showScalesOnTable().head.showCards().contains(cardToDrop))
     assert(actualPlayerInGame.showScalesOnTable().head.showCards().size == expectedScaleSize)
