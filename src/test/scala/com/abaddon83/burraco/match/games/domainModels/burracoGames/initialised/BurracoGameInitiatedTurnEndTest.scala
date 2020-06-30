@@ -1,117 +1,201 @@
 package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised
 
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.completed.BurracoGameCompleted
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.{BurracoCardsOnTable, BurracoTris, PlayerInGame}
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoId, PlayerNotAssigned, burracoGames}
-import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
+import com.abaddon83.burraco.mocks.BurracoGameInitTurnTestFactory
 import com.abaddon83.burraco.shares.decks.{Card, Ranks, Suits}
-import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
 
-  private val playerIdentityUUID1 = "061b71f7-a308-4015-9bf2-42bac1c4f6a0"
-  private val playerIdentityUUID2 = "ca65f040-eaea-4b9a-8082-c110f4640a15"
+  test("Given a player with 0 cards, when pickup the mazzetto, then receive the mazzetto cards") {
+    val player1Id = PlayerIdentity()
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(), List()), false)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
 
-  test("try to pickUp the pozzetto with at least a card, should fail") {
+    val actualGame = game.pickupMazzetto(player1Id)
+
+    assert(actualGame.playerCards(player1Id).size == 11)
+    assert(actualGame.listOfPlayers.size == 2)
+  }
+
+  test("Given a player with a card, when pickup the mazzetto, then receive an error") {
+    val player1Id = PlayerIdentity()
+    val player1 = PlayerInGame(player1Id, List(Card(Suits.Heart,Ranks.Six)), BurracoCardsOnTable(List(), List()), false)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
+
     assertThrows[AssertionError]{
-      createGame.pickupPozzetto(PlayerIdentity(playerIdentityUUID1))
+      game.pickupMazzetto(player1Id)
     }
   }
 
-  test("try to pickUp the pozzetto  with 0 a card") {
-      val game = gameWithPlayerWithNoCards(PlayerIdentity(playerIdentityUUID1))
-      val newGame = game.pickupPozzetto(PlayerIdentity(playerIdentityUUID1))
-    assert(game.playerCards(PlayerIdentity(playerIdentityUUID1)).size == 0)
-    assert(newGame.playerCards(PlayerIdentity(playerIdentityUUID1)).size == 11)
-  }
+  test("Given a player with 0 cards and the pozzetto already taken, when pickup the mazzetto, then receive an error") {
+    val player1Id = PlayerIdentity()
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(), List()), true)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
 
-  test("next Player Turn") {
-    val game = gameWithPlayerWithNoCards(PlayerIdentity(playerIdentityUUID1))
-    val newGame = game.nextPlayerTurn(PlayerIdentity(playerIdentityUUID1))
-    assert(game.validatePlayerTurn(PlayerIdentity(playerIdentityUUID1)) == PlayerIdentity(playerIdentityUUID1))
-    assert(newGame.validatePlayerTurn(PlayerIdentity(playerIdentityUUID2)) == PlayerIdentity(playerIdentityUUID2))
-  }
-
-  test("complete Game and the player has some cards, should fail"){
     assertThrows[AssertionError]{
-      createGame.completeGame(PlayerIdentity(playerIdentityUUID1))
+      game.pickupMazzetto(player1Id)
     }
   }
 
-  test("complete Game and the player has 0 cards but no burraco"){
-    assertThrows[AssertionError]{
-      gameWithPlayerWithNoCards(PlayerIdentity(playerIdentityUUID1)).completeGame(PlayerIdentity(playerIdentityUUID1))
+  test("Given a player of another turn, when pickup the mazzetto, then receive an error") {
+    val player1Id = PlayerIdentity()
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(), List()), false)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .setPlayer2Turn()
+      .buildTurnPhaseEnd()
+
+    assertThrows[UnsupportedOperationException]{
+      game.pickupMazzetto(player1Id)
     }
   }
 
-  test("complete Game and the player has 0 cards and a burraco"){
+  test("Given a player of another game, when pickup the mazzetto, then receive an error") {
+    val game = BurracoGameInitTurnTestFactory()
+      .buildTurnPhaseEnd()
 
-    gameWithPlayerWithBurracoNoCards(PlayerIdentity(playerIdentityUUID1)).completeGame(PlayerIdentity(playerIdentityUUID1))
-
+    assertThrows[NoSuchElementException]{
+      game.pickupMazzetto(PlayerIdentity())
+    }
   }
 
-  private def gameWithPlayerWithBurracoNoCards(playerIdentity: PlayerIdentity) = {
-    val game = createGame
-    val trisCards = List(
-      Card(Suits.Clover,Ranks.Five),
-      Card(Suits.Clover,Ranks.Five),
-      Card(Suits.Heart,Ranks.Five),
-      Card(Suits.Heart,Ranks.Five),
-      Card(Suits.Tile,Ranks.Five),
-      Card(Suits.Tile,Ranks.Five),
-      Card(Suits.Pike,Ranks.Five)
-    )
-    val burracoCardsOnTable = BurracoCardsOnTable(
-      List(BurracoTris(
-        BurracoId(),
-        Ranks.Five,
-        trisCards
-      )),
-      List()
-    )
-    val playersUpdated = game.listOfPlayers().map(bp =>
-      if(bp.playerIdentity == playerIdentity){
-        PlayerInGame(bp.playerIdentity,List(),burracoCardsOnTable,true)
-      }else {
-        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
-      }
-    )
-    game.copy(
-      players = playersUpdated,
-      discardPile =DiscardPile.apply(game.showDiscardPile() ++ game.playerCards(playerIdentity))
-    )
+  test("Given a player than finished the turn, when confirm the turn is over, then it's the turn of the next player") {
+    val player1Id = PlayerIdentity()
+    val player2Id = PlayerIdentity()
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id, player2Id = player2Id)
+      .buildTurnPhaseEnd()
 
-
+    val actualGame = game.nextPlayerTurn(player1Id)
+    assert(actualGame.validatePlayerTurn(player2Id) == player2Id)
+    assert(actualGame.isInstanceOf[BurracoGameInitiatedTurnStart])
   }
 
-  private def gameWithPlayerWithNoCards(playerIdentity: PlayerIdentity) ={
-    val game = createGame
-    val playersUpdated = game.listOfPlayers().map(bp =>
-      if(bp.playerIdentity == playerIdentity){
-        PlayerInGame.build(bp.playerIdentity,List())
-      }else {
-        PlayerInGame.build(bp.playerIdentity,game.playerCards(bp.playerIdentity))
-      }
-    )
+  test("Given a player during the turn of another player, when confirm the turn is over, then it's the turn of the next player") {
+    val player1Id = PlayerIdentity()
+    val player2Id = PlayerIdentity()
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id, player2Id = player2Id)
+      .setPlayer2Turn()
+      .buildTurnPhaseEnd()
 
-    game.copy(
-      players = playersUpdated,
-      discardPile =DiscardPile.apply(game.showDiscardPile() ++ game.playerCards(playerIdentity))
-    )
-
+    assertThrows[UnsupportedOperationException]{
+      game.nextPlayerTurn(player1Id)
+    }
   }
 
-  private def createGame :BurracoGameInitiatedTurnEnd ={
-    val game = burracoGames.BurracoGame.createNewBurracoGame(GameIdentity())
-      .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID1)))
-      .addPlayer(PlayerNotAssigned(PlayerIdentity(playerIdentityUUID2)))
-    val gameExecution = game
-      .initiate(BurracoDealerFactory(game).dealBurracoCards())
-      .pickUpACardFromDeck(PlayerIdentity(playerIdentityUUID1))
-    gameExecution
-      .dropCardOnDiscardPile(PlayerIdentity(playerIdentityUUID1),gameExecution.playerCards(PlayerIdentity(playerIdentityUUID1)).head)
+  test("Given a player of another game, when confirm the turn is over, then it's the turn of the next player") {
+    val player1Id = PlayerIdentity()
+    val player2Id = PlayerIdentity()
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id, player2Id = player2Id)
+      .setPlayer2Turn()
+      .buildTurnPhaseEnd()
 
+    assertThrows[NoSuchElementException]{
+      game.nextPlayerTurn(PlayerIdentity())
+    }
+  }
+
+  test("Given a player with a Burraco, no cards, when complete the turn, then the game is end"){
+    val player1Id = PlayerIdentity()
+    val tris = BurracoTris(List(
+      Card(Suits.Heart,Ranks.Six),Card(Suits.Heart,Ranks.Six),
+      Card(Suits.Pike,Ranks.Six),Card(Suits.Pike,Ranks.Six),
+      Card(Suits.Tile,Ranks.Six),Card(Suits.Tile,Ranks.Six),
+      Card(Suits.Clover,Ranks.Six),Card(Suits.Clover,Ranks.Six)
+    ))
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(tris), List()), true)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
+
+    val actualGame = game.completeGame(player1Id)
+
+    assert(actualGame.isInstanceOf[BurracoGameCompleted])
+  }
+
+  test("Given a player with a Burraco, some cards, when complete the turn, then receive an error"){
+    val player1Id = PlayerIdentity()
+    val tris = BurracoTris(List(
+      Card(Suits.Heart,Ranks.Six),Card(Suits.Heart,Ranks.Six),
+      Card(Suits.Pike,Ranks.Six),Card(Suits.Pike,Ranks.Six),
+      Card(Suits.Tile,Ranks.Six),Card(Suits.Tile,Ranks.Six),
+      Card(Suits.Clover,Ranks.Six),Card(Suits.Clover,Ranks.Six)
+    ))
+    val player1 = PlayerInGame(player1Id, List(Card(Suits.Heart,Ranks.Four)), BurracoCardsOnTable(List(tris), List()), false)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
+
+    assertThrows[AssertionError]{
+      game.completeGame(player1Id)
+    }
+  }
+
+  test("Given a player with the mazzetto didn't take, when complete the turn, then receive an error"){
+    val player1Id = PlayerIdentity()
+    val tris = BurracoTris(List(
+      Card(Suits.Heart,Ranks.Six),Card(Suits.Heart,Ranks.Six),
+      Card(Suits.Pike,Ranks.Six),Card(Suits.Pike,Ranks.Six),
+      Card(Suits.Tile,Ranks.Six),Card(Suits.Tile,Ranks.Six),
+      Card(Suits.Clover,Ranks.Six),Card(Suits.Clover,Ranks.Six)
+    ))
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(tris), List()), false)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
+
+    assertThrows[AssertionError]{
+      game.completeGame(player1Id)
+    }
+  }
+
+  test("Given a player with not a burraco, when complete the turn, then receive an error"){
+    val player1Id = PlayerIdentity()
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(), List()), true)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .buildTurnPhaseEnd()
+
+    assertThrows[AssertionError]{
+      game.completeGame(player1Id)
+    }
+  }
+
+  test("Given a player during the turn of another player, when complete the turn, then receive an error"){
+    val player1Id = PlayerIdentity()
+    val tris = BurracoTris(List(
+      Card(Suits.Heart,Ranks.Six),Card(Suits.Heart,Ranks.Six),
+      Card(Suits.Pike,Ranks.Six),Card(Suits.Pike,Ranks.Six),
+      Card(Suits.Tile,Ranks.Six),Card(Suits.Tile,Ranks.Six),
+      Card(Suits.Clover,Ranks.Six),Card(Suits.Clover,Ranks.Six)
+    ))
+    val player1 = PlayerInGame(player1Id, List(), BurracoCardsOnTable(List(tris), List()), true)
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .setPlayer1(player1)
+      .setPlayer2Turn()
+      .buildTurnPhaseEnd()
+
+    assertThrows[UnsupportedOperationException]{
+      game.completeGame(player1Id)
+    }
+  }
+
+  test("Given a player of another game, when complete the turn, then receive an error"){
+    val player1Id = PlayerIdentity()
+    val game = BurracoGameInitTurnTestFactory(player1Id = player1Id)
+      .buildTurnPhaseEnd()
+
+    assertThrows[NoSuchElementException]{
+      game.completeGame(PlayerIdentity())
+    }
   }
 
 }

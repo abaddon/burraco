@@ -8,76 +8,54 @@ import scala.collection.mutable.ListBuffer
 
 class DiscardPileTest extends AnyFunSuite{
 
-  test("Init DiscardPile with a list of Card") {
+  test("Given a list of card, when I create a discard pile, then I see the same cards in the discard pile") {
+    val cardList = List(Card(Suits.Heart,Ranks.Ace),Card(Suits.Heart,Ranks.King))
+    val discardPile = DiscardPile(cardList)
+    val expectedSize = cardList.size
+
+    assert(discardPile.numCards() == expectedSize)
+  }
+
+  test("Given a card, when I add it on the discard pile, then I see the card in the pile") {
     val cardList = List(Card(Suits.Heart,Ranks.Ace),Card(Suits.Heart,Ranks.King))
     val discardPile = DiscardPile(cardList)
 
-    assert(discardPile.numCards() == 2)
-  }
-
-  test("add a card on the DiscardPile") {
-    val cardList = List(Card(Suits.Heart,Ranks.Ace),Card(Suits.Heart,Ranks.King))
-    val discardPile = DiscardPile(cardList)
-    assert(discardPile.numCards() == 2)
-
     val cardToAdd = Card(Suits.Jolly,Ranks.Jolly)
+
+    val expectedSize = cardList.size + 1
 
     val discardPileWithCardAdded = discardPile.addCard(cardToAdd)
 
-    assert(discardPileWithCardAdded.numCards() == 3)
+    assert(discardPileWithCardAdded.numCards() == expectedSize)
     assert(discardPileWithCardAdded.grabAllCards().contains(cardToAdd))
   }
 
-  test("add a card on an empty discard pile") {
 
-    val discardPile = DiscardPile(new ListBuffer[Card])
-    assert(discardPile.numCards() == 0)
-
-    val cardToAdd = Card(Suits.Jolly,Ranks.Jolly)
-
-    val discardPileWithCardAdded = discardPile.addCard(cardToAdd)
-
-    assert(discardPile.numCards() == 1)
-    assert(discardPileWithCardAdded.grabAllCards().contains(cardToAdd))
-  }
-
-  test("grabAllCards") {
-    val card1 = Card(Suits.Heart,Ranks.Ace)
-    val card2 = Card(Suits.Heart,Ranks.King)
-    val cardList = List(card1,card2)
-
-    val discardPile = DiscardPile(cardList)
+  test("given a discardPile, when I grab all cards, then the pile is empty") {
+    val discardPile = DiscardPile(List(Card(Suits.Heart,Ranks.Ace),Card(Suits.Heart,Ranks.King)))
     assert(discardPile.numCards() == 2)
 
-    val cardToAdd = Card(Suits.Jolly,Ranks.Jolly)
+    val grabbedCards = discardPile.grabAllCards()
 
-    val discardPileWithCardAdded = discardPile.addCard(cardToAdd)
+    val expectedCardsInthePile = 0
+    val expectedCardsgrabbed = 2
 
-    val grabbedCards = discardPileWithCardAdded.grabAllCards()
-
-    assert(discardPileWithCardAdded.numCards() == 0)
-    assert(grabbedCards.size == 3)
-    assert(grabbedCards.contains(cardToAdd))
-    assert(grabbedCards.contains(card1))
-    assert(grabbedCards.contains(card2))
+    assert(discardPile.numCards() == expectedCardsInthePile)
+    assert(grabbedCards.size == expectedCardsgrabbed)
   }
 
-  test("grabAllCards from an empty list") {
+  test("given an empty discardPile, when I grab all cards, then receive an error") {
 
-    val discardPile = DiscardPile(new ListBuffer[Card])
-
-    assert(discardPile.numCards() == 0)
+    val discardPile = DiscardPile(new ListBuffer[Card].empty)
 
     assertThrows[AssertionError]{
       discardPile.grabAllCards()
     }
   }
 
-  test("grab a card should fail"){
-    val card1 = Card(Suits.Heart,Ranks.Ace)
-    val card2 = Card(Suits.Heart,Ranks.King)
-    val discardPile = DiscardPile(List(card1,card2))
-    assert(discardPile.numCards() == 2)
+  test("given a discardPile, when I grab only a card, then receive an error"){
+
+    val discardPile = DiscardPile(List(Card(Suits.Heart,Ranks.Ace),Card(Suits.Heart,Ranks.King)))
 
     assertThrows[UnsupportedOperationException]{
       discardPile.grabFirstCard()

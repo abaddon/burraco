@@ -1,6 +1,6 @@
 package com.abaddon83.burraco.mocks
 
-import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoDeck, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart, DiscardPile}
+import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.{BurracoDeck, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart, DiscardPile}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.mazzettos.{MazzettoDeck, MazzettoDecks}
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
 import com.abaddon83.burraco.shares.decks.{Card, Deck}
@@ -32,6 +32,17 @@ case class BurracoGameInitTurnTestFactory(
 
   def buildTurnPhaseExecution(): BurracoGameInitiatedTurnExecution = {
     BurracoGameInitiatedTurnExecution.build(
+      gameIdentity = gameIdentity,
+      players = List(player1, player2),
+      burracoDeck = burracoDeckBuild(),
+      mazzettoDecks = mazzettoDecks,
+      discardPile = discardPile,
+      playerTurn = playerTurn
+    ).testInvariants()
+  }
+
+  def buildTurnPhaseEnd(): BurracoGameInitiatedTurnEnd = {
+    BurracoGameInitiatedTurnEnd.build(
       gameIdentity = gameIdentity,
       players = List(player1, player2),
       burracoDeck = burracoDeckBuild(),

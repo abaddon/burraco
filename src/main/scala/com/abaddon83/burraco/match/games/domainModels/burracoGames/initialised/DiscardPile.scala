@@ -18,8 +18,8 @@ case class DiscardPile private(
   }
 
   def addCard(card: Card): DiscardPile = {
-    cards.addOne(card)
-    DiscardPile(cards)
+    val updatedCards = ListBuffer.from(cards.toList ++ List(card))
+    copy( cards = updatedCards)
   }
 
   def showCards: List[Card] = {

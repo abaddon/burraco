@@ -8,6 +8,7 @@ import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 import org.scalatest.funsuite.AnyFunSuite
 
+@deprecated
 class BurracoGameInitiatedTest extends AnyFunSuite{
 
   private val playerIdentityUUID1 = "061b71f7-a308-4015-9bf2-42bac1c4f6a0"

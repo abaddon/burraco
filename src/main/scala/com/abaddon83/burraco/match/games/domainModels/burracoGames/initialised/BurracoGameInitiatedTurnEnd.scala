@@ -14,7 +14,7 @@ case class BurracoGameInitiatedTurnEnd protected(
                                                   override protected val gameIdentity: GameIdentity
                                       ) extends BurracoGameInitiated{
 
-  def pickupPozzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnEnd = {
+  def pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnEnd = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
     assert(player.showMyCards().size ==0,"The player cannot pick up a Pozzetto if he still has cards")
@@ -50,7 +50,7 @@ case class BurracoGameInitiatedTurnEnd protected(
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
     assert(player.showMyCards.size == 0,s"The player cannot complete the game with ${player.showMyCards().size} cards on hand")
-    assert(player.mazzettoTaken,s"The player cannot complete the game if the small deck is taken ${player.mazzettoTaken}")
+    assert(player.mazzettoTaken,s"The player cannot complete the game if the small deck is not taken (status: ${player.mazzettoTaken})")
     assert(player.burracoList().size >0, "The player doesn't have a burraco")
     //TODO add the logic to check if the squad taken the pozzetto
 

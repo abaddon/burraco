@@ -42,7 +42,7 @@ class PickUpSmallDeckHandler(
     game match {
       case game: BurracoGameInitiatedTurnStart => ??? //game.pickupPozzetto(playerIdentity = playerIdentity)
       case game: BurracoGameInitiatedTurnExecution => game.pickupMazzetto(playerIdentity = playerIdentity)
-      case game: BurracoGameInitiatedTurnEnd => game.pickupPozzetto(playerIdentity = playerIdentity)
+      case game: BurracoGameInitiatedTurnEnd => game.pickupMazzetto(playerIdentity = playerIdentity)
       case _ => throw new Exception
     }
   }
