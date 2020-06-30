@@ -2,8 +2,8 @@ package com.abaddon83.libs.cqs
 
 import java.util.UUID
 
-import com.abaddon83.burraco.`match`.games.commands.games.{CreateNewGame, CreateNewGameHandler}
-import com.abaddon83.burraco.mocks.MockBurracoGameRepositoryAdapter
+import com.abaddon83.cardsGames.burracoGames.commands.games.{CreateNewGame, CreateNewGameHandler}
+import com.abaddon83.cardsGames.mocks.MockBurracoGameRepositoryAdapter
 import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 import com.google.inject.{AbstractModule, Guice}
 import net.codingwell.scalaguice.InjectorExtensions._
