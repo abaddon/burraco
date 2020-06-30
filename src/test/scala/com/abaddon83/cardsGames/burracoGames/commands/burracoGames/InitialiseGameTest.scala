@@ -1,5 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
 
+import com.abaddon83.cardsGames.burracoGames.commands.{StartGameCmd, StartGameHandler}
 import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
@@ -12,7 +13,7 @@ class InitialiseGameTest extends AnyFunSuite
   with MockExecutionContext
   with MockPlayerAdapter{
 
-  val handler = new InitialiseGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
+  val handler = new StartGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
   //val player1 = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")
   //val player2 = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")
 
@@ -22,7 +23,7 @@ class InitialiseGameTest extends AnyFunSuite
     GameFactoryMock
       .build(gameIdentity).persist()
 
-    val command = InitialiseGame(gameIdentity = gameIdentity)
+    val command = StartGameCmd(gameIdentity = gameIdentity)
     handler.handleAsync(command) map { result =>
       assertThrows[UnsupportedOperationException]{
         result
@@ -38,7 +39,7 @@ class InitialiseGameTest extends AnyFunSuite
       .addPlayerNotAssigned(player1)
       .persist()
 
-    val command = InitialiseGame(gameIdentity = gameIdentity)
+    val command = StartGameCmd(gameIdentity = gameIdentity)
 
       handler.handleAsync(command) map {result =>
         assertThrows[AssertionError]{
@@ -58,7 +59,7 @@ class InitialiseGameTest extends AnyFunSuite
       .addPlayerNotAssigned(player2)
       .persist()
 
-    val command = InitialiseGame(gameIdentity = gameIdentity)
+    val command = StartGameCmd(gameIdentity = gameIdentity)
 
     handler.handleAsync(command) foreach { r =>
       mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnStartBy(gameIdentity) map { result =>
@@ -72,7 +73,7 @@ class InitialiseGameTest extends AnyFunSuite
     val gameIdentity = GameIdentity()
     GameFactoryMock.build(gameIdentity).persist()
 
-    val command = InitialiseGame(gameIdentity = gameIdentity)
+    val command = StartGameCmd(gameIdentity = gameIdentity)
 
     assertThrows[UnsupportedOperationException]{
       handler.handle(command)
@@ -89,7 +90,7 @@ class InitialiseGameTest extends AnyFunSuite
       .addPlayerNotAssigned(player1)
       .persist()
 
-    val command = InitialiseGame(gameIdentity = gameIdentity)
+    val command = StartGameCmd(gameIdentity = gameIdentity)
 
     assertThrows[AssertionError]{
       handler.handle(command)
@@ -107,7 +108,7 @@ class InitialiseGameTest extends AnyFunSuite
       .addPlayerNotAssigned(player2)
       .persist()
 
-    val command = InitialiseGame(gameIdentity = gameIdentity)
+    val command = StartGameCmd(gameIdentity = gameIdentity)
 
     handler.handle(command)
     mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnStartBy(gameIdentity) map { result =>

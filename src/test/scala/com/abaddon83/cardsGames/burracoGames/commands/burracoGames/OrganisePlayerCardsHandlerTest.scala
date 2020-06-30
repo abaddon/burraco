@@ -1,5 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
 
+import com.abaddon83.cardsGames.burracoGames.commands.{OrganisePlayerCardsCmd, OrganisePlayerCardsHandler}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.decks.Card
@@ -34,7 +35,7 @@ class OrganisePlayerCardsHandlerTest extends AnyFunSuite
     val currentCards = gameCreated.asInstanceOf[BurracoGameInitiatedTurnStart].playerCards(playerToUpdate)
     val orderedCards: List[Card] = currentCards.sortBy(_.rank.label)
 
-    val command = OrganisePlayerCards(
+    val command = OrganisePlayerCardsCmd(
       gameIdentity = gameIdentity,
       playerIdentity = playerToUpdate,
       orderedCards = orderedCards
@@ -66,7 +67,7 @@ class OrganisePlayerCardsHandlerTest extends AnyFunSuite
     val currentCards = gameCreated.asInstanceOf[BurracoGameInitiatedTurnStart].playerCards(playerToUpdate)
     val orderedCards: List[Card] = currentCards.sortBy(_.rank.label)
 
-    val command = OrganisePlayerCards(
+    val command = OrganisePlayerCardsCmd(
       gameIdentity = gameIdentity,
       playerIdentity = playerToUpdate,
       orderedCards = orderedCards
@@ -99,7 +100,7 @@ class OrganisePlayerCardsHandlerTest extends AnyFunSuite
     val currentCards = gameCreated.asInstanceOf[BurracoGameInitiatedTurnExecution].playerCards(playerToUpdate)
     val orderedCards: List[Card] = currentCards.sortBy(_.rank.label)
 
-    val command = OrganisePlayerCards(
+    val command = OrganisePlayerCardsCmd(
       gameIdentity = gameIdentity,
       playerIdentity = playerToUpdate,
       orderedCards = orderedCards
@@ -133,7 +134,7 @@ class OrganisePlayerCardsHandlerTest extends AnyFunSuite
     val currentCards = gameCreated.asInstanceOf[BurracoGameInitiatedTurnEnd].playerCards(playerToUpdate)
     val orderedCards: List[Card] = currentCards.sortBy(_.rank.label)
 
-    val command = OrganisePlayerCards(
+    val command = OrganisePlayerCardsCmd(
       gameIdentity = gameIdentity,
       playerIdentity = playerToUpdate,
       orderedCards = orderedCards

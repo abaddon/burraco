@@ -17,7 +17,7 @@ case class CreateNewBurracoGameCmd(
 }
 
 
-class CreateNewGameHandler(
+class CreateNewBurracoGameHandler(
                             gameRepositoryPort: GameRepositoryPort
                           )
                           (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[CreateNewBurracoGameCmd] {

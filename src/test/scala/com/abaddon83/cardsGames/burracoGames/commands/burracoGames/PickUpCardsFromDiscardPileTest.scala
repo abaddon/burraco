@@ -1,5 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
 
+import com.abaddon83.cardsGames.burracoGames.commands.{PickUpCardsFromDiscardPileCmd, PickUpCardsFromDiscardPileHandler}
 import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
 import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
@@ -28,7 +29,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
       .initialise()
       .persist()
 
-    val command = PickUpCardsFromDiscardPile(gameIdentity = gameIdentity, playerIdentity = player1)
+    val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity, playerIdentity = player1)
     handler.handleAsync(command).foreach{r =>
       val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnExecutionBy(gameIdentity).futureValue
       assert(gameTurnExecution.identity() == gameIdentity)
@@ -49,7 +50,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
       .initialise()
       .persist()
 
-    val command = PickUpCardsFromDiscardPile(gameIdentity = gameIdentity, playerIdentity = player2)
+    val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity, playerIdentity = player2)
     handler.handleAsync(command).foreach { result =>
       assertThrows[UnsupportedOperationException]{
         result
@@ -69,7 +70,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
       .initialise()
       .persist()
 
-    val command = PickUpCardsFromDiscardPile(gameIdentity = gameIdentity, playerIdentity = player1)
+    val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity, playerIdentity = player1)
     handler.handle(command)
     val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnExecutionBy(gameIdentity).futureValue
     assert(gameTurnExecution.identity() == gameIdentity)
@@ -90,7 +91,7 @@ class PickUpCardsFromDiscardPileTest extends AnyFunSuite
       .initialise()
       .persist()
 
-    val command = PickUpCardsFromDiscardPile(gameIdentity = gameIdentity, playerIdentity = player2)
+    val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity, playerIdentity = player2)
 
     assertThrows[UnsupportedOperationException]{
       handler.handle(command)

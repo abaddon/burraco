@@ -1,5 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
 
+import com.abaddon83.cardsGames.burracoGames.commands.{PickUpACardFromDeckCmd, PickUpACardFromDeckHandler}
 import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
 import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
@@ -27,7 +28,7 @@ class PickUpACardFromDeckTest extends AnyFunSuite
       .initialise()
       .persist()
 
-    val command = PickUpACardFromDeck(gameIdentity = gameIdentity, playerIdentity = player1)
+    val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity, playerIdentity = player1)
     handler.handleAsync(command).foreach{r =>
       val gameTurnExecution = mockBurracoGameRepositoryAdapter.findBurracoGameInitialisedTurnExecutionBy(gameIdentity).futureValue
       assert(gameTurnExecution.identity() == gameIdentity)
@@ -46,7 +47,7 @@ class PickUpACardFromDeckTest extends AnyFunSuite
       .initialise()
       .persist()
 
-    val command = PickUpACardFromDeck(gameIdentity = gameIdentity, playerIdentity = player2)
+    val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity, playerIdentity = player2)
     handler.handleAsync(command).foreach { result =>
       assertThrows[UnsupportedOperationException]{
         result

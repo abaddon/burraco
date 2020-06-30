@@ -2,7 +2,7 @@ package com.abaddon83.libs.cqs
 
 import java.util.UUID
 
-import com.abaddon83.cardsGames.burracoGames.commands.games.{CreateNewGame, CreateNewGameHandler}
+import com.abaddon83.cardsGames.burracoGames.commands.{CreateNewBurracoGameCmd, CreateNewBurracoGameHandler}
 import com.abaddon83.cardsGames.mocks.MockBurracoGameRepositoryAdapter
 import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 import com.google.inject.{AbstractModule, Guice}
@@ -21,7 +21,7 @@ class ContextTest extends AnyFunSuite with MockBurracoGameRepositoryAdapter{
     val injector = Guice.createInjector(new TestModule())
 
     val context = new Context(injector)
-    assert(context.getInjector.instance[CommandHandler[CreateNewGame]].isInstanceOf[CreateNewGameHandler])
+    assert(context.getInjector.instance[CommandHandler[CreateNewBurracoGameCmd]].isInstanceOf[CreateNewBurracoGameHandler])
     assert(context.getInjector.instance[CommandHandler[UpdateGame]].isInstanceOf[UpdateGameHandler])
   }
 
@@ -46,7 +46,7 @@ class TestModule extends AbstractModule with ScalaModule with MockBurracoGameRep
   implicit val ec: scala.concurrent.ExecutionContext= scala.concurrent.ExecutionContext.global
   override def configure(): Unit = {
 
-    bind[CommandHandler[CreateNewGame]].toInstance(new CreateNewGameHandler(mockBurracoGameRepositoryAdapter))
+    bind[CommandHandler[CreateNewBurracoGameCmd]].toInstance(new CreateNewBurracoGameHandler(mockBurracoGameRepositoryAdapter))
     bind[CommandHandler[UpdateGame]].toInstance(UpdateGameHandler())
 
 

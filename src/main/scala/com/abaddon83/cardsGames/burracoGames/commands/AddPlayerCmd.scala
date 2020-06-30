@@ -25,7 +25,6 @@ class AddPlayerHandler(
 
    override def handleAsync(command: AddPlayerCmd): Future[Unit] = {
      assert(gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} doesn't exist")
-
      for{
        burracoGameWaitingPlayers <- gameRepositoryPort.findBurracoGameWaitingPlayersBy(command.gameIdentity)
        player <- playerPort.findPlayerNotAssignedBy(command.playerIdentity)
@@ -35,9 +34,7 @@ class AddPlayerHandler(
   override def handle(command: AddPlayerCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
-
     assert(gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} doesn't exist")
-
     val game = Await.result(gameRepositoryPort.findBurracoGameWaitingPlayersBy(command.gameIdentity), 5000 millis)
     val player = Await.result( playerPort.findPlayerNotAssignedBy(command.playerIdentity), 5000 millis)
     gameRepositoryPort.save(game.addPlayer(player))

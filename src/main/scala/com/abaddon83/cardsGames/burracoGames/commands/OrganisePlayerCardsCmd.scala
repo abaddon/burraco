@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
 import java.util.UUID
 
@@ -11,7 +11,7 @@ import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.{Await, Future}
 
-case class OrganisePlayerCards(
+case class OrganisePlayerCardsCmd(
                                 gameIdentity: GameIdentity,
                                 playerIdentity: PlayerIdentity,
                                 orderedCards: List[Card]
@@ -22,16 +22,16 @@ case class OrganisePlayerCards(
 class OrganisePlayerCardsHandler(
                                   gameRepositoryPort: GameRepositoryPort
                                 )(implicit val ec: scala.concurrent.ExecutionContext)
-  extends CommandHandler[OrganisePlayerCards] {
+  extends CommandHandler[OrganisePlayerCardsCmd] {
 
-  override def handleAsync(command: OrganisePlayerCards): Future[Unit] = {
+  override def handleAsync(command: OrganisePlayerCardsCmd): Future[Unit] = {
     for {
       gameInitialised <- gameRepositoryPort.findBurracoGameInitialisedBy(gameIdentity = command.gameIdentity)
       gameInitialisedUpdated = reorderPlayerCards(gameInitialised, command.playerIdentity, command.orderedCards)
     } yield gameRepositoryPort.save(gameInitialisedUpdated)
   }
 
-  override def handle(command: OrganisePlayerCards): Unit = {
+  override def handle(command: OrganisePlayerCardsCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
     val gameInitialised = Await.result(gameRepositoryPort.findBurracoGameInitialisedBy(gameIdentity = command.gameIdentity), 500 millis)

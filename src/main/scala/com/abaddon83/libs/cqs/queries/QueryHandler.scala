@@ -2,9 +2,9 @@ package com.abaddon83.libs.cqs.queries
 
 import scala.concurrent.Future
 
-trait QueryHandler[TQueryHandler,TQueryResult]{
+trait QueryHandler[TQuery,TQueryResult]{
 
-  def handleAsync( query: TQueryHandler): Future[TQueryResult]
-  def handle( query: TQueryHandler): TQueryResult
+  def handleAsync( query: TQuery): Future[TQueryResult]
+  def handle( query: TQuery): TQueryResult
 
 }
