@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
 import java.util.UUID
 
@@ -9,7 +9,7 @@ import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.{Await, Future}
 
-case class AddPlayer(
+case class AddPlayerCmd(
                         gameIdentity: GameIdentity,
                         playerIdentity: PlayerIdentity
                         ) extends Command {
@@ -21,9 +21,9 @@ class AddPlayerHandler(
                                  gameRepositoryPort: GameRepositoryPort,
                                  playerPort: PlayerPort
                                )
-                               (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[AddPlayer]{
+                               (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[AddPlayerCmd]{
 
-   override def handleAsync(command: AddPlayer): Future[Unit] = {
+   override def handleAsync(command: AddPlayerCmd): Future[Unit] = {
      assert(gameRepositoryPort.exists(command.gameIdentity), s"GameIdentity ${command.gameIdentity} doesn't exist")
 
      for{
@@ -32,7 +32,7 @@ class AddPlayerHandler(
      } yield gameRepositoryPort.save(burracoGameWaitingPlayers.addPlayer(player))
   }
 
-  override def handle(command: AddPlayer): Unit = {
+  override def handle(command: AddPlayerCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
 

@@ -1,5 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
 
+import com.abaddon83.cardsGames.burracoGames.commands.{AddPlayerCmd, AddPlayerHandler}
 import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
 import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
@@ -27,7 +28,7 @@ class AddPlayerTest extends AnyFunSuite
     GameFactoryMock
       .build(gameIdentity).persist()
 
-    val command = AddPlayer(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
     handler.handleAsync(command).foreach{ r =>
       val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
       assert(game.isAlreadyAPlayer(playerIdentity))
@@ -42,7 +43,7 @@ class AddPlayerTest extends AnyFunSuite
 
     GameFactoryMock
       .build(gameIdentity).persist()
-    val command = AddPlayer(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
     handler.handleAsync(command).foreach { r =>
       mockPlayerAdapter.updatePlayerStatusToPlayerAssigned(playerIdentity)
       handler.handleAsync(command).foreach{ r1 =>
@@ -60,7 +61,7 @@ class AddPlayerTest extends AnyFunSuite
 
     GameFactoryMock
       .build(gameIdentity).persist()
-    val command = AddPlayer(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
     handler.handle(command)
 
     val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
@@ -75,7 +76,7 @@ class AddPlayerTest extends AnyFunSuite
     GameFactoryMock
       .build(gameIdentity).persist()
 
-    val command = AddPlayer(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
     handler.handle(command)
 
     assertThrows[AssertionError] {

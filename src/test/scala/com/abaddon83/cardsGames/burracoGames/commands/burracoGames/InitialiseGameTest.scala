@@ -1,6 +1,5 @@
 package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
 
-import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
 import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
