@@ -41,7 +41,7 @@ class PickUpSmallDeckHandler(
   private def pickupSmallDeck(game: BurracoGameInitiated, playerIdentity: PlayerIdentity) = {
     game match {
       case game: BurracoGameInitiatedTurnStart => ??? //game.pickupPozzetto(playerIdentity = playerIdentity)
-      case game: BurracoGameInitiatedTurnExecution => game.pickupPozzetto(playerIdentity = playerIdentity)
+      case game: BurracoGameInitiatedTurnExecution => game.pickupMazzetto(playerIdentity = playerIdentity)
       case game: BurracoGameInitiatedTurnEnd => game.pickupPozzetto(playerIdentity = playerIdentity)
       case _ => throw new Exception
     }

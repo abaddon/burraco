@@ -12,7 +12,7 @@ case class BurracoGameInitiatedTurnStart private(
                                                   override protected val gameIdentity: GameIdentity,
                                                   override protected val players: List[PlayerInGame],
                                                   override protected val burracoDeck: BurracoDeck,
-                                                  override protected val pozzettos: MazzettoDecks,
+                                                  override protected val mazzettoDecks: MazzettoDecks,
                                                   override protected val discardPile: DiscardPile,
                                                   override protected val playerTurn: PlayerIdentity
                                          ) extends BurracoGameInitiated{
@@ -32,10 +32,10 @@ case class BurracoGameInitiatedTurnStart private(
     validatePlayerTurn(playerIdentity)
 
     BurracoGameInitiatedTurnExecution.build(
-      this,
+      this.gameIdentity,
       UpdatePlayers(player.addCardsOnMyCard(List(burracoDeck.grabFirstCard()))),
       this.burracoDeck,
-      this.pozzettos,
+      this.mazzettoDecks,
       this.discardPile,
       this.playerTurn
     ).testInvariants()
@@ -47,10 +47,10 @@ case class BurracoGameInitiatedTurnStart private(
     validatePlayerTurn(playerIdentity)
 
     BurracoGameInitiatedTurnExecution.build(
-      this,
+      this.gameIdentity,
       UpdatePlayers(player.addCardsOnMyCard(discardPile.grabAllCards())),
       this.burracoDeck,
-      this.pozzettos,
+      this.mazzettoDecks,
       this.discardPile,
       this.playerTurn
     ).testInvariants()
@@ -82,7 +82,7 @@ object BurracoGameInitiatedTurnStart{
              gameIdentity: GameIdentity,
              players: List[PlayerInGame],
              burracoDeck: BurracoDeck,
-             pozzettos: MazzettoDecks,
+             mazzettoDecks: MazzettoDecks,
              discardPile: DiscardPile,
              playerTurn: PlayerIdentity
            ): BurracoGameInitiatedTurnStart ={
@@ -91,7 +91,7 @@ object BurracoGameInitiatedTurnStart{
       gameIdentity,
       players,
       burracoDeck,
-      pozzettos,
+      mazzettoDecks,
       discardPile,
       playerTurn
     ).testInvariants()

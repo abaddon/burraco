@@ -12,7 +12,7 @@ case class BurracoGameInitiatedTurnExecution private(
                                                       override protected val gameIdentity: GameIdentity,
                                                       override protected val players: List[PlayerInGame],
                                                       override protected val burracoDeck: BurracoDeck,
-                                                      override protected val pozzettos: MazzettoDecks,
+                                                      override protected val mazzettoDecks: MazzettoDecks,
                                                       override protected val discardPile: DiscardPile,
                                                       override protected val playerTurn: PlayerIdentity
                         ) extends BurracoGameInitiated{
@@ -20,7 +20,7 @@ case class BurracoGameInitiatedTurnExecution private(
   def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     this.copy(
-      players = UpdatePlayers(player.copy(cards = orderedCards))
+      players = UpdatePlayers(player.orderPlayerCards(orderedCards))
     ).testInvariants
   }
 
@@ -50,36 +50,18 @@ case class BurracoGameInitiatedTurnExecution private(
     ).testInvariants()
   }
 
-  /*def appendCardsOnAScaleDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
+  def pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
+    assert(player.showMyCards.size ==0,"The player cannot pick up a Mazzetto if he still has cards")
+    assert(player.mazzettoTaken == false,"The player cannot pick up a Mazzetto he already taken")
 
-    copy(
-      players = UpdatePlayers(player.appendACardOnScaleDropped(burracoId,cardsToAppend))
-    ).testInvariants()
-  }
-
-  def appendCardsOnATrisDropped(playerIdentity: PlayerIdentity,cardsToAppend: List[Card],burracoId: BurracoId): BurracoGameInitiatedTurnExecution = {
-    val player = validatePlayerId(playerIdentity)
-    validatePlayerTurn(playerIdentity)
-
-    copy(
-      players = UpdatePlayers(player.appendACardOnTrisDropped(burracoId,cardsToAppend))
-    ).testInvariants()
-  }*/
-
-  def pickupPozzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnExecution = {
-    val player = validatePlayerId(playerIdentity)
-    validatePlayerTurn(playerIdentity)
-    assert(player.showMyCards.size ==0,"The player cannot pick up a Pozzetto if he still has cards")
-    assert(player.mazzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
-
-    val mazzetto = pozzettos.firstMazzettoAvailable()
-    pozzettos.mazzettoTaken(mazzetto)
+    val mazzetto = mazzettoDecks.firstMazzettoAvailable()
+    mazzettoDecks.mazzettoTaken(mazzetto)
 
     copy(
       players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
-      pozzettos = pozzettos.mazzettoTaken(mazzetto)
+      mazzettoDecks = mazzettoDecks.mazzettoTaken(mazzetto)
     ).testInvariants()
 
   }
@@ -92,7 +74,7 @@ case class BurracoGameInitiatedTurnExecution private(
       players = UpdatePlayers(player.dropACard(card)),
       playerTurn = playerTurn,
       burracoDeck = burracoDeck,
-      pozzettos = pozzettos,
+      mazzettoDecks = mazzettoDecks,
       discardPile = discardPile.addCard(card),
       gameIdentity = gameIdentity
     ).testInvariants()
@@ -102,24 +84,22 @@ case class BurracoGameInitiatedTurnExecution private(
 
 object BurracoGameInitiatedTurnExecution{
   def build(
-             burracoGame: BurracoGameInitiatedTurnStart,
+             gameIdentity: GameIdentity,
              players: List[PlayerInGame],
              burracoDeck: BurracoDeck,
-             pozzettos: MazzettoDecks,
+             mazzettoDecks: MazzettoDecks,
              discardPile: DiscardPile,
              playerTurn: PlayerIdentity
              ): BurracoGameInitiatedTurnExecution = {
 
     val burracoGamePlayerTurnExecution =new BurracoGameInitiatedTurnExecution(
-      gameIdentity = burracoGame.identity(),
+      gameIdentity = gameIdentity,
       players = players,
       burracoDeck = burracoDeck,
-      pozzettos = pozzettos,
+      mazzettoDecks = mazzettoDecks,
       discardPile = discardPile,
       playerTurn = playerTurn
     ).testInvariants()
-
-    assert(players.size == burracoGamePlayerTurnExecution.numPlayers)
 
     burracoGamePlayerTurnExecution
   }

@@ -11,27 +11,27 @@ trait BurracoGameInitiated extends BurracoGame {
   override protected val players: List[PlayerInGame]
   protected val playerTurn: PlayerIdentity
   protected val burracoDeck: BurracoDeck
-  protected val pozzettos: MazzettoDecks
+  protected val mazzettoDecks: MazzettoDecks
   protected val discardPile: DiscardPile
 
   //READ Methods
   def playerCards(playerIdentity: PlayerIdentity): List[Card] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(value) => value.showMyCards().toList
+      case Some(player) => player.showMyCards()
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
 
   def playerTrisOnTable(playerIdentity: PlayerIdentity): List[BurracoTris] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(player) => player.burracoList().filter(b => b.isInstanceOf[BurracoTris]).map(b => b.asInstanceOf[BurracoTris])
+      case Some(player) => player.showTrisOnTable()
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
 
   def playerScalesOnTable(playerIdentity: PlayerIdentity): List[BurracoScale] = {
     players.find(p => p.playerIdentity == playerIdentity) match {
-      case Some(player) => player.burracoList().filter(b => b.isInstanceOf[BurracoScale]).map(b => b.asInstanceOf[BurracoScale])
+      case Some(player) => player.showScalesOnTable()
       case None => throw new NoSuchElementException(s"Player ${playerIdentity} is not a player of this game ${gameIdentity}")
     }
   }
@@ -71,7 +71,7 @@ trait BurracoGameInitiated extends BurracoGame {
       player.totalPlayerCards()
     ).foldLeft(0)(_ + _)
 
-    playersCardsTot + burracoDeck.numCards() + pozzettos.numCards() + discardPile.numCards()
+    playersCardsTot + burracoDeck.numCards() + mazzettoDecks.numCards() + discardPile.numCards()
   }
 
 

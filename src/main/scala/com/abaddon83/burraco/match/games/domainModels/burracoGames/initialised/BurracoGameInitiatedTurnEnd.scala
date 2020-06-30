@@ -9,7 +9,7 @@ case class BurracoGameInitiatedTurnEnd protected(
                                                   override protected val players: List[PlayerInGame],
                                                   override protected val playerTurn: PlayerIdentity,
                                                   override protected val burracoDeck: BurracoDeck,
-                                                  override protected val pozzettos: MazzettoDecks,
+                                                  override protected val mazzettoDecks: MazzettoDecks,
                                                   override protected val discardPile: DiscardPile,
                                                   override protected val gameIdentity: GameIdentity
                                       ) extends BurracoGameInitiated{
@@ -20,12 +20,12 @@ case class BurracoGameInitiatedTurnEnd protected(
     assert(player.showMyCards().size ==0,"The player cannot pick up a Pozzetto if he still has cards")
     assert(player.mazzettoTaken == false,"The player cannot pick up a Pozzetto he already taken")
 
-    val mazzetto = pozzettos.firstMazzettoAvailable()
-    pozzettos.mazzettoTaken(mazzetto)
+    val mazzetto = mazzettoDecks.firstMazzettoAvailable()
+    mazzettoDecks.mazzettoTaken(mazzetto)
 
     copy(
       players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
-      pozzettos = pozzettos.mazzettoTaken(mazzetto)
+      mazzettoDecks = mazzettoDecks.mazzettoTaken(mazzetto)
     ).testInvariants()
 
   }
@@ -40,7 +40,7 @@ case class BurracoGameInitiatedTurnEnd protected(
       gameIdentity = gameIdentity,
       players =players,
       burracoDeck = burracoDeck,
-      pozzettos = pozzettos,
+      mazzettoDecks = mazzettoDecks,
       discardPile = discardPile,
       playerTurn =nextPlayerTurn
     )
@@ -54,7 +54,7 @@ case class BurracoGameInitiatedTurnEnd protected(
     assert(player.burracoList().size >0, "The player doesn't have a burraco")
     //TODO add the logic to check if the squad taken the pozzetto
 
-    BurracoGameCompleted.build(gameIdentity, players, pozzettos, playerTurn)
+    BurracoGameCompleted.build(gameIdentity, players, mazzettoDecks, playerTurn)
 
   }
 
@@ -65,8 +65,8 @@ case class BurracoGameInitiatedTurnEnd protected(
 }
 
 object BurracoGameInitiatedTurnEnd{
-  def build(players: List[PlayerInGame], playerTurn: PlayerIdentity, burracoDeck: BurracoDeck, pozzettos: MazzettoDecks, discardPile: DiscardPile, gameIdentity: GameIdentity): BurracoGameInitiatedTurnEnd = {
-    new BurracoGameInitiatedTurnEnd(players, playerTurn, burracoDeck, pozzettos, discardPile, gameIdentity)
+  def build(players: List[PlayerInGame], playerTurn: PlayerIdentity, burracoDeck: BurracoDeck, mazzettoDecks: MazzettoDecks, discardPile: DiscardPile, gameIdentity: GameIdentity): BurracoGameInitiatedTurnEnd = {
+    new BurracoGameInitiatedTurnEnd(players, playerTurn, burracoDeck, mazzettoDecks, discardPile, gameIdentity)
   }
 }
 

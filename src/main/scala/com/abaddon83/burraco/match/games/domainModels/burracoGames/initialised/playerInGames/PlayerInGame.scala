@@ -46,9 +46,7 @@ case class PlayerInGame protected(
   def dropATris(tris: BurracoTris): PlayerInGame = {
     val updatedPlayerCards = cards diff tris.showCards
     val updatedPlayerCardsOnTable = cardsOnTable.addTris(tris)
-
-    this.copy( cards = updatedPlayerCards,cardsOnTable = updatedPlayerCardsOnTable)
-
+    this.copy( cards = updatedPlayerCards, cardsOnTable = updatedPlayerCardsOnTable)
   }
 
   def dropAScale(scale: BurracoScale): PlayerInGame = {
