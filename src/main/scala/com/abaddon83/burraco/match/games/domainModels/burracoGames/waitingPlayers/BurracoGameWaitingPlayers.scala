@@ -11,7 +11,7 @@ case class BurracoGameWaitingPlayers(
                                       override protected val players: List[BurracoPlayer]
                                     ) extends BurracoGame{
 
-  def addPlayer(player: PlayerNotAssigned): BurracoGameWaitingPlayers ={
+  def addPlayer(player: BurracoPlayer): BurracoGameWaitingPlayers ={
     assert(players.size < maxPlayers,s"Maximum number of players reached, (Max: ${maxPlayers})")
     assert(isAlreadyAPlayer(player.playerIdentity) == false, s"The player ${player.playerIdentity.toString()} is already a player of game ${this.gameIdentity.toString()}")
     BurracoGameWaitingPlayers(gameIdentity,players ++ List(player))
