@@ -2,7 +2,8 @@ package com.abaddon83.burraco.`match`.games.domainModels.burracoGames.waitingPla
 
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.BurracoGame
 import com.abaddon83.burraco.`match`.games.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
-import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer, PlayerNotAssigned}
+import com.abaddon83.burraco.`match`.games.domainModels.{BurracoPlayer}
+import com.abaddon83.burraco.`match`.games.services.BurracoDealerFactory
 import com.abaddon83.burraco.shares.games.GameIdentity
 import com.abaddon83.burraco.shares.players.PlayerIdentity
 
@@ -21,8 +22,9 @@ case class BurracoGameWaitingPlayers(
     players.exists(p => p.playerIdentity == playerIdentity)
   }
 
-  def initiate(burracoCardsDealt: BurracoCardsDealt): BurracoGameInitiatedTurnStart = {
+  def start(): BurracoGameInitiatedTurnStart = {
     assert(players.size >1, s"Not enough players to initiate the game, ( Min: ${minPlayers})")
+    val burracoCardsDealt = BurracoDealerFactory(this).dealBurracoCards()
     BurracoGameInitiatedTurnStart.build(this,burracoCardsDealt).testInvariants()
   }
 

@@ -26,8 +26,7 @@ class InitialiseGameHandler(
    override def handleAsync(command: InitialiseGame): Future[Unit] = {
      for {
        burracoGame <- gameRepositoryPort.findBurracoGameWaitingPlayersBy(command.gameIdentity)
-       burracoCardsDealt = BurracoDealerFactory(burracoGame).dealBurracoCards()
-       burracoGameInitialised = burracoGame.initiate(burracoCardsDealt)
+       burracoGameInitialised = burracoGame.start()
      } yield gameRepositoryPort.save(burracoGameInitialised)
   }
 
@@ -36,7 +35,7 @@ class InitialiseGameHandler(
     import scala.language.postfixOps
     val game =Await.result(gameRepositoryPort.findBurracoGameWaitingPlayersBy(command.gameIdentity), 500 millis)
     val burracoCardsDealt = BurracoDealerFactory(game).dealBurracoCards()
-    gameRepositoryPort.save(game.initiate(burracoCardsDealt))
+    gameRepositoryPort.save(game.start())
 
   }
 

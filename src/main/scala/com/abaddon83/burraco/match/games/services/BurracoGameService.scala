@@ -37,7 +37,7 @@ class BurracoGameService(
     for {
       burracoGameWaitingPlayers <- burracoGameRepositoryPort.findBurracoGameWaitingPlayersBy(gameIdentity)
       burracoCardsDealt = BurracoDealerFactory(burracoGameWaitingPlayers).dealBurracoCards()
-      burracoGameInitialised = burracoGameWaitingPlayers.initiate(burracoCardsDealt)
+      burracoGameInitialised = burracoGameWaitingPlayers.start()
     } yield burracoGameRepositoryPort.save(burracoGameInitialised)
   }
 

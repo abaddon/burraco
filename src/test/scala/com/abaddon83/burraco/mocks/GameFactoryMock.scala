@@ -31,7 +31,7 @@ case class GameFactoryMock(
     val gameWaiting = game.asInstanceOf[BurracoGameWaitingPlayers]
     val burracoCardsDealt = BurracoDealerFactory(gameWaiting).dealBurracoCards()
     this.copy(
-      game = gameWaiting.initiate(burracoCardsDealt)
+      game = gameWaiting.start()
     )
   }
 

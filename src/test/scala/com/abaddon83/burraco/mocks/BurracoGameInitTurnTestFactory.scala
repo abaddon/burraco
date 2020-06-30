@@ -53,12 +53,16 @@ case class BurracoGameInitTurnTestFactory(
     ).testInvariants()
   }
 
-  def buildWaitingPlayer(): BurracoGameWaitingPlayers = {
+  def buildWaitingPlayer(singlePlayer: Boolean = false): BurracoGameWaitingPlayers = {
     BurracoGameWaitingPlayers(
       gameIdentity = gameIdentity,
-      players = List(player1,player2)
+      players = {
+        if (singlePlayer) List(player1)
+        else List(player1, player2)
+      }
     )
   }
+
 
   def burracoDeckBuild(): BurracoDeck = {
     BurracoDeck(
