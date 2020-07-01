@@ -75,7 +75,7 @@ class InitialiseGameTest extends AnyFunSuite
 
     val command = StartGameCmd(gameIdentity = gameIdentity)
 
-    assertThrows[UnsupportedOperationException]{
+    assertThrows[AssertionError]{
       handler.handle(command)
     }
   }
