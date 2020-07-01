@@ -3,7 +3,7 @@
 
 ## Todo List
 - [x] Implement Burraco game context 
-- [x] Implement Burraco game context API
+- [ ] Implement Burraco game context API
 - [ ] Implement Players context
 - [ ] Implement Players context API
 - [ ] Implement Score Board context
