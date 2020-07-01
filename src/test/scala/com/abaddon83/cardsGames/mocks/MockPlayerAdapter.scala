@@ -4,12 +4,12 @@ import com.abaddon83.cardsGames.burracoGames.domainModels.{BurracoPlayer, Player
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
 import com.abaddon83.cardsGames.burracoGames.ports.PlayerPort
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
+import com.abaddon83.cardsGames.testutils.WithExecutionContext
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
-trait MockPlayerAdapter {
-  implicit val ec: scala.concurrent.ExecutionContext
+trait MockPlayerAdapter extends WithExecutionContext {
 
   val mockPlayerAdapter = new PlayerPort {
     override def findPlayerNotAssignedBy(playerIdentity: PlayerIdentity): Future[PlayerNotAssigned] = {

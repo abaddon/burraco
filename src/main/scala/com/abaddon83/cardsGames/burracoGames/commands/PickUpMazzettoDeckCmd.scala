@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
 import java.util.UUID
 
@@ -10,7 +10,7 @@ import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.{Await, Future}
 
-case class PickUpSmallDeck(
+case class PickUpMazzettoDeckCmd(
                             gameIdentity: GameIdentity,
                             playerIdentity: PlayerIdentity
                           ) extends Command {
@@ -21,16 +21,16 @@ class PickUpSmallDeckHandler(
                               gameRepositoryPort: GameRepositoryPort
                             )
                             (implicit val ec: scala.concurrent.ExecutionContext)
-  extends CommandHandler[PickUpSmallDeck] {
+  extends CommandHandler[PickUpMazzettoDeckCmd] {
 
-  override def handleAsync(command: PickUpSmallDeck): Future[Unit] = {
+  override def handleAsync(command: PickUpMazzettoDeckCmd): Future[Unit] = {
     for {
       gameExecution <- gameRepositoryPort.findBurracoGameInitialisedBy(gameIdentity = command.gameIdentity)
       updatedGameExecution = pickupSmallDeck(gameExecution, playerIdentity = command.playerIdentity)
     } yield gameRepositoryPort.save(updatedGameExecution)
   }
 
-  override def handle(command: PickUpSmallDeck): Unit = {
+  override def handle(command: PickUpMazzettoDeckCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
     val gameExecution = Await.result(gameRepositoryPort.findBurracoGameInitialisedBy(gameIdentity = command.gameIdentity), 500 millis)

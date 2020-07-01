@@ -1,6 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised
 
-import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.completed.BurracoGameCompleted
+import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.BurracoGameEnded
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.mazzettos.MazzettoDecks
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
 import com.abaddon83.cardsGames.shares.games.GameIdentity
@@ -47,7 +47,7 @@ case class BurracoGameInitiatedTurnEnd protected(
     )
   }
 
-  def completeGame(playerIdentity: PlayerIdentity): BurracoGameCompleted = {
+  def completeGame(playerIdentity: PlayerIdentity): BurracoGameEnded = {
     val player = validatePlayerId(playerIdentity)
     validatePlayerTurn(playerIdentity)
     assert(player.showMyCards.size == 0,s"The player cannot complete the game with ${player.showMyCards().size} cards on hand")
@@ -55,7 +55,7 @@ case class BurracoGameInitiatedTurnEnd protected(
     assert(player.burracoList().size >0, "The player doesn't have a burraco")
     //TODO add the logic to check if the squad taken the pozzetto
 
-    BurracoGameCompleted.build(gameIdentity, players, mazzettoDecks, playerTurn)
+    BurracoGameEnded.build(gameIdentity, players, mazzettoDecks, playerTurn)
 
   }
 

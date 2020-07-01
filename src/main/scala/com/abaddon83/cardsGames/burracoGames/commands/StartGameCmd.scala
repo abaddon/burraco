@@ -17,7 +17,7 @@ case class StartGameCmd(
 
 
 class StartGameHandler(
-                                 gameRepositoryPort: GameRepositoryPort,
+                                 gameRepositoryPort: GameRepositoryPort
                                )
                       (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[StartGameCmd]{
 

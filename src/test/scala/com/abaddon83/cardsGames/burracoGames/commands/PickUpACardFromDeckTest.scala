@@ -1,17 +1,16 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
-import com.abaddon83.cardsGames.burracoGames.commands.{PickUpACardFromDeckCmd, PickUpACardFromDeckHandler}
-import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
-import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
+import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
+import com.abaddon83.cardsGames.testutils.WithExecutionContext
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.funsuite.AnyFunSuite
 
 class PickUpACardFromDeckTest extends AnyFunSuite
   with ScalaFutures
   with MockBurracoGameRepositoryAdapter
-  with MockExecutionContext
+  with WithExecutionContext
   with MockPlayerAdapter{
 
   val handler = new PickUpACardFromDeckHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)

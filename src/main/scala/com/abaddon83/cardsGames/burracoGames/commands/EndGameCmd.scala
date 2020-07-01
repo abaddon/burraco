@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
 import java.util.UUID
 
@@ -9,27 +9,27 @@ import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.{Await, Future}
 
-case class CompleteGame(
+case class EndGameCmd(
                          gameIdentity: GameIdentity,
                          playerIdentity: PlayerIdentity
                        ) extends Command {
   override protected val requestId: UUID = UUID.randomUUID()
 }
 
-class CompleteGameHandler(
+class EndGameHandler(
                            gameRepositoryPort: GameRepositoryPort
                          )
                          (implicit val ec: scala.concurrent.ExecutionContext)
-  extends CommandHandler[CompleteGame] {
+  extends CommandHandler[EndGameCmd] {
 
-  override def handleAsync(command: CompleteGame): Future[Unit] = {
+  override def handleAsync(command: EndGameCmd): Future[Unit] = {
     for {
       gameEnd <- gameRepositoryPort.findBurracoGameInitialisedTurnEndBy(gameIdentity = command.gameIdentity)
       updatedGameEnd = gameEnd.completeGame(playerIdentity = command.playerIdentity)
     } yield gameRepositoryPort.save(updatedGameEnd)
   }
 
-  override def handle(command: CompleteGame): Unit = {
+  override def handle(command: EndGameCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
     val gameEnd = Await.result(gameRepositoryPort.findBurracoGameInitialisedTurnEndBy(gameIdentity = command.gameIdentity), 500 millis)

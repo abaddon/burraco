@@ -1,8 +1,7 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
-import com.abaddon83.cardsGames.burracoGames.commands.{AddPlayerCmd, AddPlayerHandler}
 import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
-import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
+import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
 import org.scalatest.BeforeAndAfter
@@ -13,10 +12,9 @@ class AddPlayerTest extends AnyFunSuite
   with ScalaFutures
   with BeforeAndAfter
   with MockBurracoGameRepositoryAdapter
-  with MockExecutionContext
   with MockPlayerAdapter{
 
-  val handler = new AddPlayerHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter,playerPort = mockPlayerAdapter )
+  val handler = new AddPlayerHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter )
 
 
 
@@ -28,7 +26,7 @@ class AddPlayerTest extends AnyFunSuite
     GameFactoryMock
       .build(gameIdentity).persist()
 
-    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity,playerToAdd = PlayerNotAssigned(playerIdentity))
     handler.handleAsync(command).foreach{ r =>
       val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
       assert(game.isAlreadyAPlayer(playerIdentity))
@@ -43,7 +41,7 @@ class AddPlayerTest extends AnyFunSuite
 
     GameFactoryMock
       .build(gameIdentity).persist()
-    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity,playerToAdd = PlayerNotAssigned(playerIdentity))
     handler.handleAsync(command).foreach { r =>
       mockPlayerAdapter.updatePlayerStatusToPlayerAssigned(playerIdentity)
       handler.handleAsync(command).foreach{ r1 =>
@@ -61,7 +59,7 @@ class AddPlayerTest extends AnyFunSuite
 
     GameFactoryMock
       .build(gameIdentity).persist()
-    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity,playerToAdd = PlayerNotAssigned(playerIdentity))
     handler.handle(command)
 
     val game = mockBurracoGameRepositoryAdapter.findBurracoGameWaitingPlayersBy(gameIdentity).futureValue
@@ -76,7 +74,7 @@ class AddPlayerTest extends AnyFunSuite
     GameFactoryMock
       .build(gameIdentity).persist()
 
-    val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity)
+    val command = AddPlayerCmd(gameIdentity = gameIdentity,playerToAdd = PlayerNotAssigned(playerIdentity))
     handler.handle(command)
 
     assertThrows[AssertionError] {

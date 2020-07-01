@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.completed
+package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.BurracoId
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.Burraco

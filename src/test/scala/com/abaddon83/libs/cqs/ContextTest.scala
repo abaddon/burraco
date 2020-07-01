@@ -15,7 +15,7 @@ import scala.concurrent.Future
 
 
 class ContextTest extends AnyFunSuite with MockBurracoGameRepositoryAdapter{
-  implicit val ec: scala.concurrent.ExecutionContext= scala.concurrent.ExecutionContext.global
+  //override implicit val ec: scala.concurrent.ExecutionContext= scala.concurrent.ExecutionContext.global
 
   test("Text context"){
     val injector = Guice.createInjector(new TestModule())
@@ -43,7 +43,7 @@ case class UpdateGameHandler()(implicit val ec: scala.concurrent.ExecutionContex
 }
 
 class TestModule extends AbstractModule with ScalaModule with MockBurracoGameRepositoryAdapter {
-  implicit val ec: scala.concurrent.ExecutionContext= scala.concurrent.ExecutionContext.global
+  //override implicit val ec: scala.concurrent.ExecutionContext= scala.concurrent.ExecutionContext.global
   override def configure(): Unit = {
 
     bind[CommandHandler[CreateNewBurracoGameCmd]].toInstance(new CreateNewBurracoGameHandler(mockBurracoGameRepositoryAdapter))

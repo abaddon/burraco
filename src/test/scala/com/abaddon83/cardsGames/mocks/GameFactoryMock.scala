@@ -12,7 +12,7 @@ import com.abaddon83.cardsGames.shares.players.PlayerIdentity
 
 case class GameFactoryMock(
                             game: BurracoGame)
-                          (implicit val ec: scala.concurrent.ExecutionContext)
+                          (implicit override val ec: scala.concurrent.ExecutionContext)
   extends MockBurracoGameRepositoryAdapter with MockPlayerAdapter {
 
   def addPlayerNotAssigned(playerIdentity: PlayerIdentity): GameFactoryMock = {

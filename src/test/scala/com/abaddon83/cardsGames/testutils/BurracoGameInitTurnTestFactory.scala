@@ -1,8 +1,8 @@
-package com.abaddon83.cardsGames.mocks
+package com.abaddon83.cardsGames.testutils
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.mazzettos.{MazzettoDeck, MazzettoDecks}
-import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoDeck, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart, DiscardPile}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
+import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised._
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.cardsGames.shares.decks.{Card, Deck}
 import com.abaddon83.cardsGames.shares.games.GameIdentity

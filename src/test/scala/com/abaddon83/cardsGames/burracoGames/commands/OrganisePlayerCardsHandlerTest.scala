@@ -1,11 +1,11 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
-import com.abaddon83.cardsGames.burracoGames.commands.{OrganisePlayerCardsCmd, OrganisePlayerCardsHandler}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
-import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockExecutionContext, MockPlayerAdapter}
+import com.abaddon83.cardsGames.mocks.{GameFactoryMock, MockBurracoGameRepositoryAdapter, MockPlayerAdapter}
 import com.abaddon83.cardsGames.shares.decks.Card
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
+import com.abaddon83.cardsGames.testutils.WithExecutionContext
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.funsuite.AnyFunSuite
 
@@ -13,7 +13,7 @@ import org.scalatest.funsuite.AnyFunSuite
 class OrganisePlayerCardsHandlerTest extends AnyFunSuite
   with ScalaFutures
   with MockBurracoGameRepositoryAdapter
-  with MockExecutionContext
+  with WithExecutionContext
   with MockPlayerAdapter{
 
   val handler = new OrganisePlayerCardsHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)

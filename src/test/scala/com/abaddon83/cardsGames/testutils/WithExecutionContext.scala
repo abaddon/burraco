@@ -1,6 +1,6 @@
-package com.abaddon83.cardsGames.mocks
+package com.abaddon83.cardsGames.testutils
 
-trait MockExecutionContext {
+trait WithExecutionContext {
   implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.global
 
 }

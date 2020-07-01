@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
 import java.util.UUID
 
@@ -10,7 +10,7 @@ import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.{Await, Future}
 
-case class DropScale(
+case class DropScaleCmd(
                      gameIdentity: GameIdentity,
                      playerIdentity: PlayerIdentity,
                      scale: BurracoScale
@@ -22,16 +22,16 @@ class DropScaleHandler(
                        gameRepositoryPort: GameRepositoryPort
                      )
                      (implicit val ec: scala.concurrent.ExecutionContext)
-  extends CommandHandler[DropScale] {
+  extends CommandHandler[DropScaleCmd] {
 
-  override def handleAsync(command: DropScale): Future[Unit] = {
+  override def handleAsync(command: DropScaleCmd): Future[Unit] = {
     for {
       gameExecution <- gameRepositoryPort.findBurracoGameInitialisedTurnExecutionBy(gameIdentity = command.gameIdentity)
       gameExecutionUpdated = gameExecution.dropOnTableAScale(playerIdentity = command.playerIdentity, scale = command.scale)
     } yield gameRepositoryPort.save(gameExecutionUpdated)
   }
 
-  override def handle(command: DropScale): Unit = {
+  override def handle(command: DropScaleCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
     val gameExecution = Await.result(gameRepositoryPort.findBurracoGameInitialisedTurnExecutionBy(gameIdentity = command.gameIdentity), 500 millis)

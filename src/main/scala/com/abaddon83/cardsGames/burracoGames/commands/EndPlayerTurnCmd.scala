@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.commands.burracoGames
+package com.abaddon83.cardsGames.burracoGames.commands
 
 import java.util.UUID
 
@@ -9,7 +9,7 @@ import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
 
 import scala.concurrent.{Await, Future}
 
-case class EndPlayerTurn(
+case class EndPlayerTurnCmd(
                           gameIdentity: GameIdentity,
                           playerIdentity: PlayerIdentity
                         ) extends Command {
@@ -20,16 +20,16 @@ class EndPlayerTurnHandler(
                             gameRepositoryPort: GameRepositoryPort
                           )
                           (implicit val ec: scala.concurrent.ExecutionContext)
-  extends CommandHandler[EndPlayerTurn] {
+  extends CommandHandler[EndPlayerTurnCmd] {
 
-  override def handleAsync(command: EndPlayerTurn): Future[Unit] = {
+  override def handleAsync(command: EndPlayerTurnCmd): Future[Unit] = {
     for {
       gameEnd <- gameRepositoryPort.findBurracoGameInitialisedTurnEndBy(gameIdentity = command.gameIdentity)
       updatedGameEnd = gameEnd.nextPlayerTurn(playerIdentity = command.playerIdentity)
     } yield gameRepositoryPort.save(updatedGameEnd)
   }
 
-  override def handle(command: EndPlayerTurn): Unit = {
+  override def handle(command: EndPlayerTurnCmd): Unit = {
     import scala.concurrent.duration._
     import scala.language.postfixOps
     val gameEnd = Await.result(gameRepositoryPort.findBurracoGameInitialisedTurnEndBy(gameIdentity = command.gameIdentity), 500 millis)

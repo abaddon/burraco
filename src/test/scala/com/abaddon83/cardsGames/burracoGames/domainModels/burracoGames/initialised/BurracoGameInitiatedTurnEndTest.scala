@@ -1,10 +1,10 @@
 package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised
 
-import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.completed.BurracoGameCompleted
+import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.BurracoGameEnded
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.{BurracoCardsOnTable, BurracoTris, PlayerInGame}
-import com.abaddon83.cardsGames.mocks.BurracoGameInitTurnTestFactory
 import com.abaddon83.cardsGames.shares.decks.{Card, Ranks, Suits}
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
+import com.abaddon83.cardsGames.testutils.BurracoGameInitTurnTestFactory
 import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
@@ -118,7 +118,7 @@ class BurracoGameInitiatedTurnEndTest extends AnyFunSuite{
 
     val actualGame = game.completeGame(player1Id)
 
-    assert(actualGame.isInstanceOf[BurracoGameCompleted])
+    assert(actualGame.isInstanceOf[BurracoGameEnded])
   }
 
   test("Given a player with a Burraco, some cards, when complete the turn, then receive an error"){

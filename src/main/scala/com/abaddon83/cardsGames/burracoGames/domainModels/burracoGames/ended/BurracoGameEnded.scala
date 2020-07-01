@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.completed
+package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.BurracoGame
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.mazzettos.MazzettoDecks
@@ -6,7 +6,7 @@ import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialis
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
 
-case class BurracoGameCompleted(
+case class BurracoGameEnded(
                                 override protected val gameIdentity: GameIdentity,
                                 override protected val players: List[PlayerScore],
                                 pozzettoMissed: Boolean
@@ -15,9 +15,9 @@ case class BurracoGameCompleted(
 }
 
 
-object BurracoGameCompleted {
-  def build(gameIdentity: GameIdentity, players: List[PlayerInGame], pozzettos: MazzettoDecks, playerTurn: PlayerIdentity): BurracoGameCompleted = {
-    BurracoGameCompleted(
+object BurracoGameEnded {
+  def build(gameIdentity: GameIdentity, players: List[PlayerInGame], pozzettos: MazzettoDecks, playerTurn: PlayerIdentity): BurracoGameEnded = {
+    BurracoGameEnded(
       gameIdentity = gameIdentity,
       players = playersScore(players, playerTurn),
       pozzettoMissed = pozzettos.numCards() > 0

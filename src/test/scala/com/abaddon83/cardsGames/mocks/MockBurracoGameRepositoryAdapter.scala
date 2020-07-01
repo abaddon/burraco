@@ -1,17 +1,17 @@
 package com.abaddon83.cardsGames.mocks
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.BurracoGame
-import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.completed.BurracoGameCompleted
+import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.BurracoGameEnded
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.cardsGames.burracoGames.ports.GameRepositoryPort
 import com.abaddon83.cardsGames.shares.games.GameIdentity
+import com.abaddon83.cardsGames.testutils.WithExecutionContext
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
-trait MockBurracoGameRepositoryAdapter {
-implicit val ec: scala.concurrent.ExecutionContext
+trait MockBurracoGameRepositoryAdapter extends WithExecutionContext{
 
   val mockBurracoGameRepositoryAdapter = new GameRepositoryPort {
 
@@ -49,10 +49,10 @@ implicit val ec: scala.concurrent.ExecutionContext
         case _ => throw new NoSuchElementException()
       }
     }
-    override def save(burracoGame: BurracoGameCompleted): BurracoGameCompleted = {
+    override def save(burracoGame: BurracoGameEnded): BurracoGameEnded = {
 
       BurracoGameDB.persist(burracoGame) match {
-        case game: BurracoGameCompleted =>  game
+        case game: BurracoGameEnded =>  game
         case _ => throw new NoSuchElementException()
       }
     }
@@ -124,6 +124,7 @@ implicit val ec: scala.concurrent.ExecutionContext
       }
     }
 
+    override def findBurracoBurracoGameEndedBy(gameIdentity: GameIdentity): Future[BurracoGameEnded] = ???
   }
 }
 

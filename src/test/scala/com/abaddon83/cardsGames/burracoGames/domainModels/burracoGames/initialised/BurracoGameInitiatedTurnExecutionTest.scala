@@ -2,10 +2,10 @@ package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initiali
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.BurracoId
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.{BurracoCardsOnTable, BurracoScale, BurracoTris, PlayerInGame}
-import com.abaddon83.cardsGames.mocks.BurracoGameInitTurnTestFactory
 import com.abaddon83.cardsGames.shares.decks.Ranks._
 import com.abaddon83.cardsGames.shares.decks.{Card, Ranks, Suits}
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
+import com.abaddon83.cardsGames.testutils.BurracoGameInitTurnTestFactory
 import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoGameInitiatedTurnExecutionTest extends AnyFunSuite {

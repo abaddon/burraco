@@ -1,9 +1,9 @@
 package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised
 
-import com.abaddon83.cardsGames.mocks.BurracoGameInitTurnTestFactory
 import com.abaddon83.cardsGames.shares.decks.{Card, Deck, Ranks, Suits}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
+import com.abaddon83.cardsGames.testutils.BurracoGameInitTurnTestFactory
 import org.scalatest.funsuite.AnyFunSuite
 
 class BurracoGameInitiatedTurnStartTest extends AnyFunSuite{
