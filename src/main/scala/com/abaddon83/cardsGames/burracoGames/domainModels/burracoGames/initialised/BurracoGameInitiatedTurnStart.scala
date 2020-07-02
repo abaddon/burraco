@@ -18,7 +18,7 @@ case class BurracoGameInitiatedTurnStart private(
 
   //WRITE Methods
   //all players can order cards when they want to
-  def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnStart = {
+  override def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnStart = {
     val player = validatePlayerId(playerIdentity)
     this.copy(
       players = UpdatePlayers(player.orderPlayerCards(orderedCards))

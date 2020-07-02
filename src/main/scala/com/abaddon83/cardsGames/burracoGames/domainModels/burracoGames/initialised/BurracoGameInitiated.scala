@@ -40,6 +40,8 @@ trait BurracoGameInitiated extends BurracoGame {
   }
 
   // write
+  def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiated
+
   protected def UpdatePlayers(burracoPlayerInGame: PlayerInGame): List[PlayerInGame] = {
     players.map(playerInGame =>
       if (playerInGame.playerIdentity == burracoPlayerInGame.playerIdentity) {

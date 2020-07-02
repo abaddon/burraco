@@ -8,15 +8,13 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.funsuite.AnyFunSuite
 
-class AddPlayerTest extends AnyFunSuite
+class AddPlayerCmdTest extends AnyFunSuite
   with ScalaFutures
   with BeforeAndAfter
   with MockBurracoGameRepositoryAdapter
   with MockPlayerAdapter{
 
   val handler = new AddPlayerHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter )
-
-
 
   test("async, add new player") {
     val playerIdentity = PlayerIdentity()

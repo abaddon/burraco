@@ -3,6 +3,7 @@ package com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initiali
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.BurracoGameEnded
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.mazzettos.MazzettoDecks
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.PlayerInGame
+import com.abaddon83.cardsGames.shares.decks.Card
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
 
@@ -14,6 +15,8 @@ case class BurracoGameInitiatedTurnEnd protected(
                                                   override protected val discardPile: DiscardPile,
                                                   override protected val gameIdentity: GameIdentity
                                       ) extends BurracoGameInitiated{
+
+  override def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiated = ???
 
   def pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameInitiatedTurnEnd = {
     val player = validatePlayerId(playerIdentity)
@@ -62,6 +65,7 @@ case class BurracoGameInitiatedTurnEnd protected(
   override def listOfPlayers: List[PlayerInGame] = {
     this.players
   }
+
 
 }
 

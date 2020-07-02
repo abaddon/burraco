@@ -47,7 +47,7 @@ class TestModule extends AbstractModule with ScalaModule with MockBurracoGameRep
   override def configure(): Unit = {
 
     bind[CommandHandler[CreateNewBurracoGameCmd]].toInstance(new CreateNewBurracoGameHandler(mockBurracoGameRepositoryAdapter))
-    bind[CommandHandler[UpdateGame]].toInstance(UpdateGameHandler())
+
 
 
     //bind[CreditCardPaymentService]

@@ -17,8 +17,6 @@ libraryDependencies ++= {
   //val akkaHttp = "10.1.11"
   Seq(
     "net.codingwell" %% "scala-guice" % "4.2.7",
-  //"org.apache.pdfbox" % "pdfbox" % "2.0.18",
-    //"com.openhtmltopdf" % "openhtmltopdf-pdfbox" % "1.0.2",
     //"com.typesafe.akka" %% "akka-actor" % akkaVersion,
     //"com.typesafe.akka" %% "akka-http"       % akkaHttp,
     //"com.typesafe.akka" %% "akka-slf4j"      % akkaVersion,

@@ -10,7 +10,7 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.funsuite.AnyFunSuite
 
 
-class OrganisePlayerCardsHandlerTest extends AnyFunSuite
+class OrganisePlayerCardsCmdTest extends AnyFunSuite
   with ScalaFutures
   with MockBurracoGameRepositoryAdapter
   with WithExecutionContext
@@ -18,7 +18,7 @@ class OrganisePlayerCardsHandlerTest extends AnyFunSuite
 
   val handler = new OrganisePlayerCardsHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
 
-  test("async, update the player cards orders during his turn during the start phase") {
+  test("Given a player ") {
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
     val player2 = PlayerIdentity()

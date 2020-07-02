@@ -7,18 +7,16 @@ import com.abaddon83.cardsGames.testutils.WithExecutionContext
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.funsuite.AnyFunSuite
 
-class InitialiseGameTest extends AnyFunSuite
+class StartGameCmdTest extends AnyFunSuite
   with ScalaFutures
   with MockBurracoGameRepositoryAdapter
   with WithExecutionContext
   with MockPlayerAdapter{
 
   val handler = new StartGameHandler(gameRepositoryPort = mockBurracoGameRepositoryAdapter)
-  //val player1 = PlayerIdentity("75673281-5c5b-426e-898f-b8ebbef532ee")
-  //val player2 = PlayerIdentity("1e515b66-a51d-43b9-9afe-c847911ff739")
 
 
-  test("async, initialise the game with no player, should fail") {
+  test("Given the game doesn't have players,when I execute async the command, then the command fails") {
     val gameIdentity = GameIdentity()
     GameFactoryMock
       .build(gameIdentity).persist()
@@ -31,7 +29,7 @@ class InitialiseGameTest extends AnyFunSuite
     }
   }
 
-  test("async, initialise the game with a player, should fail") {
+  test("Given the game has a players,,when I execute async the command, then the command fails") {
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
     GameFactoryMock
@@ -48,7 +46,7 @@ class InitialiseGameTest extends AnyFunSuite
       }
   }
 
-  test("async, initialise the game with two players") {
+  test("Given the game has 2 players,,when I execute async the command, then the command is executed correctly") {
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
     val player2 = PlayerIdentity()
@@ -69,7 +67,7 @@ class InitialiseGameTest extends AnyFunSuite
 
   }
 
-  test("sync, initialise the game with no player, should fail") {
+  test("Given the game doesn't have players,when I execute sync the command, then the command fails") {
     val gameIdentity = GameIdentity()
     GameFactoryMock.build(gameIdentity).persist()
 
@@ -80,7 +78,7 @@ class InitialiseGameTest extends AnyFunSuite
     }
   }
 
-  test("sync, initialise the game with a player, should fail") {
+  test("Given the game has 1 player,when I execute async the command, then the command fails") {
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
 
@@ -97,7 +95,7 @@ class InitialiseGameTest extends AnyFunSuite
     }
   }
 
-  test("sync, initialise the game with two players") {
+  test("Given the game has 2 players,,when I execute sync the command, then the command is executed correctly") {
     val gameIdentity = GameIdentity()
     val player1 = PlayerIdentity()
     val player2 = PlayerIdentity()

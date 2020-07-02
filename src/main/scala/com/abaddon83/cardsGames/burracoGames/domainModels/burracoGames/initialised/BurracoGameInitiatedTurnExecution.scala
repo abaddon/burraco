@@ -16,7 +16,7 @@ case class BurracoGameInitiatedTurnExecution private(
                                                       override protected val playerTurn: PlayerIdentity
                         ) extends BurracoGameInitiated{
 
-  def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnExecution = {
+  override def updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List[Card]): BurracoGameInitiatedTurnExecution = {
     val player = validatePlayerId(playerIdentity)
     this.copy(
       players = UpdatePlayers(player.orderPlayerCards(orderedCards))
