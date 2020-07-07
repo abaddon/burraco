@@ -7,6 +7,7 @@ import akka.http.scaladsl.server.{Directives, Route}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.cardsGames.burracoGames.adapters.BurracoGameUIAkkaAdapters.requests.CreateGameRequest
 import com.abaddon83.cardsGames.burracoGames.adapters.BurracoGameUIAkkaAdapters.responses.BurracoGameResponse
+import com.abaddon83.cardsGames.burracoGames.adapters.BurracoGameUIAkkaAdapters.webSockets.WebSocket
 import spray.json._
 import spray.json.DefaultJsonProtocol._
 
@@ -18,30 +19,30 @@ class BurracoGameRestRoute()(implicit actorSystem: ActorSystem)
   extends Directives with BurracoGameJsonSupport {
 
   val route: Route = {
-    pathPrefix("api") {
-      extractUri { uri =>
-        pathPrefix("game") {
-          pathEndOrSingleSlash {
-            post {
-              entity(as[CreateGameRequest]) { request =>
-                println(request.gameType)
-                complete("ciao")
-//                val game: Future[BurracoGameWaitingPlayers] = createNewBurracoGame()
-//                onComplete(game) {
-//                  _ match {
-//                    case Failure(exception) => complete(exception.getMessage) //complete(StatusCodes.InternalServerError,ErrorMessage.apply(exception, uri.path.toString()))
-//                    case Success(game) => {
-//                      complete(BurracoGameResponse(identity = game.gameIdentity.convertTo(),players = game.numPlayers))
-//                    }
-//                  }
-//                }
-              }
+    extractUri { uri =>
+      pathPrefix("games") {
+        pathEndOrSingleSlash {
+          post {
+            entity(as[CreateGameRequest]) { request =>
+              println(request.gameType)
+              WebSocket.sendText(s"request.gameType: /${request.gameType}")
+              complete("ciao")
+
+              //                val game: Future[BurracoGameWaitingPlayers] = createNewBurracoGame()
+              //                onComplete(game) {
+              //                  _ match {
+              //                    case Failure(exception) => complete(exception.getMessage) //complete(StatusCodes.InternalServerError,ErrorMessage.apply(exception, uri.path.toString()))
+              //                    case Success(game) => {
+              //                      complete(BurracoGameResponse(identity = game.gameIdentity.convertTo(),players = game.numPlayers))
+              //                    }
+              //                  }
+              //                }
             }
           }
         }
       }
-
     }
+
   }
 }
 
