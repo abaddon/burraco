@@ -28,16 +28,10 @@ class BurracoGameWebSocketRoute(/*burracoGameUIAkkaAdapter: BurracoGameUIAkkaAda
             println(s"gameIdentity: ${gameIdentity}")
             println(s"playerIdentity: ${playerIdentity}")
             //burracoGameUIAkkaAdapter.findBurracoGame(gameIdentity)
-            handleWebSocketMessages(
-              GameRooms.findOrCreate(gameIdentity).websocketFlow(playerIdentity)
-            )
-
-
-            //val futureFlow = (handler ? GetWebsocketFlow) (3.seconds).mapTo[Flow[Message, Message, _]]
-            //onComplete(futureFlow) {
-            //  case Success(flow) => handleWebSocketMessages(flow)
-            //  case Failure(err) => complete(err.toString)
-            //}
+//            handleWebSocketMessages(
+//              GameRooms.findOrCreate(gameIdentity).websocketFlow(playerIdentity)
+//            )
+            handleWebSocketMessages(WebSocket.listen())
           }
         }
       }
