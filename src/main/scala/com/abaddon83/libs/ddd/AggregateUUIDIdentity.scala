@@ -16,7 +16,7 @@ object AggregateUUIDIdentity {
       UUID.fromString(value)
       true
     } catch {
-      case e => false
+      case e: Throwable => false
     }
   }
 }

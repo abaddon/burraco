@@ -114,6 +114,15 @@ trait MockBurracoGameRepositoryAdapter extends WithExecutionContext{
       }
     }
 
+    override def findBurracoGameBy(gameIdentity: GameIdentity): Future[BurracoGame] =  {
+      Future{
+        BurracoGameDB.search().find(game => game.identity() == gameIdentity) match {
+          case Some(value) => value
+          case None => throw new NoSuchElementException()
+        }
+      }
+    }
+
     override def findAllBurracoGameWaitingPlayers(): Future[List[BurracoGameWaitingPlayers]] = {
       Future{
         BurracoGameDB.search().filter(game =>
@@ -125,6 +134,8 @@ trait MockBurracoGameRepositoryAdapter extends WithExecutionContext{
     }
 
     override def findBurracoBurracoGameEndedBy(gameIdentity: GameIdentity): Future[BurracoGameEnded] = ???
+
+
   }
 }
 

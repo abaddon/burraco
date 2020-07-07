@@ -14,10 +14,10 @@ case class FindBurracoGameInitiatedTurnEndQuery(
 
 class FindBurracoGameInitiatedTurnEndHandler(
                                      gameRepositoryPort: GameRepositoryPort
-                                   ) extends QueryHandler[FindBurracoGameEndedQuery, BurracoGameInitiatedTurnEnd] {
-  override def handleAsync(query: FindBurracoGameEndedQuery): Future[BurracoGameInitiatedTurnEnd] = {
+                                   ) extends QueryHandler[FindBurracoGameInitiatedTurnEndQuery, BurracoGameInitiatedTurnEnd] {
+  override def handleAsync(query: FindBurracoGameInitiatedTurnEndQuery): Future[BurracoGameInitiatedTurnEnd] = {
     gameRepositoryPort.findBurracoGameInitialisedTurnEndBy(query.gameIdentity)
   }
 
-  override def handle(query: FindBurracoGameEndedQuery): BurracoGameInitiatedTurnEnd = ???
+  override def handle(query: FindBurracoGameInitiatedTurnEndQuery): BurracoGameInitiatedTurnEnd = ???
 }

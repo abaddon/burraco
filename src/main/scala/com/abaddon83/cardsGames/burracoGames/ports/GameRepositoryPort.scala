@@ -1,5 +1,6 @@
 package com.abaddon83.cardsGames.burracoGames.ports
 
+import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.BurracoGame
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.BurracoGameEnded
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
@@ -16,6 +17,7 @@ trait GameRepositoryPort {
   def save(burracoGame: BurracoGameInitiated): BurracoGameInitiated
   def save(burracoGame: BurracoGameEnded): BurracoGameEnded
   def exists(gameIdentity: GameIdentity): Boolean
+  def findBurracoGameBy(gameIdentity: GameIdentity): Future[BurracoGame]
   def findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): Future[BurracoGameWaitingPlayers]
   def findBurracoGameInitialisedBy(gameIdentity: GameIdentity): Future[BurracoGameInitiated]
   def findBurracoGameInitialisedTurnStartBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnStart]
@@ -23,4 +25,5 @@ trait GameRepositoryPort {
   def findBurracoGameInitialisedTurnEndBy(gameIdentity: GameIdentity): Future[BurracoGameInitiatedTurnEnd]
   def findBurracoBurracoGameEndedBy(gameIdentity: GameIdentity): Future[BurracoGameEnded]
   def findAllBurracoGameWaitingPlayers(): Future[List[BurracoGameWaitingPlayers]]
+
 }

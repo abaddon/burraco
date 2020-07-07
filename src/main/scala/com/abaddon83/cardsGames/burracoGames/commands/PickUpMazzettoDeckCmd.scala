@@ -17,7 +17,7 @@ case class PickUpMazzettoDeckCmd(
   override protected val requestId: UUID = UUID.randomUUID()
 }
 
-class PickUpSmallDeckHandler(
+class PickUpMazzettoDeckHandler(
                               gameRepositoryPort: GameRepositoryPort
                             )
                             (implicit val ec: scala.concurrent.ExecutionContext)

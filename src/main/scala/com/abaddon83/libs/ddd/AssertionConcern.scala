@@ -28,13 +28,6 @@ trait AssertionConcern {
     if (anObject1 == anObject2) throw new IllegalArgumentException(aMessage)
   }
 
-  protected def assertArgumentNotEmpty(anObject: Option[Any], aMessage: String): Unit = {
-    anObject match {
-      case Some(value) => value
-      case None => throw new IllegalArgumentException(aMessage)
-    }
-  }
-
   protected def assertArgumentRange(aValue: Double, aMinimum: Double, aMaximum: Double, aMessage: String): Unit = {
     if (aValue < aMinimum || aValue > aMaximum) throw new IllegalArgumentException(aMessage)
   }

@@ -8,7 +8,7 @@ import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialis
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.cardsGames.burracoGames.ports.{GameRepositoryPort, PlayerPort}
-import com.abaddon83.cardsGames.burracoGames.queries.{FindBurracoGameEndedQuery, FindBurracoGameInitiatedQuery, FindBurracoGameStartedTurnStartQuery, FindBurracoGameWaitingQuery}
+import com.abaddon83.cardsGames.burracoGames.queries.{FindBurracoGameEndedQuery, FindBurracoGameInitiatedQuery, FindBurracoGameQuery, FindBurracoGameStartedTurnStartQuery, FindBurracoGameWaitingQuery}
 import com.abaddon83.cardsGames.shares.decks.Card
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
@@ -19,11 +19,15 @@ import scala.concurrent.Future
 
 
 class BurracoGameService(
-                          burracoGameRepositoryPort: GameRepositoryPort,
                           playerPort: PlayerPort,
                           commandDispatcher: CommandDispatcher,
                           queryDispatcher: QueryDispatcher
                         )(implicit val ec: scala.concurrent.ExecutionContext /* = scala.concurrent.ExecutionContext.global*/) {
+
+  def findBurracoGame(gameIdentity: GameIdentity): Future[BurracoGame] = {
+    val query = FindBurracoGameQuery(gameIdentity)
+    queryDispatcher.dispatchAsync[FindBurracoGameQuery, BurracoGame](query)
+  }
 
   def createNewBurracoGame(): Future[BurracoGameWaitingPlayers] = {
     val gameIdentity = GameIdentity()

@@ -79,7 +79,7 @@ class PlayerInGameTest extends AnyFunSuite {
 
   test("given some cards, when I drop one of them, then I have a card less on my hand") {
     val cardToDrop = Deck.allRanksCards().take(1)
-    val myCards = Deck.allRanksCards().filterNot(p => p == cardToDrop).take(5) ++ cardToDrop
+    val myCards = Deck.allRanksCards().filterNot(p => p == cardToDrop.head).take(5) ++ cardToDrop
     val playerInGame = PlayerInGameTestFactory().withCards(myCards).build()
 
     val expectedMyCardSize = myCards.size - 1
