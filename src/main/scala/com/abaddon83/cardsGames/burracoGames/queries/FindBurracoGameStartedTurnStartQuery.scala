@@ -1,7 +1,7 @@
 package com.abaddon83.cardsGames.burracoGames.queries
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.BurracoGameInitiatedTurnStart
-import com.abaddon83.cardsGames.burracoGames.ports.GameRepositoryPort
+import com.abaddon83.cardsGames.burracoGames.ports.BurracoGameRepositoryPort
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.libs.cqs.queries.{Query, QueryHandler}
 
@@ -14,7 +14,7 @@ case class FindBurracoGameStartedTurnStartQuery(
 }
 
 class FindBurracoGameStartedTurnStartHandler(
-                                     gameRepositoryPort: GameRepositoryPort
+                                     gameRepositoryPort: BurracoGameRepositoryPort
                                    ) extends QueryHandler[FindBurracoGameStartedTurnStartQuery, BurracoGameInitiatedTurnStart] {
   override def handleAsync(query: FindBurracoGameStartedTurnStartQuery): Future[BurracoGameInitiatedTurnStart] = {
     gameRepositoryPort.findBurracoGameInitialisedTurnStartBy(query.gameIdentity)

@@ -1,4 +1,4 @@
-package com.abaddon83.cardsGames.mocks
+package com.abaddon83.cardsGames.burracoGames.adapters.BurracoGameRepositoryAdapters
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.BurracoGame
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.BurracoGameEnded
@@ -6,14 +6,11 @@ import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialis
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.cardsGames.burracoGames.ports.BurracoGameRepositoryPort
 import com.abaddon83.cardsGames.shares.games.GameIdentity
-import com.abaddon83.cardsGames.testutils.WithExecutionContext
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 
-trait MockBurracoGameRepositoryAdapter extends WithExecutionContext{
-
-  val mockBurracoGameRepositoryAdapter = new BurracoGameRepositoryPort {
+class BurracoGameRepositoryFakeAdapter()(implicit val ec: scala.concurrent.ExecutionContext) extends BurracoGameRepositoryPort{
 
     override def save(burracoGame: BurracoGameWaitingPlayers): BurracoGameWaitingPlayers = {
       BurracoGameDB.persist(burracoGame) match {
@@ -58,9 +55,9 @@ trait MockBurracoGameRepositoryAdapter extends WithExecutionContext{
     }
 
 
-  override def exists(gameIdentity: GameIdentity): Boolean = {
-    BurracoGameDB.search().exists(game => game.identity() == gameIdentity)
-  }
+    override def exists(gameIdentity: GameIdentity): Boolean = {
+      BurracoGameDB.search().exists(game => game.identity() == gameIdentity)
+    }
 
     override def findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): Future[BurracoGameWaitingPlayers] = {
       Future{
@@ -135,8 +132,6 @@ trait MockBurracoGameRepositoryAdapter extends WithExecutionContext{
 
     override def findBurracoBurracoGameEndedBy(gameIdentity: GameIdentity): Future[BurracoGameEnded] = ???
 
-
-  }
 }
 
 protected object BurracoGameDB{

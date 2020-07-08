@@ -7,7 +7,7 @@ import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.ended.Bur
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.playerInGames.{BurracoScale, BurracoTris}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.initialised.{BurracoGameInitiated, BurracoGameInitiatedTurnEnd, BurracoGameInitiatedTurnExecution, BurracoGameInitiatedTurnStart}
 import com.abaddon83.cardsGames.burracoGames.domainModels.burracoGames.waitingPlayers.BurracoGameWaitingPlayers
-import com.abaddon83.cardsGames.burracoGames.ports.{GameRepositoryPort, PlayerPort}
+import com.abaddon83.cardsGames.burracoGames.ports.{BurracoGameRepositoryPort, PlayerPort}
 import com.abaddon83.cardsGames.burracoGames.queries.{FindBurracoGameEndedQuery, FindBurracoGameInitiatedQuery, FindBurracoGameQuery, FindBurracoGameStartedTurnStartQuery, FindBurracoGameWaitingQuery}
 import com.abaddon83.cardsGames.shares.decks.Card
 import com.abaddon83.cardsGames.shares.games.GameIdentity

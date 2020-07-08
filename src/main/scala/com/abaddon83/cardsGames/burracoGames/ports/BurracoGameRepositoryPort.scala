@@ -8,7 +8,7 @@ import com.abaddon83.cardsGames.shares.games.{Game, GameIdentity}
 
 import scala.concurrent.Future
 
-trait GameRepositoryPort {
+trait BurracoGameRepositoryPort {
 
   def save(burracoGame: BurracoGameWaitingPlayers): BurracoGameWaitingPlayers
   def save(burracoGame: BurracoGameInitiatedTurnStart): BurracoGameInitiatedTurnStart

@@ -3,7 +3,7 @@ package com.abaddon83.cardsGames.burracoGames.commands
 import java.util.UUID
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.PlayerNotAssigned
-import com.abaddon83.cardsGames.burracoGames.ports.{GameRepositoryPort, PlayerPort}
+import com.abaddon83.cardsGames.burracoGames.ports.{BurracoGameRepositoryPort, PlayerPort}
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
 import com.abaddon83.libs.cqs.commands.{Command, CommandHandler}
@@ -19,7 +19,7 @@ case class AddPlayerCmd(
 
 
 class AddPlayerHandler(
-                        gameRepositoryPort: GameRepositoryPort
+                        gameRepositoryPort: BurracoGameRepositoryPort
                       )
                       (implicit val ec: scala.concurrent.ExecutionContext) extends CommandHandler[AddPlayerCmd] {
 

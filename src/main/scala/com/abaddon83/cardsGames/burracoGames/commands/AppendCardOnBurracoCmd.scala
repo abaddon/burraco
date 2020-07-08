@@ -3,7 +3,7 @@ package com.abaddon83.cardsGames.burracoGames.commands
 import java.util.UUID
 
 import com.abaddon83.cardsGames.burracoGames.domainModels.BurracoId
-import com.abaddon83.cardsGames.burracoGames.ports.GameRepositoryPort
+import com.abaddon83.cardsGames.burracoGames.ports.BurracoGameRepositoryPort
 import com.abaddon83.cardsGames.shares.decks.Card
 import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
@@ -21,7 +21,7 @@ case class AppendCardOnBurracoCmd(
 }
 
 class AppendCardOnBurracoHandler(
-                                  gameRepositoryPort: GameRepositoryPort
+                                  gameRepositoryPort: BurracoGameRepositoryPort
                                 )
                                 (implicit val ec: scala.concurrent.ExecutionContext)
   extends CommandHandler[AppendCardOnBurracoCmd] {
