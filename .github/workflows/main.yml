@@ -5,10 +5,9 @@ name: Kotlin CI with Gradle
 
 on:
   push:
-    branches:
-      - 'langs/**'
+    branches: [ master_kotlin ]
   pull_request:
-    branches: [ langs/kotlin ]
+    branches: [ master_kotlin ]
 
 jobs:
   test:
