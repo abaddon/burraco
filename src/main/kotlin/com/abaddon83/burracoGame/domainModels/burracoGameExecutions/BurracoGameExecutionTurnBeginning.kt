@@ -22,7 +22,7 @@ data class BurracoGameExecutionTurnBeginning private constructor(
 
 
     //all players can order cards when they want to
-    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecution {
+    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnBeginning {
         val player = validatePlayerId(playerIdentity)
         return this.copy(players = UpdatePlayers(player.orderPlayerCards(orderedCards)))
     }

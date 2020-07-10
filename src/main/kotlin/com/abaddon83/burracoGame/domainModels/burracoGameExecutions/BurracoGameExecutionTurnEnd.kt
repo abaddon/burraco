@@ -19,7 +19,7 @@ data class BurracoGameExecutionTurnEnd private constructor(
 ) : BurracoGameExecution() {
 
 
-    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecution {
+    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnEnd {
         TODO("Not yet implemented")
     }
 

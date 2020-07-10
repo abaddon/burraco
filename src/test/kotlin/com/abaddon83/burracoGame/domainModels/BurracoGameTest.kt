@@ -10,7 +10,6 @@ class BurracoGameTest {
     fun `Given anew game identity, when I create a new Burraco game, then I have a new game`(){
         val gameId= GameIdentity.create()
         val game = BurracoGame.create(gameId)
-        assert(game is BurracoGameWaitingPlayers)
         assert(game.numPlayers() == 0)
         assert(game.identity() == gameId)
     }

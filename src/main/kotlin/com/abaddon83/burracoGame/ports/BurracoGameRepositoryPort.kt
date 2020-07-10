@@ -16,11 +16,11 @@ interface BurracoGameRepositoryPort {
     fun save(burracoGame: BurracoGameExecution): BurracoGameExecution
     fun save(burracoGame: BurracoGameEnded): BurracoGameEnded
     fun exists(identity: GameIdentity): Boolean
-    suspend fun findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): BurracoGameWaitingPlayers
-    suspend fun findBurracoGameInitialisedBy(gameIdentity: GameIdentity): BurracoGameExecution
-    suspend fun findBurracoGameInitialisedTurnStartBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnBeginning
-    suspend fun findBurracoGameInitialisedTurnExecutionBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnExecution
-    suspend fun findBurracoGameInitialisedTurnEndBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnEnd
-    suspend fun findBurracoBurracoGameEndedBy(gameIdentity: GameIdentity): BurracoGameEnded
-    suspend fun findAllBurracoGameWaitingPlayers(): List<BurracoGameWaitingPlayers>
+    suspend fun findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): BurracoGameWaitingPlayers?
+    suspend fun findBurracoGameExecutionBy(gameIdentity: GameIdentity): BurracoGameExecution?
+    suspend fun findBurracoGameExecutionTurnBeginningBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnBeginning?
+    suspend fun findBurracoGameExecutionTurnExecutionBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnExecution?
+    suspend fun findBurracoGameExecutionTurnEndBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnEnd?
+    suspend fun findBurracoGameEndedBy(gameIdentity: GameIdentity): BurracoGameEnded?
+    suspend fun findAllBurracoGameWaitingPlayers(): List<BurracoGameWaitingPlayers>?
 }

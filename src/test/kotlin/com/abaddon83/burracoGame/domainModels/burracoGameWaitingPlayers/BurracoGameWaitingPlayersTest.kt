@@ -73,7 +73,7 @@ class BurracoGameWaitingPlayersTest {
     fun `Given a burraco game with 2 players, when I start the game, then I started the burraco game`(){
         val game = BurracoGameInitTurnTestFactory.create().buildWaitingPlayer()
         val actualGame = game.start()
-        assert(actualGame is BurracoGameExecutionTurnBeginning)
+
     }
     @Test
     fun `Given a burraco game with 1 players, when I start the game, then I receive an error`(){

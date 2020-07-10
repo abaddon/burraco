@@ -87,7 +87,6 @@ class BurracoGameExecutionTurnEndTest {
 
         val actualGame = game.nextPlayerTurn(player1Id)
         assert(actualGame.validatePlayerTurn(player2Id) == player2Id)
-        assert(actualGame is BurracoGameExecutionTurnBeginning)
     }
 
     @Test
@@ -131,8 +130,8 @@ class BurracoGameExecutionTurnEndTest {
                 .buildTurnPhaseEnd()
 
         val actualGame = game.completeGame(player1Id)
+        
 
-        assert(actualGame is BurracoGameEnded)
     }
 
     @Test
