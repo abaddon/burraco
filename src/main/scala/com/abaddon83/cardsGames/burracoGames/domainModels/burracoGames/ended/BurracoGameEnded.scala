@@ -7,9 +7,9 @@ import com.abaddon83.cardsGames.shares.games.GameIdentity
 import com.abaddon83.cardsGames.shares.players.PlayerIdentity
 
 case class BurracoGameEnded(
-                                override protected val gameIdentity: GameIdentity,
-                                override protected val players: List[PlayerScore],
-                                pozzettoMissed: Boolean
+                             override protected val gameIdentity: GameIdentity,
+                             override protected val players: List[PlayerScore],
+                             mazzettoMissed: Boolean
                               ) extends BurracoGame {
 
 }
@@ -20,7 +20,7 @@ object BurracoGameEnded {
     BurracoGameEnded(
       gameIdentity = gameIdentity,
       players = playersScore(players, playerTurn),
-      pozzettoMissed = pozzettos.numCards() > 0
+      mazzettoMissed = pozzettos.numCards() > 0
     )
   }
 
