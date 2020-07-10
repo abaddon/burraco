@@ -14,14 +14,11 @@ import java.util.*
 
 data class StartGameCmd(
         val gameIdentity: GameIdentity,
-        val playerToAdd: PlayerNotAssigned,
         override val commandId: UUID,
         override val commandTimeStamp: Timestamp): Command {
 
-    constructor(gameIdentity: GameIdentity,
-                playerToAdd: PlayerNotAssigned): this(
+    constructor(gameIdentity: GameIdentity): this(
             gameIdentity = gameIdentity,
-            playerToAdd = playerToAdd,
             commandId = UUID.randomUUID(),
             commandTimeStamp = Timestamp(System.currentTimeMillis())
     )

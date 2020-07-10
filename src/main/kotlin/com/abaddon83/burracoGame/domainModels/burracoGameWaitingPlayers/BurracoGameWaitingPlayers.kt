@@ -26,7 +26,6 @@ data class BurracoGameWaitingPlayers constructor(
         assert(players.size >1) {"Not enough players to initiate the game, ( Min: ${minPlayers})"}
         val burracoDealer = BurracoDealer.create(this)
         return BurracoGameExecutionTurnBeginning.create(this,burracoDealer)
-
     }
 
 }
