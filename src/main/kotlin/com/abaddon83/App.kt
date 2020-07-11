@@ -3,13 +3,69 @@
  */
 package com.abaddon83
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello world."
+import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.handleExceptions.errorsHandling
+import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.routes.apiBurracoGames
+import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.routes.apiGames
+import com.abaddon83.burracoGame.iocs.AppAdapters
+import com.abaddon83.burracoGame.ports.BurracoGameControllerPort
+import com.fasterxml.jackson.databind.SerializationFeature
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.features.CallLogging
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
+import io.ktor.features.StatusPages
+import io.ktor.jackson.jackson
+import io.ktor.routing.Routing
+import io.ktor.routing.route
+import io.ktor.routing.routing
+import io.ktor.server.engine.commandLineEnvironment
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import org.koin.ktor.ext.Koin
+import org.koin.ktor.ext.inject
+
+//class App {
+//    val greeting: String
+//        get() {
+//            return "Hello world."
+//        }
+//}
+//
+//fun main(args: Array<String>) {
+//    println(App().greeting)
+//}
+
+fun Application.di() {
+    //DI setup
+    install(Koin) {
+        printLogger()
+        modules(AppAdapters)
+    }
+}
+
+fun Application.main() {
+    val controller: BurracoGameControllerPort by inject()
+
+    //HTTP
+    install(DefaultHeaders)
+    install(CallLogging)
+    install(ContentNegotiation) {
+        jackson {
+            configure(SerializationFeature.INDENT_OUTPUT, true)
         }
+    }
+    install(StatusPages) {
+        errorsHandling()
+    }
+    install(Routing) {
+        routing {
+            apiGames(controller)
+            apiBurracoGames(controller)
+        }
+    }
 }
 
 fun main(args: Array<String>) {
-    println(App().greeting)
+    embeddedServer(Netty, commandLineEnvironment(args)).start()
 }

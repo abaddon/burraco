@@ -1,10 +1,12 @@
 package com.abaddon83.burracoGame.commands
 
+import com.abaddon83.burracoGame.adapters.burracoGameRepositoryAdapters.inMemories.BurracoGameDB
 import com.abaddon83.burracoGame.domainModels.BurracoGame
 import com.abaddon83.burracoGame.ports.BurracoGameRepositoryPort
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.utils.cqs.commands.Command
 import com.abaddon83.utils.cqs.commands.CommandHandler
+import com.abaddon83.utils.logs.WithLog
 import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -23,19 +25,25 @@ data class CreateNewBurracoGameCmd(
 
 }
 
-class CreateNewBurracoGameHandler() : CommandHandler<CreateNewBurracoGameCmd>, KoinComponent {
+class CreateNewBurracoGameHandler() : CommandHandler<CreateNewBurracoGameCmd>, KoinComponent, WithLog() {
 
     private val repository: BurracoGameRepositoryPort by inject()
 
     override fun handle(command: CreateNewBurracoGameCmd) {
-        check(repository.exists(command.gameIdentity)) {"GameIdentity ${command.gameIdentity} already exist"}
-        val burracoGameWaitingPlayer = BurracoGame.create(command.gameIdentity)
-        repository.save(burracoGameWaitingPlayer)
+        createBurracoGame(command)
     }
 
     override suspend fun handleAsync(command: CreateNewBurracoGameCmd) {
-        check(repository.exists(command.gameIdentity)) {"GameIdentity ${command.gameIdentity} already exist"}
+        createBurracoGame(command)
+    }
+
+    private fun createBurracoGame(command: CreateNewBurracoGameCmd){
+        check(!repository.exists(command.gameIdentity)) {
+            log.warn("${command.gameIdentity} already exist")
+            "${command.gameIdentity} already exist"
+        }
         val burracoGameWaitingPlayer = BurracoGame.create(command.gameIdentity)
         repository.save(burracoGameWaitingPlayer)
+        log.info("${command.gameIdentity} created")
     }
 }

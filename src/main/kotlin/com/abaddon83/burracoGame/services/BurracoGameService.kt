@@ -25,14 +25,13 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 
-class BurracoGameServices : KoinComponent, WithLog() {
+class BurracoGameService : KoinComponent, WithLog() {
     private val playerPort: PlayerPort by inject()
     private val context: Context by inject()
     private val queryDispatcher: QueryDispatcher = QueryDispatcherImpl(context)
     private val commandDispatcher: CommandDispatcher = CommandDispatcherImpl(context)
 
-    suspend fun createNewBurracoGame(): BurracoGameWaitingPlayers {
-        val gameIdentity = GameIdentity.create()
+    suspend fun createNewBurracoGame(gameIdentity: GameIdentity): BurracoGameWaitingPlayers {
         val command = CreateNewBurracoGameCmd(gameIdentity)
         val query = FindBurracoGameWaitingQuery(gameIdentity)
         commandDispatcher.dispatchAsync(command)
