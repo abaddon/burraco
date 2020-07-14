@@ -19,13 +19,13 @@ data class BurracoScale(
     
 
     override fun validateNewCards(cardsToValidate: List<Card>): List<Card> {
-        assert(cardsToValidate.find {c -> c.suit!= suit && c.suit!=Suits.Jolly} == null)
+        check(cardsToValidate.find {c -> c.suit!= suit && c.suit!=Suits.Jolly} == null){warnMsg("The scale have multiple suites.")}
         return validateSequence(cards.plus(cardsToValidate),suit)
     }
 
     companion object Factory {
         fun create(cards: List<Card>): BurracoScale {
-            assert(cards.size >= 3) {"A Scale is composed by 3 or more cards"}
+            check(cards.size >= 3) {"A Scale is composed by 3 or more cards"}
             val scalaSuit = calculateScaleSuit(cards)
             val scalaCards = validateSequence(cards, scalaSuit)
             return BurracoScale(identity = BurracoIdentity.create(), cards = scalaCards, suit = scalaSuit)
@@ -33,7 +33,7 @@ data class BurracoScale(
 
         private fun calculateScaleSuit(cards: List<Card>): Suits.Suit {
             val cardsBySuit = cards.groupBy { c -> c.suit }.mapValues { (_, v) -> v.size }
-            assert(cardsBySuit.keys.size <= 2) { "Too many different suits found: ${cardsBySuit.keys}" }
+            check(cardsBySuit.keys.size <= 2) { "Too many different suits found: ${cardsBySuit.keys}" }
             val primarySuit = cardsBySuit.maxBy { it.value }!!.key
             if (cardsBySuit.keys.size == 2) {
                 val numCardsSecondarySuit = cardsBySuit.minBy { it.value }!!.value

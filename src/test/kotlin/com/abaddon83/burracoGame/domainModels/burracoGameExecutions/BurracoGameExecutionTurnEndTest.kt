@@ -36,7 +36,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer1(player1)
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.pickupMazzetto(player1Id)
         }
     }
@@ -49,7 +49,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer1(player1)
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.pickupMazzetto(player1Id)
         }
     }
@@ -63,7 +63,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(AssertionError::class) {
             game.pickupMazzetto(player1Id)
         }
     }
@@ -73,7 +73,7 @@ class BurracoGameExecutionTurnEndTest {
         val game = BurracoGameInitTurnTestFactory.create()
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.pickupMazzetto(PlayerIdentity.create())
         }
     }
@@ -85,8 +85,7 @@ class BurracoGameExecutionTurnEndTest {
         val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id, player2Id = player2Id)
                 .buildTurnPhaseEnd()
 
-        val actualGame = game.nextPlayerTurn(player1Id)
-        assert(actualGame.validatePlayerTurn(player2Id) == player2Id)
+        game.nextPlayerTurn(player1Id)
     }
 
     @Test
@@ -110,7 +109,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.nextPlayerTurn(PlayerIdentity.create())
         }
     }
@@ -148,7 +147,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer1(player1)
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.completeGame(player1Id)
         }
     }
@@ -167,7 +166,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer1(player1)
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.completeGame(player1Id)
         }
     }
@@ -180,7 +179,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer1(player1)
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.completeGame(player1Id)
         }
     }
@@ -211,7 +210,7 @@ class BurracoGameExecutionTurnEndTest {
         val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id)
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.completeGame(PlayerIdentity.create())
         }
     }

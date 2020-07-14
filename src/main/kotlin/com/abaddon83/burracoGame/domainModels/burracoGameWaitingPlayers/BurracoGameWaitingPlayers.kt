@@ -12,8 +12,10 @@ data class BurracoGameWaitingPlayers constructor(
 ) : BurracoGame() {
 
     fun addPlayer(player: BurracoPlayer): BurracoGameWaitingPlayers {
-        assert(players.size < maxPlayers){"Maximum number of players reached, (Max: ${maxPlayers})"}
-        assert(!isAlreadyAPlayer(player.identity())) {"The player ${player.identity()} is already a player of game ${this.identity()}"}
+        check(players.size < maxPlayers){
+            warnMsg("Maximum number of players reached, (Max: ${maxPlayers})")}
+        check(!isAlreadyAPlayer(player.identity())) {
+            warnMsg("The player ${player.identity()} is already a player of game ${this.identity()}")}
 
         return BurracoGameWaitingPlayers(identity,listOf(players, listOf(player)).flatten())
     }
@@ -23,7 +25,8 @@ data class BurracoGameWaitingPlayers constructor(
     }
 
     fun start(): BurracoGameExecutionTurnBeginning {
-        assert(players.size >1) {"Not enough players to initiate the game, ( Min: ${minPlayers})"}
+        check(players.size >1) {
+            log.warn("Not enough players to initiate the game, ( Min: ${minPlayers})")}
         val burracoDealer = BurracoDealer.create(this)
         return BurracoGameExecutionTurnBeginning.create(this,burracoDealer)
     }

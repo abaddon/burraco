@@ -34,8 +34,9 @@ class AddPlayerHandler() : CommandHandler<AddPlayerCmd>, KoinComponent {
 
 
     override fun handle(command: AddPlayerCmd) {
-        val burracoGameWaitingPlayers = runBlocking { repository.findBurracoGameWaitingPlayersBy(command.gameIdentity) }
-        check(burracoGameWaitingPlayers != null) {"GameIdentity ${command.gameIdentity} not found exist"}
+        val burracoGameWaitingPlayers = checkNotNull(
+                runBlocking { repository.findBurracoGameWaitingPlayersBy(command.gameIdentity) }
+        ) {"GameIdentity ${command.gameIdentity} not found exist"}
         repository.save(burracoGameWaitingPlayers.addPlayer(command.playerToAdd))
     }
 

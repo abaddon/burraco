@@ -30,11 +30,11 @@ abstract class BurracoGameExecution : BurracoGame() {
 
     fun showDiscardPile(): List<Card> = discardPile.showCards()
 
-    fun validatePlayerTurn(playerIdentity: PlayerIdentity): PlayerIdentity {
-        if (playerTurn != playerIdentity)
-            throw UnsupportedOperationException("It's not the turn of the player $playerIdentity")
-        return playerIdentity
-    }
+    fun validatePlayerTurn(playerIdentity: PlayerIdentity): Unit =
+            check(playerTurn != playerIdentity) {
+                warnMsg("It's not the turn of the player $playerIdentity")
+            }
+
 
     fun testInvariants() = invariantNumCardsInGame()
 
@@ -50,20 +50,20 @@ abstract class BurracoGameExecution : BurracoGame() {
     }
 
     //validation
-    protected fun validatePlayerId(playerIdentity: PlayerIdentity): PlayerInGame = players.find { p -> p.identity() == playerIdentity }
-            ?.let { player ->
-                player
-            } ?: throw NoSuchElementException("Player $playerIdentity is not a player of this game ${identity()}")
+    protected fun validatePlayerId(playerIdentity: PlayerIdentity): PlayerInGame =
+            checkNotNull(players.find { p -> p.identity() == playerIdentity }) {
+                errorMsg("Player $playerIdentity is not a player of this game ${identity()}")
+            }
 
     private fun numCardsInGame(): Int {
         val playersCardsTot = players.map { player ->
             player.totalPlayerCards()
-        }.fold(0){ total, item -> total + item }
+        }.fold(0) { total, item -> total + item }
         return playersCardsTot + burracoDeck.numCards() + mazzettoDecks.numCards() + discardPile.numCards()
     }
 
     private fun invariantNumCardsInGame(): Unit {
-        check(totalCardsRequired == numCardsInGame()){"The cards in game are not ${totalCardsRequired}. Founds ${numCardsInGame()}"}
+        assert(totalCardsRequired == numCardsInGame()) { "The cards in game are not ${totalCardsRequired}. Founds ${numCardsInGame()}" }
     }
 
 

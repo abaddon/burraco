@@ -15,19 +15,19 @@ data class BurracoTris constructor(
         return copy(cards = validateNewCards(cardsToAdd))
     }
 
-    override fun validateNewCards(cards: List<Card>): List<Card> {
-        val tmpCardList=cards.plus(this.cards)
+    override fun validateNewCards(cardsToValidate: List<Card>): List<Card> {
+        val tmpCardList=cardsToValidate.plus(this.cards)
         val cardsWithoutJolly = tmpCardList.filterNot {c -> c.rank == Ranks.Jolly || c.rank == Ranks.Two}
-        assert((tmpCardList.minus(cardsWithoutJolly)).size <= 1) { "A tris can contain at least 1 Jolly or Two" }
-        assert(cardsWithoutJolly.filterNot { c -> c.rank == rank }.isEmpty()) { "A tris is composed by cards with the same rank" }
+        check((tmpCardList.minus(cardsWithoutJolly)).size <= 1) { warnMsg("A tris can contain at least 1 Jolly or Two") }
+        check(cardsWithoutJolly.filterNot { c -> c.rank == rank }.isEmpty()) { warnMsg("A tris is composed by cards with the same rank") }
         return tmpCardList
     }
 
     companion object Factory {
         fun create(cards: List<Card>): BurracoTris {
-            assert(cards.size >=3) { "A tris is composed by 3 or more cards" }
+            check(cards.size >=3) { "A tris is composed by 3 or more cards" }
             val rank = calculateTrisRank(cards)
-            assert(!listOf(Ranks.Two,Ranks.Jolly).contains(rank)) { "Tris of Jolly or Two are not allowed" }
+            check(!listOf(Ranks.Two,Ranks.Jolly).contains(rank)) { "Tris of Jolly or Two are not allowed" }
             return BurracoTris(identity = BurracoIdentity.create(), rank = rank, cards = cards)
         }
 
@@ -37,7 +37,7 @@ data class BurracoTris constructor(
             val cardsByRankWithoutJollyAndTwo = cardsByRank.minus(Ranks.Jolly).minus(Ranks.Two)
 
             assert(cardsByRankWithoutJollyAndTwo.keys.size ==1) {"Too many different ranks found: ${cardsByRank.keys}"}
-            return cardsByRank.maxBy { it.value }?.key ?: throw Exception("Tris Rank calculation failed")
+            return checkNotNull(cardsByRank.maxBy { it.value }?.key){"Tris Rank calculation failed"}
         }
 
     }

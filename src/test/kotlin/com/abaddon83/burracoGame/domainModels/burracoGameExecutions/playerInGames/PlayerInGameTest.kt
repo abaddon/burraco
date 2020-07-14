@@ -37,7 +37,7 @@ class PlayerInGameTest {
         val mazzetto: MazzettoDeck = MazzettoDeck.create(ListCardsBuilder.allRanksCards().take(11))
         val mazzetto2: MazzettoDeck = MazzettoDeck.create(ListCardsBuilder.allRanksCards().take(11))
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             playerInGame.pickUpMazzetto(mazzetto).pickUpMazzetto(mazzetto2)
         }
     }
@@ -118,7 +118,7 @@ class PlayerInGameTest {
         val burracoTris = BurracoTris.create(deck.filter { c -> c.rank == Ranks.Three }.take(4))
         deck = deck.minus(burracoTris.showCards())
         val myCards = deck.take(5).plus(listOf(cardToDrop))
-        deck = deck.minus(myCards)
+        //deck.minus(myCards)
 
         val burracoScale = BurracoScale.create(cardsScale)
 

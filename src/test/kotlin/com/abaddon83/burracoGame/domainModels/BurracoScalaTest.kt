@@ -300,7 +300,7 @@ class BurracoScalaTest {
         val scale = BurracoScale.create(cards)
         val cardToAdd = listOf(Card(Suits.Tile, Ranks.Six))
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             scale.addCards(cardToAdd)
         }
 
@@ -331,7 +331,7 @@ class BurracoScalaTest {
         val scale = BurracoScale.create(cards)
         val cardToAdd = listOf(Card(Suits.Tile, Ranks.Six))
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             scale.addCards(cardToAdd)
         }
     }
@@ -363,7 +363,7 @@ class BurracoScalaTest {
         val scale = BurracoScale.create(cards)
         val cardToAdd = listOf(Card(Suits.Tile, Ranks.Six))
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             scale.addCards(cardToAdd)
         }
     }

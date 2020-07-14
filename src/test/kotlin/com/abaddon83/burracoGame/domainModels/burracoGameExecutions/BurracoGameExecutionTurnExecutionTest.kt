@@ -37,7 +37,7 @@ fun `Given a player not in game, when update the cards order, I receive an error
         val playerCards = game.playerCards(player1Id)
         val orderedCards = playerCards.sorted()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.updatePlayerCardsOrder(PlayerIdentity.create(), orderedCards)
         }
     }
@@ -69,7 +69,7 @@ fun `Given a player not in the turn, when drop a tris, I receive an error`() {
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.dropOnTableATris(player1Id, tris)
         }
     }
@@ -80,7 +80,7 @@ fun `Given a player not in this game, when drop a tris, I receive an error`() {
         val game = BurracoGameInitTurnTestFactory.create()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.dropOnTableATris(PlayerIdentity.create(), tris)
         }
     }
@@ -137,7 +137,7 @@ fun `Given a player not in this game, when drop a scale, I receive an error`() {
         val game = BurracoGameInitTurnTestFactory.create()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.dropOnTableAScale(PlayerIdentity.create(), scale)
         }
     }
@@ -190,7 +190,7 @@ fun `Given a player of another game, with a tris, when append a card on the tris
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.appendCardsOnABurracoDropped(PlayerIdentity.create(), cardToAppend,tris.identity())
         }
     }
@@ -217,7 +217,7 @@ fun `Given a player during his turn with some cards, when pickUp the mazzetto, t
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class){
+        assertFailsWith(IllegalStateException::class){
             game.pickupMazzetto(player1Id)
         }
     }
@@ -230,7 +230,7 @@ fun `Given a player during his turn with no cards and a mazzetto already taken, 
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class){
+        assertFailsWith(IllegalStateException::class){
             game.pickupMazzetto(player1Id)
         }
     }
@@ -244,7 +244,7 @@ fun `Given a player with no cards, during the tun of another player , when pickU
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class){
+        assertFailsWith(AssertionError::class){
             game.pickupMazzetto(player1Id)
         }
     }

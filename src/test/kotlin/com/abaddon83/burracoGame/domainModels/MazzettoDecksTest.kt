@@ -24,7 +24,7 @@ class MazzettoDecksTest {
         val list = listOf(mazzettoDeck1)
 
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalArgumentException::class) {
             MazzettoDecks.create(list)
         }
     }
@@ -34,7 +34,7 @@ class MazzettoDecksTest {
         val mazzettoDeck1 = MazzettoDeck.create(ListCardsBuilder.allRanksWithJollyCards().take(11))
         val list = listOf(mazzettoDeck1, mazzettoDeck1, mazzettoDeck1)
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalArgumentException::class) {
             MazzettoDecks.create(list)
         }
     }
@@ -68,7 +68,7 @@ class MazzettoDecksTest {
                 .mazzettoTaken(mazzettoDeck1)
                 .mazzettoTaken(mazzettoDeck2)
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalArgumentException::class) {
             actualMazzettoDecks.firstMazzettoAvailable()
         }
     }

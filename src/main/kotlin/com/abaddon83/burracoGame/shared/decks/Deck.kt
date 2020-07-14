@@ -1,6 +1,7 @@
 package com.abaddon83.burracoGame.shared.decks
 
-interface Deck {
+
+interface Deck{
     val cards: MutableList<Card>
 
     fun numCards(): Int = cards.size

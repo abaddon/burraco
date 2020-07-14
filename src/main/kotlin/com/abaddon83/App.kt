@@ -8,13 +8,15 @@ import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.rou
 import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.routes.apiGames
 import com.abaddon83.burracoGame.iocs.AppAdapters
 import com.abaddon83.burracoGame.ports.BurracoGameControllerPort
+import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.utils.ddd.UUIDIdentity
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.install
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
-import io.ktor.features.StatusPages
+import io.ktor.features.*
+import io.ktor.http.ContentType
+import io.ktor.jackson.JacksonConverter
 import io.ktor.jackson.jackson
 import io.ktor.routing.Routing
 import io.ktor.routing.route
@@ -24,6 +26,8 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
+import java.text.DateFormat
+import java.util.*
 
 //class App {
 //    val greeting: String
@@ -53,16 +57,16 @@ fun Application.main() {
     install(ContentNegotiation) {
         jackson {
             configure(SerializationFeature.INDENT_OUTPUT, true)
+            register(ContentType.Application.Json, JacksonConverter())
         }
     }
+
     install(StatusPages) {
         errorsHandling()
     }
     install(Routing) {
-        routing {
-            apiGames(controller)
-            apiBurracoGames(controller)
-        }
+        apiGames(controller)
+        apiBurracoGames(controller)
     }
 }
 

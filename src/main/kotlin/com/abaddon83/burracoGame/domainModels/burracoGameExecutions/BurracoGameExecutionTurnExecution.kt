@@ -41,12 +41,13 @@ data class BurracoGameExecutionTurnExecution private constructor(
     fun pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)
-        assert(player.showMyCards().isEmpty()) { "The player cannot pick up a Mazzetto if he still has cards" }
-        assert(!player.isMazzettoTaken()) { "The player cannot pick up a Mazzetto he already taken" }
+        check(player.showMyCards().isEmpty()) { warnMsg("The player cannot pick up a Mazzetto if he still has cards") }
+        check(!player.isMazzettoTaken()) { warnMsg("The player cannot pick up a Mazzetto he already taken") }
 
         val mazzetto = mazzettoDecks.firstMazzettoAvailable()
         mazzettoDecks.mazzettoTaken(mazzetto)
 
+        assert(player.isMazzettoTaken()){errorMsg("The mazzetto is taken now, the model is inconsistent!")}
         return copy(
                 players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
                 mazzettoDecks = mazzettoDecks.mazzettoTaken(mazzetto)

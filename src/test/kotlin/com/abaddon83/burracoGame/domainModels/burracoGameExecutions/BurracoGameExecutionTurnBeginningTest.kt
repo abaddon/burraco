@@ -44,7 +44,7 @@ class BurracoGameExecutionTurnBeginningTest {
         val playerCards = game.playerCards(player1Id)
         val orderedCards = playerCards.sorted()
 
-        assertFailsWith(NoSuchElementException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.updatePlayerCardsOrder(PlayerIdentity.create(), orderedCards)
         }
     }
@@ -70,7 +70,7 @@ class BurracoGameExecutionTurnBeginningTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseStart()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.pickUpACardFromDeck(player1Id)
         }
     }

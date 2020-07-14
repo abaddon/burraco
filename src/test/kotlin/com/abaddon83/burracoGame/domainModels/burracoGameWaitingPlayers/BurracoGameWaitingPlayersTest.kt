@@ -25,7 +25,7 @@ class BurracoGameWaitingPlayersTest {
         val game = BurracoGameInitTurnTestFactory.create().buildWaitingPlayer()
         val player1 = PlayerNotAssigned(PlayerIdentity.create())
         val newGame = game.addPlayer(player1)
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             newGame.addPlayer(player1)
         }
 
@@ -47,7 +47,7 @@ class BurracoGameWaitingPlayersTest {
                 .addPlayer(PlayerNotAssigned(PlayerIdentity.create()))
                 .addPlayer(PlayerNotAssigned(PlayerIdentity.create()))
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             game.addPlayer(PlayerNotAssigned(PlayerIdentity.create()))
         }
     }
@@ -72,13 +72,13 @@ class BurracoGameWaitingPlayersTest {
     @Test
     fun `Given a burraco game with 2 players, when I start the game, then I started the burraco game`(){
         val game = BurracoGameInitTurnTestFactory.create().buildWaitingPlayer()
-        val actualGame = game.start()
+        game.start()
 
     }
     @Test
     fun `Given a burraco game with 1 players, when I start the game, then I receive an error`(){
         val game = BurracoGameInitTurnTestFactory.create().buildWaitingPlayer(true)
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             game.start()
         }
     }

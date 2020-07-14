@@ -27,7 +27,7 @@ class BurracoTrisTest {
         val burracoTrisSize = 2
         val cards = ListCardsBuilder.allRanksWithJollyCards().filter{ c -> c . rank == burracoTrisRank}.take(burracoTrisSize)
 
-            assertFailsWith(AssertionError::class){
+            assertFailsWith(IllegalStateException::class){
             BurracoTris.create(cards)
         }
     }
@@ -144,7 +144,7 @@ class BurracoTrisTest {
         val cards = listOf(Card(suit = Suits.Jolly, rank = Ranks.Jolly))
         val burracoTris = createABurracoTrisWithAJollyAnd(burracoTrisRank, burracoTrisSize)
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             burracoTris.addCards(cards)
         }
     }
@@ -157,7 +157,7 @@ class BurracoTrisTest {
         val cards = listOf(Card(suit = Suits.Heart, rank = Ranks.Two))
         val burracoTris = createABurracoTrisWithAJollyAnd(burracoTrisRank, burracoTrisSize)
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             burracoTris.addCards(cards)
         }
     }
@@ -170,7 +170,7 @@ class BurracoTrisTest {
         val cards = listOf(Card(suit = Suits.Jolly, rank = Ranks.Jolly))
         val burracoTris = createABurracoTrisWithATwoAnd(burracoTrisRank, burracoTrisSize)
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             burracoTris.addCards(cards)
         }
     }
@@ -183,7 +183,7 @@ class BurracoTrisTest {
         val cards = listOf(Card(suit = Suits.Heart, rank = Ranks.Two))
         val burracoTris = createABurracoTrisWithATwoAnd(burracoTrisRank, burracoTrisSize)
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             burracoTris.addCards(cards)
         }
     }
@@ -196,7 +196,7 @@ class BurracoTrisTest {
         val cards = listOf(Card(suit = Suits.Heart, rank = Ranks.Three))
         val burracoTris = createABurracoTrisWith(burracoTrisRank, burracoTrisSize)
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             burracoTris.addCards(cards)
         }
     }

@@ -52,7 +52,7 @@ class DiscardPileTest {
 
         val discardPile = DiscardPile.create(listOf())
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             discardPile.grabAllCards()
         }
     }

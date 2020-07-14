@@ -25,13 +25,13 @@ data class PlayerInGame constructor(
     fun burracoList(): List<Burraco> = cardsOnTable.burracoList()
 
     fun orderPlayerCards(cardsOrdered: List<Card>): PlayerInGame {
-        assert(cardsOrdered.sorted() == cards.sorted()) { "The cardsOrdered doesn't contain the same player cards" }
+        check(cardsOrdered.sorted() == cards.sorted()) { warnMsg("The cardsOrdered has to contain the same player cards") }
         return copy(cards = cardsOrdered)
     }
 
     //pickup
     fun pickUpMazzetto(mazzetto: MazzettoDeck): PlayerInGame {
-        assert(!mazzettoTaken) { MazzettoDeck }
+        check(!mazzettoTaken) { warnMsg("The player has already taken the Mazzetto") }
         return addCardsOnMyCard(mazzetto.getCardList()).copy(mazzettoTaken = true)
     }
 
@@ -55,7 +55,7 @@ data class PlayerInGame constructor(
     }
 
     fun dropACard(card: Card): PlayerInGame {
-        assert(cards.find { c -> c == card } != null) { "This card $card is not a card of the player $this" }
+        check(cards.find { c -> c == card } != null) { warnMsg("This card $card is not a card of the player $this") }
         return this.copy(cards = cards.minusElement(card))
     }
 
@@ -70,10 +70,10 @@ data class PlayerInGame constructor(
     fun totalPlayerCards(): Int = cards.size + cardsOnTable.numCardsOnTable()
 
     private fun removeElements(cardsToRemove:List<Card>, myCards: List<Card>): List<Card> {
-        check(cardsToRemove.size <= myCards.size)
-        val cardToremove = cardsToRemove.first()
-        val cardsToRemoveUpdated = cardsToRemove.minusElement(cardToremove)
-        val myCardsUpdated = myCards.minusElement(cardToremove)
+        check(cardsToRemove.size <= myCards.size){"The cards to remove cannot be more the player's cards"}
+        val cardToRemove = cardsToRemove.first()
+        val cardsToRemoveUpdated = cardsToRemove.minusElement(cardToRemove)
+        val myCardsUpdated = myCards.minusElement(cardToRemove)
         return when{
             cardsToRemoveUpdated.isEmpty() -> myCardsUpdated
             cardsToRemoveUpdated.isNotEmpty() -> removeElements(cardsToRemoveUpdated,myCardsUpdated)

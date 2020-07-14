@@ -1,15 +1,17 @@
 package com.abaddon83.burracoGame.domainModels
 
+import com.abaddon83.utils.logs.WithLog
 
-data class MazzettoDecks private constructor(val list: List<MazzettoDeck>) {
+
+data class MazzettoDecks private constructor(val list: List<MazzettoDeck>): WithLog() {
 
     fun firstMazzettoAvailable(): MazzettoDeck {
-        assert(list.isNotEmpty()){"Mazzetto list empty, all Mazzetto taken"}
+        check(list.isNotEmpty()){ warnMsg("Mazzetto list empty, all Mazzetto taken")}
         return list.first()
     }
 
     fun mazzettoTaken(mazzettoDeck: MazzettoDeck): MazzettoDecks {
-        assert(list.find{m -> m == mazzettoDeck}!= null) {"MazzettoDeck not found"}
+        check(list.find{m -> m == mazzettoDeck}!= null) {errorMsg("MazzettoDeck not found")}
         return copy(list = list.minus(mazzettoDeck))
     }
 
@@ -17,7 +19,7 @@ data class MazzettoDecks private constructor(val list: List<MazzettoDeck>) {
 
     companion object Factory {
         fun create(list: List<MazzettoDeck>): MazzettoDecks {
-            assert(list.size == 2) {"MazzettoDecks can accept only 2 MazzettoDecks"}
+            require(list.size == 2) {"MazzettoDecks can accept only 2 MazzettoDecks"}
             return MazzettoDecks(list.sortedBy {p-> p.numCards()}.reversed())
         }
     }

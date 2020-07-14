@@ -2,11 +2,12 @@ package com.abaddon83.burracoGame.domainModels
 
 import com.abaddon83.burracoGame.shared.decks.Card
 import com.abaddon83.burracoGame.shared.decks.Deck
+import com.abaddon83.utils.logs.WithLog
 
-data class DiscardPile private constructor(override val cards: MutableList<Card>): Deck {
+data class DiscardPile private constructor(override val cards: MutableList<Card>): Deck,WithLog() {
 
     override fun grabAllCards(): List<Card> {
-        assert(cards.size >0){"The DiscardPile is empty, you can't grab a card from here"}
+        check(cards.size >0){warnMsg("The DiscardPile is empty, you can't grab a card from here")}
         return super.grabAllCards()
     }
 

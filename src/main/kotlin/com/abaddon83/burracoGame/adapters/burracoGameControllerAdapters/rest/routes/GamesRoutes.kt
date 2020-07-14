@@ -1,6 +1,7 @@
 package com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.routes
 
-import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.requests.CreateGame
+import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.requests.CreateGameRequest
+import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.requests.GameType
 import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.responses.GameResponse
 import com.abaddon83.burracoGame.ports.BurracoGameControllerPort
 import io.ktor.application.call
@@ -14,12 +15,12 @@ import java.lang.IllegalArgumentException
 fun Routing.apiGames(controller: BurracoGameControllerPort) {
     route("games") {
         post {
-            val request = call.receive<CreateGame>()
+            val request = call.receive<CreateGameRequest>()
             val gameResponse: GameResponse = when (request.gameType) {
-                "burraco" -> GameResponse(controller.createNewBurracoGame())
-                else -> throw IllegalArgumentException("Game type ${request.gameType} not found")
+                GameType.BURRACO -> GameResponse(controller.createNewBurracoGame())
+                //else -> throw IllegalArgumentException("Game type ${request.gameType} not found")
             }
-            call.respond("gameResponse")
+            call.respond(gameResponse)
         }
     }
 }

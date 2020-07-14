@@ -74,7 +74,7 @@ data class BurracoGameExecutionTurnBeginning private constructor(
         }
 
         fun create(burracoGameWaitingPlayers: BurracoGameWaitingPlayers, burracoCardsDealt: BurracoCardsDealt): BurracoGameExecutionTurnBeginning {
-            assert(burracoGameWaitingPlayers.listOfPlayers().map { player -> player.identity() }.containsAll(burracoCardsDealt.playersCards.keys)) { "One or more players doesn't have their cards" }
+            check(burracoGameWaitingPlayers.listOfPlayers().map { player -> player.identity() }.containsAll(burracoCardsDealt.playersCards.keys)) { "One or more players doesn't have their cards" }
 
             val burracoPlayersInGame = burracoGameWaitingPlayers.listOfPlayers().map { player ->
                 PlayerInGame.create(
@@ -89,7 +89,7 @@ data class BurracoGameExecutionTurnBeginning private constructor(
                     burracoDeck = burracoCardsDealt.burracoDeck,
                     mazzettoDecks = burracoCardsDealt.mazzettoDecks,
                     discardPile = burracoCardsDealt.discardPile,
-                    playerTurn = burracoPlayersInGame[0].identity
+                    playerTurn = burracoPlayersInGame[0].identity()
             )
             game.testInvariants()
             return game

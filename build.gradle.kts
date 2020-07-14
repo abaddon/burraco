@@ -14,6 +14,7 @@ plugins {
 
 }
 
+
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
@@ -41,6 +42,7 @@ dependencies {
     implementation("io.ktor:ktor-client-jackson:${ktorVersion}")
     implementation("io.ktor:ktor-server-netty:${ktorVersion}")
     implementation("io.ktor:ktor-jackson:${ktorVersion}")
+    //implementation("io.ktor:ktor-gson:${ktorVersion}")
 
     //CQS
     implementation(group = "org.reflections",name ="reflections",version = "0.9.12" )
@@ -70,7 +72,9 @@ dependencies {
 
 application {
     // Define the main class for the application.
+    applicationDefaultJvmArgs = listOf("-ea")
     mainClassName = "com.abaddon83.AppKt"
+
 }
 
 

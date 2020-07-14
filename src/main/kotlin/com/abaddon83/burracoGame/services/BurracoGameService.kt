@@ -19,6 +19,7 @@ import com.abaddon83.utils.cqs.QueryDispatcherImpl
 import com.abaddon83.utils.cqs.CommandDispatcherImpl
 import com.abaddon83.utils.cqs.Context
 import com.abaddon83.utils.cqs.commands.CommandDispatcher
+import com.abaddon83.utils.cqs.queries.Query
 import com.abaddon83.utils.cqs.queries.QueryDispatcher
 import com.abaddon83.utils.logs.WithLog
 import org.koin.core.KoinComponent
@@ -31,6 +32,10 @@ class BurracoGameService : KoinComponent, WithLog() {
     private val queryDispatcher: QueryDispatcher = QueryDispatcherImpl(context)
     private val commandDispatcher: CommandDispatcher = CommandDispatcherImpl(context)
 
+    suspend fun <TQuery : Query<TResponse>, TResponse>executeQuery(query: TQuery): TResponse {
+        return queryDispatcher.dispatchAsync(query)
+    }
+
     suspend fun createNewBurracoGame(gameIdentity: GameIdentity): BurracoGameWaitingPlayers {
         val command = CreateNewBurracoGameCmd(gameIdentity)
         val query = FindBurracoGameWaitingQuery(gameIdentity)
@@ -41,7 +46,8 @@ class BurracoGameService : KoinComponent, WithLog() {
     }
 
     suspend fun addPlayer(gameIdentity: GameIdentity, playerIdentity: PlayerIdentity): BurracoGameWaitingPlayers {
-        val player = playerPort.findPlayerNotAssignedBy(playerIdentity)
+        val player = requireNotNull(playerPort.findPlayerNotAssignedBy(playerIdentity)){
+            log.warn("$playerIdentity not available") }
         val command = AddPlayerCmd(gameIdentity, player)
         commandDispatcher.dispatch(command)
         val query = FindBurracoGameWaitingQuery(gameIdentity)

@@ -1,5 +1,6 @@
 package com.abaddon83.burracoGame.ports
 
+import com.abaddon83.burracoGame.domainModels.BurracoGame
 import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.BurracoGameExecution
 import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.BurracoGameExecutionTurnBeginning
 import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.BurracoGameExecutionTurnEnd
@@ -16,6 +17,7 @@ interface BurracoGameRepositoryPort {
     fun save(burracoGame: BurracoGameExecution): BurracoGameExecution
     fun save(burracoGame: BurracoGameEnded): BurracoGameEnded
     fun exists(identity: GameIdentity): Boolean
+    suspend fun findBurracoGameBy(gameIdentity: GameIdentity): BurracoGame?
     suspend fun findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): BurracoGameWaitingPlayers?
     suspend fun findBurracoGameExecutionBy(gameIdentity: GameIdentity): BurracoGameExecution?
     suspend fun findBurracoGameExecutionTurnBeginningBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnBeginning?

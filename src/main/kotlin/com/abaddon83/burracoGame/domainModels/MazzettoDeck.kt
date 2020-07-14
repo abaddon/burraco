@@ -2,8 +2,9 @@ package com.abaddon83.burracoGame.domainModels
 
 import com.abaddon83.burracoGame.shared.decks.Card
 import com.abaddon83.burracoGame.shared.decks.Deck
+import com.abaddon83.utils.logs.WithLog
 
-data class MazzettoDeck private constructor(override val cards: MutableList<Card>) : Deck {
+data class MazzettoDeck private constructor(override val cards: MutableList<Card>) : Deck, WithLog() {
 
     override fun grabFirstCard(): Card = throw UnsupportedOperationException("This method is not implemented in the Mazzetto")
 

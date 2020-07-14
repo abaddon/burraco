@@ -26,11 +26,12 @@ data class BurracoGameExecutionTurnEnd private constructor(
     fun pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnEnd {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)
-        assert(player.showMyCards().isEmpty()) { "The player cannot pick up a Pozzetto if he still has cards" }
-        assert(!player.isMazzettoTaken()) { "The player cannot pick up a Pozzetto he already taken" }
+        check(player.showMyCards().isEmpty()) { warnMsg("The player cannot pick up a Mazzetto if he still has cards") }
+        check(!player.isMazzettoTaken()) { warnMsg("The player cannot pick up a Mazzetto he already taken") }
 
         val mazzetto = mazzettoDecks.firstMazzettoAvailable()
         mazzettoDecks.mazzettoTaken(mazzetto)
+        assert(player.isMazzettoTaken()){errorMsg("The mazzetto is taken now, the model is inconsistent!")}
 
         return copy(
                 players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
@@ -57,9 +58,9 @@ data class BurracoGameExecutionTurnEnd private constructor(
     fun completeGame(playerIdentity: PlayerIdentity): BurracoGameEnded {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)
-        assert(player.showMyCards().isEmpty()) { "The player cannot complete the game with ${player.showMyCards().size} cards on hand" }
-        assert(player.isMazzettoTaken()) { "The player cannot complete the game if the small deck is not taken (status: ${player.isMazzettoTaken()})" }
-        assert(player.burracoList().isNotEmpty()) { "The player doesn't have a burraco" }
+        check(player.showMyCards().isEmpty()) { warnMsg("The player cannot complete the game with ${player.showMyCards().size} cards on hand") }
+        check(player.isMazzettoTaken()) { warnMsg("The player cannot complete the game if the small deck is not taken (status: ${player.isMazzettoTaken()})") }
+        check(player.burracoList().isNotEmpty()) { warnMsg("The player doesn't have a burraco") }
         //TODO add the logic to check if the squad taken the pozzetto
 
         return BurracoGameEnded.create(identity(), players, mazzettoDecks, playerTurn)

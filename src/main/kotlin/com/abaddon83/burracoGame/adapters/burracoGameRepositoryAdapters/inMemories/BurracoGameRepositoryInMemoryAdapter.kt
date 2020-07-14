@@ -51,6 +51,8 @@ class BurracoGameRepositoryInMemoryAdapter : BurracoGameRepositoryPort, WithLog(
     override fun exists(identity: GameIdentity): Boolean =
             BurracoGameDB.search().find { game -> game.identity() == identity } != null
 
+    override suspend fun findBurracoGameBy(gameIdentity: GameIdentity): BurracoGame? =
+        BurracoGameDB.search().find { game -> game.identity() == gameIdentity }
 
     override suspend fun findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): BurracoGameWaitingPlayers? =
             BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameWaitingPlayers?
