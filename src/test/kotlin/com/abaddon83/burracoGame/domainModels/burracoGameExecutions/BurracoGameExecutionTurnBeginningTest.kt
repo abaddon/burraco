@@ -98,7 +98,7 @@ class BurracoGameExecutionTurnBeginningTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseStart()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.pickUpCardsFromDiscardPile(player1Id)
         }
     }

@@ -45,9 +45,7 @@ data class BurracoGameExecutionTurnExecution private constructor(
         check(!player.isMazzettoTaken()) { warnMsg("The player cannot pick up a Mazzetto he already taken") }
 
         val mazzetto = mazzettoDecks.firstMazzettoAvailable()
-        mazzettoDecks.mazzettoTaken(mazzetto)
-
-        assert(player.isMazzettoTaken()){errorMsg("The mazzetto is taken now, the model is inconsistent!")}
+        
         return copy(
                 players = UpdatePlayers(player.pickUpMazzetto(mazzetto)),
                 mazzettoDecks = mazzettoDecks.mazzettoTaken(mazzetto)

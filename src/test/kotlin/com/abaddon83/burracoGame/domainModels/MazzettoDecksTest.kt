@@ -68,7 +68,7 @@ class MazzettoDecksTest {
                 .mazzettoTaken(mazzettoDeck1)
                 .mazzettoTaken(mazzettoDeck2)
 
-        assertFailsWith(IllegalArgumentException::class) {
+        assertFailsWith(IllegalStateException::class) {
             actualMazzettoDecks.firstMazzettoAvailable()
         }
     }

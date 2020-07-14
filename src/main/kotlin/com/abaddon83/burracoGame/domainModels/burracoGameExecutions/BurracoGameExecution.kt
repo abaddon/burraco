@@ -31,7 +31,7 @@ abstract class BurracoGameExecution : BurracoGame() {
     fun showDiscardPile(): List<Card> = discardPile.showCards()
 
     fun validatePlayerTurn(playerIdentity: PlayerIdentity): Unit =
-            check(playerTurn != playerIdentity) {
+            check(playerTurn == playerIdentity) {
                 warnMsg("It's not the turn of the player $playerIdentity")
             }
 

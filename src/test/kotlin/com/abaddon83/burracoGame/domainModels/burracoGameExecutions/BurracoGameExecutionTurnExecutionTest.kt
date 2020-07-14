@@ -121,7 +121,7 @@ fun `Given a player not in the turn, when drop a scale, I receive an error`() {
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.dropOnTableAScale(player1Id, scale)
         }
     }
@@ -174,7 +174,7 @@ fun `Given a player with a tris and during the turn of another player, when appe
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.appendCardsOnABurracoDropped(player1Id, cardToAppend,tris.identity())
         }
 
@@ -244,7 +244,7 @@ fun `Given a player with no cards, during the tun of another player , when pickU
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(AssertionError::class){
+        assertFailsWith(IllegalStateException::class){
             game.pickupMazzetto(player1Id)
         }
     }
@@ -258,7 +258,7 @@ fun `Given a player of another game , when pickUp the mazzetto, then I receive a
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(NoSuchElementException::class){
+        assertFailsWith(IllegalStateException::class){
             game.pickupMazzetto(PlayerIdentity.create())
         }
     }
@@ -291,7 +291,7 @@ fun `Given a player during the turn of another player, when drop a card on a dis
                 .setPlayer2Turn()
                 .buildTurnPhaseExecution()
 
-        assertFailsWith(UnsupportedOperationException::class){
+        assertFailsWith(IllegalStateException::class){
             game.dropCardOnDiscardPile(player1Id,cardToDrop)
         }
 

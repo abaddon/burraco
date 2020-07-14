@@ -63,7 +63,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(AssertionError::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.pickupMazzetto(player1Id)
         }
     }
@@ -96,7 +96,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.nextPlayerTurn(player1Id)
         }
     }
@@ -199,7 +199,7 @@ class BurracoGameExecutionTurnEndTest {
                 .setPlayer2Turn()
                 .buildTurnPhaseEnd()
 
-        assertFailsWith(UnsupportedOperationException::class) {
+        assertFailsWith(IllegalStateException::class) {
             game.completeGame(player1Id)
         }
     }
