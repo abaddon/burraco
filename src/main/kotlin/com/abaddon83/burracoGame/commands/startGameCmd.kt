@@ -30,13 +30,13 @@ class StartGameHandler() : CommandHandler<StartGameCmd>, KoinComponent {
 
     override fun handle(command: StartGameCmd) {
         val burracoGameWaitingPlayers = runBlocking { repository.findBurracoGameWaitingPlayersBy(command.gameIdentity) }
-        check(burracoGameWaitingPlayers != null) {"GameIdentity ${command.gameIdentity} not found exist"}
+        checkNotNull(burracoGameWaitingPlayers) {"GameIdentity ${command.gameIdentity} not found exist"}
         repository.save(burracoGameWaitingPlayers.start())
     }
 
     override suspend fun handleAsync(command: StartGameCmd) {
         val burracoGameWaitingPlayers = repository.findBurracoGameWaitingPlayersBy(command.gameIdentity)
-        check(burracoGameWaitingPlayers != null) {"GameIdentity ${command.gameIdentity} not found exist"}
+        checkNotNull(burracoGameWaitingPlayers) {"GameIdentity ${command.gameIdentity} not found exist"}
         repository.save(burracoGameWaitingPlayers.start())
     }
 }

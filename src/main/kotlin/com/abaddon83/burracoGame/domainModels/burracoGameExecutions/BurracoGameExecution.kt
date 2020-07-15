@@ -13,22 +13,29 @@ abstract class BurracoGameExecution : BurracoGame() {
     protected abstract val discardPile: DiscardPile
 
     //READ Methods
-    fun playerCards(playerIdentity: PlayerIdentity): List<Card> = players.find { p -> p.identity() == playerIdentity }
-            ?.let { player ->
-                player.showMyCards()
-            } ?: throw NoSuchElementException("Player $playerIdentity is not a player of this game ${identity()}")
+    fun playerCards(playerIdentity: PlayerIdentity): List<Card> =
+            when (val player = players.find { p -> p.identity() == playerIdentity }) {
+                is PlayerInGame -> player.showMyCards()
+                else -> throw NoSuchElementException("Player $playerIdentity is not a player of this game ${identity()}")
+            }
 
-    fun playerTrisOnTable(playerIdentity: PlayerIdentity): List<BurracoTris> = players.find { p -> p.identity() == playerIdentity }
-            ?.let { player ->
-                player.showTrisOnTable()
-            } ?: throw NoSuchElementException("Player $playerIdentity is not a player of this game ${identity()}")
+    fun playerTrisOnTable(playerIdentity: PlayerIdentity): List<BurracoTris> =
+            when (val player = players.find { p -> p.identity() == playerIdentity }) {
+                is PlayerInGame -> player.showTrisOnTable()
+                else -> throw NoSuchElementException("Player $playerIdentity is not a player of this game ${identity()}")
+            }
 
-    fun playerScalesOnTable(playerIdentity: PlayerIdentity): List<BurracoScale> = players.find { p -> p.identity() == playerIdentity }
-            ?.let { player ->
-                player.showScalesOnTable()
-            } ?: throw NoSuchElementException("Player ${playerIdentity} is not a player of this game ${identity()}")
+    fun playerScalesOnTable(playerIdentity: PlayerIdentity): List<BurracoScale> =
+            when (val player = players.find { p -> p.identity() == playerIdentity }) {
+                is PlayerInGame -> player.showScalesOnTable()
+                else -> throw NoSuchElementException("Player $playerIdentity is not a player of this game ${identity()}")
+            }
 
     fun showDiscardPile(): List<Card> = discardPile.showCards()
+
+    fun showPlayerTurn(): PlayerIdentity = playerTurn
+
+    fun showNumMazzettoAvailable(): Int = mazzettoDecks.list.size
 
     fun validatePlayerTurn(playerIdentity: PlayerIdentity): Unit =
             check(playerTurn == playerIdentity) {

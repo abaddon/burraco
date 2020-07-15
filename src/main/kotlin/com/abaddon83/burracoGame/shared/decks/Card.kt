@@ -1,6 +1,7 @@
 package com.abaddon83.burracoGame.shared.decks
 
 import java.awt.Color
+import java.lang.Exception
 
 data class Card(val suit: Suits.Suit, val rank: Ranks.Rank) : Comparable<Card> {
 
@@ -13,11 +14,11 @@ data class Card(val suit: Suits.Suit, val rank: Ranks.Rank) : Comparable<Card> {
         //   return 0 if two cards are equal
         //   return 1 if this card is greater than passed one
         //   return -1 otherwise
-        if(rank.position > other.rank.position){
+        if (rank.position > other.rank.position) {
             return -1
-        }else if(rank.position == other.rank.position){
+        } else if (rank.position == other.rank.position) {
             return 0
-        }else{
+        } else {
             return 1
         }
     }
@@ -25,8 +26,14 @@ data class Card(val suit: Suits.Suit, val rank: Ranks.Rank) : Comparable<Card> {
 }
 
 object Ranks {
-    val noFiguresRanks: List<Rank> = listOf(Ace,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten)
+    val noFiguresRanks: List<Rank> = listOf(Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten)
     val fullRanks: List<Rank> = listOf(noFiguresRanks, listOf(Jack, Queen, King)).flatten()
+
+    fun valueOf(value: String): Ranks.Rank =
+            when (val rank = fullRanks.plus(Jolly).find { it.javaClass.simpleName.toLowerCase() == value.toLowerCase() }) {
+                is Rank -> rank
+                else -> throw Exception("$value is not a valid Rank")
+            }
 
     interface Rank {
         val label: String
@@ -106,6 +113,12 @@ object Ranks {
 
 object Suits {
     val allSuit: List<Suit> = listOf(Heart, Tile, Clover, Pike)
+
+    fun valueOf(value: String): Suit =
+            when (val suit = Suits.allSuit.plus(Jolly).find { it.javaClass.simpleName.toLowerCase() == value.toLowerCase() }) {
+                is Suit -> suit
+                else -> throw Exception("$value is not a valid Suit")
+            }
 
     interface Suit {
         val icon: Char;

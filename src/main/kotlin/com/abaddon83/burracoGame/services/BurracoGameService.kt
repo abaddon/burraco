@@ -41,17 +41,17 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameWaitingQuery(gameIdentity)
         commandDispatcher.dispatchAsync(command)
 
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
         { "Game $gameIdentity not created" }
     }
 
     suspend fun addPlayer(gameIdentity: GameIdentity, playerIdentity: PlayerIdentity): BurracoGameWaitingPlayers {
         val player = requireNotNull(playerPort.findPlayerNotAssignedBy(playerIdentity)){
-            log.warn("$playerIdentity not available") }
+            warnMsg("$playerIdentity not available") }
         val command = AddPlayerCmd(gameIdentity, player)
         commandDispatcher.dispatch(command)
         val query = FindBurracoGameWaitingQuery(gameIdentity)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
         { "Game $gameIdentity not found" }
     }
 
@@ -60,7 +60,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnBeginningQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
         { "Game $gameIdentity not found" }
     }
 
@@ -69,7 +69,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun pickUpCardsFromDiscardPile(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution{
@@ -77,7 +77,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun organisePlayerCard(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecution{
@@ -85,7 +85,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun dropScale(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity, scale: BurracoScale) : BurracoGameExecutionTurnExecution{
@@ -93,7 +93,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun dropTris(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity, tris: BurracoTris) : BurracoGameExecutionTurnExecution{
@@ -101,7 +101,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun appendCardOnBurraco(gameIdentity: GameIdentity, playerIdentity: PlayerIdentity, burracoIdentity: BurracoIdentity, cardsToAppend: List<Card>) : BurracoGameExecutionTurnExecution{
@@ -109,7 +109,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun pickUpMazzettoDeck(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity) : BurracoGameExecution{
@@ -117,7 +117,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun dropCardOnDiscardPile(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity, card: Card) : BurracoGameExecutionTurnEnd {
@@ -125,7 +125,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnEndQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun endPlayerTurn(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity): BurracoGameExecutionTurnBeginning{
@@ -133,7 +133,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameExecutionTurnBeginningQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
     suspend fun endGame(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity): BurracoGameEnded {
@@ -141,7 +141,7 @@ class BurracoGameService : KoinComponent, WithLog() {
         val query = FindBurracoGameEndedQuery(gameIdentity)
 
         commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatchAsync(query))
+        return checkNotNull(queryDispatcher.dispatch(query))
     }
 
 }

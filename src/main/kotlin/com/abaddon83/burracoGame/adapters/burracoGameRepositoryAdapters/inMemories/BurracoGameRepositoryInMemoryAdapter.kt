@@ -15,7 +15,9 @@ class BurracoGameRepositoryInMemoryAdapter : BurracoGameRepositoryPort, WithLog(
     override fun save(burracoGame: BurracoGameWaitingPlayers): BurracoGameWaitingPlayers =
             when (val game = BurracoGameDB.persist(burracoGame)) {
                 is BurracoGameWaitingPlayers -> game
-                else -> { throw NoSuchElementException() }
+                else -> {
+                    throw NoSuchElementException()
+                }
             }
 
     override fun save(burracoGame: BurracoGameExecutionTurnBeginning): BurracoGameExecutionTurnBeginning =
@@ -52,33 +54,55 @@ class BurracoGameRepositoryInMemoryAdapter : BurracoGameRepositoryPort, WithLog(
             BurracoGameDB.search().find { game -> game.identity() == identity } != null
 
     override suspend fun findBurracoGameBy(gameIdentity: GameIdentity): BurracoGame? =
-        BurracoGameDB.search().find { game -> game.identity() == gameIdentity }
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGame -> game
+                else -> null
+            }
 
     override suspend fun findBurracoGameWaitingPlayersBy(gameIdentity: GameIdentity): BurracoGameWaitingPlayers? =
-            BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameWaitingPlayers?
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGameWaitingPlayers -> game
+                else -> null
+            }
+
 
     override suspend fun findBurracoGameExecutionBy(gameIdentity: GameIdentity): BurracoGameExecution? =
-            BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameExecution
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGameExecution -> game
+                else -> null
+            }
 
 
     override suspend fun findBurracoGameExecutionTurnBeginningBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnBeginning? =
-            BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameExecutionTurnBeginning?
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGameExecutionTurnBeginning -> game
+                else -> null
+            }
 
     override suspend fun findBurracoGameExecutionTurnExecutionBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnExecution? =
-            BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameExecutionTurnExecution?
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGameExecutionTurnExecution -> game
+                else -> null
+            }
 
 
     override suspend fun findBurracoGameExecutionTurnEndBy(gameIdentity: GameIdentity): BurracoGameExecutionTurnEnd? =
-            BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameExecutionTurnEnd?
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGameExecutionTurnEnd -> game
+                else -> null
+            }
 
     override suspend fun findBurracoGameEndedBy(gameIdentity: GameIdentity): BurracoGameEnded? =
-            BurracoGameDB.search().find { game -> game.identity() == gameIdentity } as BurracoGameEnded?
+            when (val game = BurracoGameDB.search().find { game -> game.identity() == gameIdentity }) {
+                is BurracoGameEnded -> game
+                else -> null
+            }
 
     override suspend fun findAllBurracoGameWaitingPlayers(): List<BurracoGameWaitingPlayers>? =
             BurracoGameDB.search().filterIsInstance<BurracoGameWaitingPlayers>()
 }
 
-object BurracoGameDB: WithLog(){
+object BurracoGameDB : WithLog() {
     private val db = mutableListOf<BurracoGame>()
 
     fun persist(burracoGame: BurracoGame): BurracoGame {
@@ -92,15 +116,15 @@ object BurracoGameDB: WithLog(){
     fun search(): MutableList<BurracoGame> = db;
 
     private fun add(burracoGame: BurracoGame): Unit {
-        when(db.add(burracoGame)){
-            false -> log.error("[${object{}.javaClass.enclosingMethod?.name}]: saved failed. ${burracoGame.identity()}")
+        when (db.add(burracoGame)) {
+            false -> log.error("[${object {}.javaClass.enclosingMethod?.name}]: saved failed. ${burracoGame.identity()}")
 
         }
     }
 
     private fun update(burracoGame: BurracoGame): Unit {
-        val gameToRemove = checkNotNull(db.find { game -> game.identity() == burracoGame.identity() }){
-            log.error("[${object{}.javaClass.enclosingMethod?.name}]: Is not possible update a burraco game that doesn't exist. ${burracoGame.identity()}")
+        val gameToRemove = checkNotNull(db.find { game -> game.identity() == burracoGame.identity() }) {
+            log.error("[${object {}.javaClass.enclosingMethod?.name}]: Is not possible update a burraco game that doesn't exist. ${burracoGame.identity()}")
         }
         db.remove(gameToRemove)
         db.add(burracoGame)

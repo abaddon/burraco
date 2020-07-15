@@ -1,7 +1,7 @@
 package com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.handleExceptions
 
 
-import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.responses.ErrorMsgResponse
+import com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.messages.ErrorMsgModule
 import io.ktor.application.call
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpStatusCode
@@ -33,21 +33,21 @@ fun StatusPages.Configuration.errorsHandling() {
 //    }
 
     exception<NumberFormatException> { e ->
-        call.respond(HttpStatusCode.BadRequest, message = ErrorMsgResponse(
+        call.respond(HttpStatusCode.BadRequest, message = ErrorMsgModule(
                 code = HttpStatusCode.BadRequest.value.toString(),
                 message = e.message.orEmpty()
         ))
     }
 
     exception<IllegalStateException> { e ->
-        call.respond(HttpStatusCode.BadRequest, message = ErrorMsgResponse(
+        call.respond(HttpStatusCode.BadRequest, message = ErrorMsgModule(
                 code = HttpStatusCode.BadRequest.value.toString(),
                 message = e.message.orEmpty()
         ))
     }
 
     exception<Throwable> { e ->
-        call.respond(HttpStatusCode.InternalServerError, message = ErrorMsgResponse(
+        call.respond(HttpStatusCode.InternalServerError, message = ErrorMsgModule(
                 code = HttpStatusCode.InternalServerError.value.toString(),
                 message = e.message.orEmpty()
         ))

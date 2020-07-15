@@ -58,6 +58,7 @@ fun Application.main() {
         jackson {
             configure(SerializationFeature.INDENT_OUTPUT, true)
             register(ContentType.Application.Json, JacksonConverter())
+
         }
     }
 

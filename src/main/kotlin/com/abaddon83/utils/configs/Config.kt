@@ -12,7 +12,7 @@ object Config: WithLog() {
 
     fun getProperty(propertyName: String): String? {
         if(localProperties.isEmpty) {
-            log.info("Load local.properties from: ${File("./").absolutePath}")
+            log.info("Loading local.properties from: ${File("./").absolutePath}")
             localProperties.load(FileInputStream(File(localPropertyPath)))
         }
         return localProperties.getProperty(propertyName)

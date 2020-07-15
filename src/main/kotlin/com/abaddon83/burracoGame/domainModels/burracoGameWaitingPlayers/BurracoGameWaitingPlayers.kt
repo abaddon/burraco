@@ -26,7 +26,7 @@ data class BurracoGameWaitingPlayers constructor(
 
     fun start(): BurracoGameExecutionTurnBeginning {
         check(players.size >1) {
-            log.warn("Not enough players to initiate the game, ( Min: ${minPlayers})")}
+            warnMsg("Not enough players to initiate the game, ( Min: ${minPlayers})")}
         val burracoDealer = BurracoDealer.create(this)
         return BurracoGameExecutionTurnBeginning.create(this,burracoDealer)
     }

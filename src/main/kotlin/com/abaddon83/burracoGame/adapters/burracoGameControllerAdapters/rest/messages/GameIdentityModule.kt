@@ -1,8 +1,8 @@
-package com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.responses
+package com.abaddon83.burracoGame.adapters.burracoGameControllerAdapters.rest.messages
 
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 
-data class GameIdentityResponse(val code: String, val type: String) {
+data class GameIdentityModule(val code: String, val type: String) {
 
     constructor(gameIdentity: GameIdentity) : this(
             code = gameIdentity.convertTo().toString(),

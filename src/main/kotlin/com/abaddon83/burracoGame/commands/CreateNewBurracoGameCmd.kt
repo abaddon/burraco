@@ -39,8 +39,7 @@ class CreateNewBurracoGameHandler() : CommandHandler<CreateNewBurracoGameCmd>, K
 
     private fun createBurracoGame(command: CreateNewBurracoGameCmd){
         check(!repository.exists(command.gameIdentity)) {
-            log.warn("${command.gameIdentity} already exist")
-            "${command.gameIdentity} already exist"
+            warnMsg("${command.gameIdentity} already exist")
         }
         val burracoGameWaitingPlayer = BurracoGame.create(command.gameIdentity)
         repository.save(burracoGameWaitingPlayer)
