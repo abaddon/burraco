@@ -21,6 +21,41 @@ data class BurracoGameExecutionTurnBeginning private constructor(
         override val discardPile: DiscardPile
 ) : BurracoGameExecution(identity) {
 
+    companion object Factory {
+        fun create(identity: GameIdentity, players: List<PlayerInGame>, burracoDeck: BurracoDeck, mazzettoDecks: MazzettoDecks, discardPile: DiscardPile, playerTurn: PlayerIdentity): BurracoGameExecutionTurnBeginning {
+            val game = BurracoGameExecutionTurnBeginning(
+                    identity = identity,
+                    players = players,
+                    burracoDeck = burracoDeck,
+                    mazzettoDecks = mazzettoDecks,
+                    discardPile = discardPile,
+                    playerTurn = playerTurn
+            )
+            game.testInvariants()
+            return game
+        }
+    }
+
+    //When the turn start the player can pickUp a card from the Deck
+    fun pickUpACardFromDeck(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
+        val player = validatePlayerId(playerIdentity)
+        validatePlayerTurn(playerIdentity)
+
+        return applyAndQueueEvent(
+                CardPickedFromDeck(this.identity, player.identity(), burracoDeck.getFirstCard())
+        )
+    }
+
+    //When the turn start the player can pickUp all cards from the DiscardPile if it's not empty
+    fun pickUpCardsFromDiscardPile(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
+        val player = validatePlayerId(playerIdentity)
+        validatePlayerTurn(playerIdentity)
+
+        return applyAndQueueEvent(
+                CardsPickedFromDiscardPile(this.identity, player.identity(), discardPile.grabAllCards())
+        )
+    }
+
     override fun applyEvent(event: Event): BurracoGame =
             when (event) {
                 is CardPickedFromDeck -> apply(event)
@@ -51,62 +86,6 @@ data class BurracoGameExecutionTurnBeginning private constructor(
                 discardPile = DiscardPile.create(discardPileCards),
                 playerTurn = this.playerTurn
         )
-    }
-
-
-    //When the turn start the player can pickUp a card from the Deck
-    fun pickUpACardFromDeck(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
-        val player = validatePlayerId(playerIdentity)
-        validatePlayerTurn(playerIdentity)
-
-        return applyAndQueueEvent(
-                CardPickedFromDeck(this.identity,player.identity(),burracoDeck.getFirstCard())
-        )
-    }
-
-    //When the turn start the player can pickUp all cards from the DiscardPile if it's not empty
-    fun pickUpCardsFromDiscardPile(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
-        val player = validatePlayerId(playerIdentity)
-        validatePlayerTurn(playerIdentity)
-
-        return applyAndQueueEvent(
-                CardsPickedFromDiscardPile(this.identity,player.identity(),discardPile.grabAllCards())
-        )
-    }
-
-    companion object Factory {
-        fun create(identity: GameIdentity, players: List<PlayerInGame>, burracoDeck: BurracoDeck, mazzettoDecks: MazzettoDecks, discardPile: DiscardPile, playerTurn: PlayerIdentity): BurracoGameExecutionTurnBeginning {
-
-            val game = BurracoGameExecutionTurnBeginning(
-                    identity = identity,
-                    players = players,
-                    burracoDeck = burracoDeck,
-                    mazzettoDecks = mazzettoDecks,
-                    discardPile = discardPile,
-                    playerTurn = playerTurn
-            )
-            game.testInvariants()
-            return game
-        }
-
-        fun create(burracoGameWaitingPlayers: BurracoGameWaitingPlayers, burracoCardsDealt: BurracoCardsDealt): BurracoGameExecutionTurnBeginning {
-            check(burracoGameWaitingPlayers.listOfPlayers().map { player -> player.identity() }.containsAll(burracoCardsDealt.playersCards.keys)) { "One or more players doesn't have their cards" }
-
-            val burracoPlayersInGame = burracoGameWaitingPlayers.listOfPlayers().map { player ->
-                PlayerInGame.create(
-                        player.identity(),
-                        burracoCardsDealt.playersCards[player.identity()]?.let { list -> list } ?: throw Exception("")
-                )
-            }
-            return BurracoGameExecutionTurnBeginning(
-                    identity = burracoGameWaitingPlayers.identity(),
-                    players = burracoPlayersInGame,
-                    burracoDeck = burracoCardsDealt.burracoDeck,
-                    mazzettoDecks = burracoCardsDealt.mazzettoDecks,
-                    discardPile = burracoCardsDealt.discardPile,
-                    playerTurn = burracoPlayersInGame[0].identity()
-            )
-        }
     }
 
 }

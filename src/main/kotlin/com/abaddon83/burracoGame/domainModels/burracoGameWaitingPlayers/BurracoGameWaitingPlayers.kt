@@ -15,16 +15,44 @@ data class BurracoGameWaitingPlayers constructor(
         override val identity: GameIdentity,
         override val players: List<BurracoPlayer>) : BurracoGame(identity) {
 
+    fun addPlayer(player: BurracoPlayer): BurracoGameWaitingPlayers {
+        check(players.size < maxPlayers) {
+            warnMsg("Maximum number of players reached, (Max: ${maxPlayers})")
+        }
+        check(!isAlreadyAPlayer(player.identity())) {
+            warnMsg("The player ${player.identity()} is already a player of game ${this.identity()}")
+        }
+        return applyAndQueueEvent(PlayerAdded(gameIdentity = identity, burracoPlayer = player))//BurracoGameWaitingPlayers(identity, listOf(players, listOf(player)).flatten())
+    }
+
+    fun isAlreadyAPlayer(playerIdentity: PlayerIdentity): Boolean {
+        return players.find { p -> p.identity() == playerIdentity } != null
+    }
+
+    fun start(): BurracoGameExecutionTurnBeginning {
+        check(players.size > 1) {
+            warnMsg("Not enough players to initiate the game, ( Min: ${minPlayers})")
+        }
+        val burracoDealer = BurracoDealer.create(this)
+        return applyAndQueueEvent(GameStarted(
+                gameIdentity = identity(),
+                playersCards = burracoDealer.playersCards,
+                burracoDeckCards = burracoDealer.burracoDeck.cards.toList(),
+                mazzettoDeck1Cards = burracoDealer.mazzettoDecks.list.first().cards.toList(),
+                mazzettoDeck2Cards = burracoDealer.mazzettoDecks.list.last().cards.toList(),
+                discardPileCards = burracoDealer.discardPile.showCards(),
+                playerTurn = players[0].identity())
+        )
+    }
 
     override fun applyEvent(event: Event): BurracoGame =
-        when (event) {
-            //is BurracoGameCreated -> apply(event)
-            is GameStarted -> apply(event)
-            is PlayerAdded -> apply(event)
-            else -> throw UnsupportedEventException(event::class.java)
-        }
+            when (event) {
+                is GameStarted -> apply(event)
+                is PlayerAdded -> apply(event)
+                else -> throw UnsupportedEventException(event::class.java)
+            }
 
-    private fun apply(event: PlayerAdded):BurracoGameWaitingPlayers {
+    private fun apply(event: PlayerAdded): BurracoGameWaitingPlayers {
         return copy(players = players.plus(event.burracoPlayer))
     }
 
@@ -44,38 +72,6 @@ data class BurracoGameWaitingPlayers constructor(
         )
         gameUpdated.testInvariants()
         return gameUpdated
-    }
-
-
-    fun addPlayer(player: BurracoPlayer): BurracoGameWaitingPlayers {
-        check(players.size < maxPlayers) {
-            warnMsg("Maximum number of players reached, (Max: ${maxPlayers})")
-        }
-        check(!isAlreadyAPlayer(player.identity())) {
-            warnMsg("The player ${player.identity()} is already a player of game ${this.identity()}")
-        }
-
-        return applyAndQueueEvent(PlayerAdded(gameIdentity = identity,burracoPlayer = player))//BurracoGameWaitingPlayers(identity, listOf(players, listOf(player)).flatten())
-    }
-
-    fun isAlreadyAPlayer(playerIdentity: PlayerIdentity): Boolean {
-        return players.find { p -> p.identity() == playerIdentity } != null
-    }
-
-    fun start(): BurracoGameExecutionTurnBeginning {
-        check(players.size > 1) {
-            warnMsg("Not enough players to initiate the game, ( Min: ${minPlayers})")
-        }
-        val burracoDealer = BurracoDealer.create(this)
-        return applyAndQueueEvent(GameStarted(
-                        gameIdentity = identity(),
-                        playersCards = burracoDealer.playersCards,
-                        burracoDeckCards = burracoDealer.burracoDeck.cards.toList(),
-                        mazzettoDeck1Cards = burracoDealer.mazzettoDecks.list.first().cards.toList(),
-                        mazzettoDeck2Cards = burracoDealer.mazzettoDecks.list.last().cards.toList(),
-                        discardPileCards = burracoDealer.discardPile.showCards(),
-                        playerTurn = players[0].identity())
-                )
     }
 
 }
