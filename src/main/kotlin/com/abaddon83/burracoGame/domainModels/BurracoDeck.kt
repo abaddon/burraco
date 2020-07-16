@@ -7,6 +7,7 @@ data class BurracoDeck private constructor(override val cards: MutableList<Card>
     override fun grabAllCards(): List<Card> = throw UnsupportedOperationException("You cannot grab all cards from the Deck")
 
     override fun grabFirstCard(): Card = super.grabFirstCard()
+    fun getFirstCard(): Card = cards.first()
 
     fun shuffle(): BurracoDeck = BurracoDeck(cards.shuffled().toMutableList())
 

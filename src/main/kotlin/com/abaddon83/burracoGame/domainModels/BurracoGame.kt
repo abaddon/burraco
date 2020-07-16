@@ -22,14 +22,6 @@ open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoo
 
     override fun listOfPlayers(): List<BurracoPlayer> = players
 
-
-    companion object Factory {
-        fun create(gameIdentity: GameIdentity): BurracoGameWaitingPlayers {
-            return BurracoGameWaitingPlayers(gameIdentity,players = listOf())
-                    .applyAndQueueEvent(BurracoGameCreated(gameIdentity = gameIdentity,players = listOf()))
-        }
-    }
-
     override fun applyEvent(event: Event): BurracoGame =
             when (event) {
                 is BurracoGameCreated -> apply(event)
@@ -38,6 +30,12 @@ open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoo
 
     private fun apply(event: BurracoGameCreated):BurracoGameWaitingPlayers {
         return BurracoGameWaitingPlayers(event.gameIdentity,players = event.players)
+    }
+
+    companion object Factory {
+        fun create(gameIdentity: GameIdentity): BurracoGameWaitingPlayers {
+            return BurracoGame(gameIdentity).applyAndQueueEvent(BurracoGameCreated(gameIdentity = gameIdentity,players = listOf()))
+        }
     }
 }
 

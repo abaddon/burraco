@@ -37,11 +37,6 @@ data class BurracoGameExecutionTurnExecution private constructor(
         )
     }
 
-    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnExecution {
-        val player = validatePlayerId(playerIdentity)
-        return this.copy(players = UpdatePlayers(player.orderPlayerCards(orderedCards)))
-    }
-
     fun dropOnTableATris(playerIdentity: PlayerIdentity, tris: BurracoTris): BurracoGameExecutionTurnExecution {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)

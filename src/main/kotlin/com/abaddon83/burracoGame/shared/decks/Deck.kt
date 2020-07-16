@@ -6,7 +6,7 @@ interface Deck{
 
     fun numCards(): Int = cards.size
 
-    fun grabFirstCard(): Card = cards.removeAt(0)
+    fun grabFirstCard(): Card = cards.removeAt(0) //.first()
 
     fun grabAllCards(): List<Card> {
         val grabbedCards = cards.toList()

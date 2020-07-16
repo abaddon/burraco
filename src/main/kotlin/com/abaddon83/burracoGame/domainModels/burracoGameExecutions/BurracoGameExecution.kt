@@ -47,9 +47,6 @@ abstract class BurracoGameExecution(identity: GameIdentity) : BurracoGame(identi
     fun testInvariants() = invariantNumCardsInGame()
 
     // write
-    abstract fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecution
-
-
     protected fun UpdatePlayers(burracoPlayerInGame: PlayerInGame): List<PlayerInGame> = players.map { playerInGame ->
         if (playerInGame.identity() == burracoPlayerInGame.identity()) {
             burracoPlayerInGame

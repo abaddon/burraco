@@ -54,19 +54,13 @@ data class BurracoGameExecutionTurnBeginning private constructor(
     }
 
 
-    //all players can order cards when they want to
-    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnBeginning {
-        val player = validatePlayerId(playerIdentity)
-        return this.copy(players = UpdatePlayers(player.orderPlayerCards(orderedCards)))
-    }
-
     //When the turn start the player can pickUp a card from the Deck
     fun pickUpACardFromDeck(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)
 
         return applyAndQueueEvent(
-                CardPickedFromDeck(this.identity,player.identity(),burracoDeck.grabFirstCard())
+                CardPickedFromDeck(this.identity,player.identity(),burracoDeck.getFirstCard())
         )
     }
 

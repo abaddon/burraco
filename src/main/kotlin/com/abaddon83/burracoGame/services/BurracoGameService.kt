@@ -80,14 +80,6 @@ class BurracoGameService : KoinComponent, WithLog() {
         return checkNotNull(queryDispatcher.dispatch(query))
     }
 
-    suspend fun organisePlayerCard(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecution{
-        val command = OrganisePlayerCardsCmd(gameIdentity, playerIdentity,orderedCards)
-        val query = FindBurracoGameExecutionQuery(gameIdentity)
-
-        commandDispatcher.dispatchAsync(command)
-        return checkNotNull(queryDispatcher.dispatch(query))
-    }
-
     suspend fun dropScale(gameIdentity: GameIdentity,playerIdentity: PlayerIdentity, scale: BurracoScale) : BurracoGameExecutionTurnExecution{
         val command = DropScaleCmd(gameIdentity, playerIdentity,scale)
         val query = FindBurracoGameExecutionTurnExecutionQuery(gameIdentity)

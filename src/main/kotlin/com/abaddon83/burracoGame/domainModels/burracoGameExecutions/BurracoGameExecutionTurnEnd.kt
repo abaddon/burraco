@@ -22,10 +22,6 @@ data class BurracoGameExecutionTurnEnd private constructor(
 ) : BurracoGameExecution(identity) {
 
 
-    override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnEnd {
-        TODO("Not yet implemented")
-    }
-
     override fun applyEvent(event: Event): BurracoGame =
             when (event) {
                 is TurnEnded -> apply(event)

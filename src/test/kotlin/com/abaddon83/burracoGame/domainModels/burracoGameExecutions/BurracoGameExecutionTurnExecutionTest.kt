@@ -14,34 +14,6 @@ import org.junit.Test
 import kotlin.test.assertFailsWith
 
 class BurracoGameExecutionTurnExecutionTest {
-    
-    @Test
-fun `Given a player in game, when update the cards order, the operation is executed`() {
-        val player1Id = PlayerIdentity.create()
-        val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id)
-                .buildTurnPhaseExecution()
-
-        val playerCards = game.playerCards(player1Id)
-        val orderedCards = playerCards.sorted()
-
-        val actualGame = game.updatePlayerCardsOrder(player1Id, orderedCards)
-
-        assert(actualGame.playerCards(player1Id) == orderedCards)
-        assert(actualGame.playerCards(player1Id) != playerCards)
-    }
-
-    @Test
-fun `Given a player not in game, when update the cards order, I receive an error`() {
-        val player1Id = PlayerIdentity.create()
-        val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id).buildTurnPhaseExecution()
-        val playerCards = game.playerCards(player1Id)
-        val orderedCards = playerCards.sorted()
-
-        assertFailsWith(IllegalStateException::class) {
-            game.updatePlayerCardsOrder(PlayerIdentity.create(), orderedCards)
-        }
-    }
-
 
     @Test
 fun `Given a player during his turn, when drop a tris, the operation is executed`() {
