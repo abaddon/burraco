@@ -1,6 +1,7 @@
 package com.abaddon83.burracoGame.domainModels.burracoGameExecutions
 
 import com.abaddon83.burracoGame.domainModels.BurracoDeck
+import com.abaddon83.burracoGame.domainModels.BurracoGame
 import com.abaddon83.burracoGame.domainModels.DiscardPile
 import com.abaddon83.burracoGame.domainModels.MazzettoDecks
 import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames.PlayerInGame
@@ -8,6 +9,8 @@ import com.abaddon83.burracoGame.domainModels.burracoGameendeds.BurracoGameEnded
 import com.abaddon83.burracoGame.shared.decks.Card
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.utils.es.Event
+import com.abaddon83.utils.es.UnsupportedEventException
 
 data class BurracoGameExecutionTurnEnd private constructor(
         override val players: List<PlayerInGame>,
@@ -16,12 +19,30 @@ data class BurracoGameExecutionTurnEnd private constructor(
         override val mazzettoDecks: MazzettoDecks,
         override val discardPile: DiscardPile,
         override val identity: GameIdentity
-) : BurracoGameExecution() {
+) : BurracoGameExecution(identity) {
 
 
     override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnEnd {
         TODO("Not yet implemented")
     }
+
+    override fun applyEvent(event: Event): BurracoGame =
+            when (event) {
+                is TurnEnded -> apply(event)
+                else -> throw UnsupportedEventException(event::class.java)
+            }
+
+    private fun apply(event: TurnEnded): BurracoGameExecutionTurnBeginning {
+        return BurracoGameExecutionTurnBeginning.create(
+                identity = identity(),
+                players = players,
+                burracoDeck = burracoDeck,
+                mazzettoDecks = mazzettoDecks,
+                discardPile = discardPile,
+                playerTurn = event.nextPlayerTurn
+        )
+    }
+
 
     fun pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnEnd {
         val player = validatePlayerId(playerIdentity)
@@ -43,13 +64,8 @@ data class BurracoGameExecutionTurnEnd private constructor(
         val list = players.map { it.identity() }
         val nextPlayerTurn = list[(list.indexOf(playerTurn) + 1) % list.size]
 
-        return BurracoGameExecutionTurnBeginning.create(
-                identity = identity(),
-                players = players,
-                burracoDeck = burracoDeck,
-                mazzettoDecks = mazzettoDecks,
-                discardPile = discardPile,
-                playerTurn = nextPlayerTurn
+        return applyAndQueueEvent(
+                TurnEnded(gameIdentity = identity(), player = playerIdentity, nextPlayerTurn = nextPlayerTurn)
         )
     }
 
@@ -80,3 +96,15 @@ data class BurracoGameExecutionTurnEnd private constructor(
         }
     }
 }
+
+
+//Events
+data class TurnEnded(
+        val gameIdentity: GameIdentity,
+        val player: PlayerIdentity,
+        val nextPlayerTurn: PlayerIdentity,
+        val version: Long? = null) : Event(version) {
+    override fun copyWithVersion(version: Long): TurnEnded =
+            this.copy(version = version)
+}
+

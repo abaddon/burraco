@@ -6,6 +6,8 @@ import com.abaddon83.burracoGame.shared.burracos.BurracoIdentity
 import com.abaddon83.burracoGame.shared.decks.Card
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.utils.es.Event
+import com.abaddon83.utils.es.UnsupportedEventException
 
 data class BurracoGameExecutionTurnExecution private constructor(
         override val players: List<PlayerInGame>,
@@ -13,7 +15,27 @@ data class BurracoGameExecutionTurnExecution private constructor(
         override val burracoDeck: BurracoDeck,
         override val mazzettoDecks: MazzettoDecks,
         override val discardPile: DiscardPile,
-        override val identity: GameIdentity) : BurracoGameExecution() {
+        override val identity: GameIdentity) : BurracoGameExecution(identity) {
+
+    override fun applyEvent(event: Event): BurracoGame =
+            when (event) {
+                is CardDroppedIntoDiscardPile -> apply(event)
+                else -> throw UnsupportedEventException(event::class.java)
+            }
+
+    private fun apply(event: CardDroppedIntoDiscardPile): BurracoGameExecutionTurnEnd {
+        val player = players.find { p -> p.identity() == event.player }!!
+        val deckCards = discardPile.cards.toList().plus(event.cardDropped)
+
+        return BurracoGameExecutionTurnEnd.create(
+                identity = identity(),
+                players = UpdatePlayers(player.dropACard(event.cardDropped)),
+                playerTurn = playerTurn,
+                burracoDeck = burracoDeck,
+                mazzettoDecks = mazzettoDecks,
+                discardPile = discardPile.addCard(event.cardDropped)
+        )
+    }
 
     override fun updatePlayerCardsOrder(playerIdentity: PlayerIdentity, orderedCards: List<Card>): BurracoGameExecutionTurnExecution {
         val player = validatePlayerId(playerIdentity)
@@ -55,13 +77,8 @@ data class BurracoGameExecutionTurnExecution private constructor(
     fun dropCardOnDiscardPile(playerIdentity: PlayerIdentity, card: Card): BurracoGameExecutionTurnEnd {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)
-        return BurracoGameExecutionTurnEnd.create(
-                players = UpdatePlayers(player.dropACard(card)),
-                playerTurn = playerTurn,
-                burracoDeck = burracoDeck,
-                mazzettoDecks = mazzettoDecks,
-                discardPile = discardPile.addCard(card),
-                identity = identity()
+        return applyAndQueueEvent(
+                CardDroppedIntoDiscardPile(gameIdentity = identity(),player = player.identity(),cardDropped = card)
         )
     }
 
@@ -79,4 +96,14 @@ data class BurracoGameExecutionTurnExecution private constructor(
             return game
         }
     }
+}
+
+//Events
+data class CardDroppedIntoDiscardPile(
+        val gameIdentity: GameIdentity,
+        val player: PlayerIdentity,
+        val cardDropped: Card,
+        val version: Long? = null) : Event(version) {
+    override fun copyWithVersion(version: Long): CardDroppedIntoDiscardPile =
+            this.copy(version = version)
 }

@@ -272,9 +272,10 @@ fun `Given a player during his turn with some cards, when drop a card on a disca
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
 
-        val expectedDiscardPileSize = 1
+        val expectedDiscardPileSize = game.showDiscardPile().size + 1
 
         val actualGame = game.dropCardOnDiscardPile(player1Id,cardToDrop)
+
         assert(actualGame.playerCards(player1Id).isEmpty())
         assert(actualGame.showDiscardPile().size == expectedDiscardPileSize)
         assert(actualGame.showDiscardPile().contains(cardToDrop))

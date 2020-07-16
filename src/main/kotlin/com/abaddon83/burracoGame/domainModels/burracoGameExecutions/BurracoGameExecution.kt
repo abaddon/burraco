@@ -3,9 +3,10 @@ package com.abaddon83.burracoGame.domainModels.burracoGameExecutions
 import com.abaddon83.burracoGame.domainModels.*
 import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames.PlayerInGame
 import com.abaddon83.burracoGame.shared.decks.Card
+import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
 
-abstract class BurracoGameExecution : BurracoGame() {
+abstract class BurracoGameExecution(identity: GameIdentity) : BurracoGame(identity) {
     abstract override val players: List<PlayerInGame>
     protected abstract val playerTurn: PlayerIdentity
     protected abstract val burracoDeck: BurracoDeck
