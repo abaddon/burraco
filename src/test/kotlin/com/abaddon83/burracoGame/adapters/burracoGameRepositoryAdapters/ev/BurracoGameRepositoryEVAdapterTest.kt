@@ -1,6 +1,6 @@
 package com.abaddon83.burracoGame.adapters.burracoGameRepositoryAdapters.ev
 
-import com.abaddon83.burracoGame.commands.StartGameCmd
+import com.abaddon83.burracoGame.adapters.burracoGameEventStoreAdapters.BurracoGameRepositoryEVAdapter
 import com.abaddon83.burracoGame.domainModels.BurracoGame
 import com.abaddon83.burracoGame.domainModels.BurracoGameCreated
 import com.abaddon83.burracoGame.domainModels.PlayerNotAssigned
@@ -14,7 +14,7 @@ import com.abaddon83.burracoGame.shared.decks.ListCardsBuilder
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
 import com.abaddon83.utils.es.Event
-import com.abaddon83.utils.es.InMemoryEventStore
+import com.abaddon83.utils.es.eventStore.inMemory.InMemoryEventStore
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import eventsourcing.messagebus.AsyncInMemoryBus

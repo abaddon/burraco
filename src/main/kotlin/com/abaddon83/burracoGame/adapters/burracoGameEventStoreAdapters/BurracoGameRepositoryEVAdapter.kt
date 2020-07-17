@@ -1,9 +1,9 @@
-package com.abaddon83.burracoGame.adapters.burracoGameRepositoryAdapters.ev
+package com.abaddon83.burracoGame.adapters.burracoGameEventStoreAdapters
 
 import com.abaddon83.burracoGame.domainModels.BurracoGame
 import com.abaddon83.burracoGame.shared.games.GameIdentity
-import com.abaddon83.utils.es.EventSourcedRepository
-import com.abaddon83.utils.es.EventStore
+import com.abaddon83.utils.es.eventStore.EventStore
+import com.abaddon83.utils.es.repository.EventSourcedRepository
 
 class BurracoGameRepositoryEVAdapter(eventStore: EventStore<GameIdentity>) : EventSourcedRepository<GameIdentity, BurracoGame>(eventStore) {
 

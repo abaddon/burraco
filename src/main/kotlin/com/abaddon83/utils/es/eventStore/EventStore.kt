@@ -1,4 +1,7 @@
-package com.abaddon83.utils.es
+package com.abaddon83.utils.es.eventStore
+
+import com.abaddon83.utils.es.AggregateType
+import com.abaddon83.utils.es.Event
 
 
 /**

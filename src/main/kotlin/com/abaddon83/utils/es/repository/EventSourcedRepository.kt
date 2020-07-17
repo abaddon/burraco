@@ -1,5 +1,7 @@
-package com.abaddon83.utils.es
+package com.abaddon83.utils.es.repository
 
+import com.abaddon83.utils.es.AggregateRoot
+import com.abaddon83.utils.es.eventStore.EventStore
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -12,11 +14,11 @@ abstract class EventSourcedRepository<T,A : AggregateRoot<T>>(eventStore: EventS
 
     private val store = eventStore
 
-    override fun save(aggregate: A, expectedVersion: Long?): Boolean {
+    override fun save(aggregate: A, expectedVersion: Long?): A {
         log.debug("Storing uncommitted event for '${aggregate.aggregateType()}:$aggregate.id'")
         store.saveEvents(aggregateType = aggregate.aggregateType(), aggregateId = aggregate.identity(), events = aggregate.getUncommittedChanges(), expectedVersion = expectedVersion)
         aggregate.markChangesAsCommitted()
-        return true
+        return aggregate
     }
 
     override fun getById(id: T): A {

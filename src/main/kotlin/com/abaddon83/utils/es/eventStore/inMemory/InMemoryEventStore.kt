@@ -1,5 +1,8 @@
-package com.abaddon83.utils.es
+package com.abaddon83.utils.es.eventStore.inMemory
 
+import com.abaddon83.utils.es.AggregateRoot
+import com.abaddon83.utils.es.Event
+import com.abaddon83.utils.es.eventStore.BaseEventStore
 import com.abaddon83.utils.es.messageBus.EventPublisher
 
 /**
@@ -22,7 +25,7 @@ class InMemoryEventStore<T>(eventPublisher: EventPublisher<Event>) : BaseEventSt
 
 
     //TEST
-    fun uploadEvents(aggregate: AggregateRoot<T>,events: List<Event>){
+    fun uploadEvents(aggregate: AggregateRoot<T>, events: List<Event>){
         val streamKey = StreamKey(aggregate.aggregateType(), aggregate.identity())
         var eventVersion: Long = 0
         val list: MutableList<EventDescriptor<T>> = events.map { event ->
