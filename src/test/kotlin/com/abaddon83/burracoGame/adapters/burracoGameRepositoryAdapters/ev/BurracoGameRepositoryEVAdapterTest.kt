@@ -15,6 +15,8 @@ import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
 import com.abaddon83.utils.es.Event
 import com.abaddon83.utils.es.InMemoryEventStore
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import eventsourcing.messagebus.AsyncInMemoryBus
 import kotlinx.coroutines.GlobalScope
 import org.junit.Test
@@ -47,11 +49,12 @@ class BurracoGameRepositoryEVAdapterTest {
 
         val playersCards = mapOf<PlayerIdentity,List<Card>>(cardsPlayer1,cardsPlayer2)
         val aggregate = BurracoGame(identity = gameIdentity)
+
         val events = listOf<Event>(
-                BurracoGameCreated(gameIdentity = gameIdentity, players = listOf()),
-                PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1)),
-                PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity2)),
-                GameStarted(
+                BurracoGameCreated.create(gameIdentity = gameIdentity),
+                PlayerAdded.create(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1)),
+                PlayerAdded.create(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity2)),
+                GameStarted.create(
                         gameIdentity = gameIdentity,
                         playersCards = playersCards,
                         burracoDeckCards = burracoDeckCards,
@@ -87,5 +90,29 @@ class BurracoGameRepositoryEVAdapterTest {
         println()
         println("classType: $classType")
         println()
+
+        val kMapper = ObjectMapper().registerModule(KotlinModule())
+        println("BurracoGameCreated: ${kMapper.writeValueAsString(events[0])}")
+        println("PlayerAdded1: ${kMapper.writeValueAsString(events[1])}")
+        println("PlayerAdded2: ${kMapper.writeValueAsString(events[2])}")
+        println("GameStarted: ${kMapper.writeValueAsString(events[3])}")
     }
+
+//    @Test
+//    fun `test serialization`() {
+//
+//
+//        val gameIdentity = GameIdentity.create()
+//
+//        val playerIdentity1 = PlayerIdentity.create()
+//
+//        val event = PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1))
+//
+//
+//        println(event.burracoPlayer.identity())
+//        println()
+//        println(serializedRDJ)
+//
+//    }
+
 }

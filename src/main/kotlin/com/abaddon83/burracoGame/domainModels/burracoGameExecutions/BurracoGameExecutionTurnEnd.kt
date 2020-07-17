@@ -99,8 +99,9 @@ data class TurnEnded(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val nextPlayerTurn: PlayerIdentity,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): TurnEnded =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): TurnEnded =
             this.copy(version = version)
 }
 

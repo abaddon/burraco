@@ -8,24 +8,26 @@ import com.abaddon83.utils.es.messageBus.EventPublisher
  */
 class InMemoryEventStore<T>(eventPublisher: EventPublisher<Event>) : BaseEventStore<T>(eventPublisher) {
 
-    private val streams: MutableMap<StreamKey<T>, MutableList<EventDescriptor<T>>> = mutableMapOf()
+    private val streams: MutableMap<StreamKey<T>, List<EventDescriptor<T>>> = mutableMapOf()
 
     override fun stream(key: StreamKey<T>): Iterable<EventDescriptor<T>>? {
         return streams[key]?.toList() ?: listOf<EventDescriptor<T>>()
     }
 
-    override fun appendEventDescriptor(key: StreamKey<T>, eventDescriptor: EventDescriptor<T>) {
+    override fun appendEventDescriptor(eventDescriptor: EventDescriptor<T>) {
+        val key = eventDescriptor.streamKey
         val stream = streams[key] ?: mutableListOf()
-        stream.add(eventDescriptor)
-        streams[key] = stream
+        streams[key] = stream.plus(eventDescriptor)
     }
 
+
+    //TEST
     fun uploadEvents(aggregate: AggregateRoot<T>,events: List<Event>){
         val streamKey = StreamKey(aggregate.aggregateType(), aggregate.identity())
         var eventVersion: Long = 0
         val list: MutableList<EventDescriptor<T>> = events.map { event ->
             eventVersion++
-            EventDescriptor(streamKey, eventVersion, event.copyWithVersion(version = eventVersion))
+            EventDescriptor(streamKey, eventVersion, event.assignVersion(version = eventVersion))
         }.toMutableList()
         list.forEach { it -> println("version: ${it.version}  event: ${it.event.javaClass.simpleName}") }
         streams[streamKey] = list

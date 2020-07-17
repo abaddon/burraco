@@ -15,7 +15,7 @@ abstract class BaseEventStore<T>(private val eventPublisher : EventPublisher<Eve
 
     protected abstract fun stream(key: StreamKey<T>): Iterable<EventDescriptor<T>>?
 
-    protected abstract fun appendEventDescriptor(key: StreamKey<T>, eventDescriptor: EventDescriptor<T>)
+    protected abstract fun appendEventDescriptor(eventDescriptor: EventDescriptor<T>)
 
 
     override fun getEventsForAggregate(aggregateType: AggregateType, aggregateId: T): Iterable<Event>? {
@@ -56,13 +56,13 @@ abstract class BaseEventStore<T>(private val eventPublisher : EventPublisher<Eve
                 val eventVersion = baseVersion + i + 1
 
                 // Events have a version when stored in a stream and published
-                val versionedEvent = event.copyWithVersion(eventVersion)
+                val versionedEvent = event.assignVersion(eventVersion)
                 yield(versionedEvent)
 
                 val eventDescriptor = EventDescriptor(streamKey, eventVersion, versionedEvent)
 
                 log.debug("Appending event {} to Stream {}", eventDescriptor, streamKey)
-                appendEventDescriptor(streamKey, eventDescriptor )
+                appendEventDescriptor(eventDescriptor )
 
                 log.trace("Publishing event: {}", versionedEvent)
                 eventPublisher.publish(versionedEvent)

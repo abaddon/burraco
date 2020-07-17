@@ -91,13 +91,13 @@ data class BurracoGameExecutionTurnBeginning private constructor(
 }
 
 //Events
-
 data class CardPickedFromDeck(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val cardTaken: Card,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): CardPickedFromDeck =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): CardPickedFromDeck =
             this.copy(version = version)
 }
 
@@ -105,7 +105,8 @@ data class CardsPickedFromDiscardPile(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val cardsTaken: List<Card>,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): CardsPickedFromDiscardPile =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): CardsPickedFromDiscardPile =
             this.copy(version = version)
 }

@@ -9,5 +9,5 @@ abstract class Event(private val version: Long?, val eventTime: Instant =  Insta
     // There are effectively two types of Events: before and after they are stored in the Event Store.
     // TODO find a more elegant solution for event version
     fun version(): Long? = version
-    abstract fun copyWithVersion(version: Long): Event
+    abstract fun assignVersion(version: Long): Event
 }

@@ -140,8 +140,9 @@ data class CardDroppedIntoDiscardPile(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val cardDropped: Card,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): CardDroppedIntoDiscardPile =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): CardDroppedIntoDiscardPile =
             this.copy(version = version)
 }
 
@@ -149,8 +150,9 @@ data class TrisDropped(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val tris: BurracoTris,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): TrisDropped =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): TrisDropped =
             this.copy(version = version)
 }
 
@@ -158,8 +160,9 @@ data class ScaleDropped(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val scale: BurracoScale,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): ScaleDropped =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): ScaleDropped =
             this.copy(version = version)
 }
 
@@ -168,8 +171,9 @@ data class CardAddedOnBurraco(
         val player: PlayerIdentity,
         val burracoIdentity: BurracoIdentity,
         val cardsToAppend: List<Card>,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): CardAddedOnBurraco =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): CardAddedOnBurraco =
             this.copy(version = version)
 }
 
@@ -177,7 +181,8 @@ data class MazzettoPickedUp(
         val gameIdentity: GameIdentity,
         val player: PlayerIdentity,
         val mazzettoDeck: MazzettoDeck,
-        val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): MazzettoPickedUp =
+        val version: Long? = null
+) : Event(version) {
+    override fun assignVersion(version: Long): MazzettoPickedUp =
             this.copy(version = version)
 }
