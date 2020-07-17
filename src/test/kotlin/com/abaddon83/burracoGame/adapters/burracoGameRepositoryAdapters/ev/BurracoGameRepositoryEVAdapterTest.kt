@@ -51,10 +51,10 @@ class BurracoGameRepositoryEVAdapterTest {
         val aggregate = BurracoGame(identity = gameIdentity)
 
         val events = listOf<Event>(
-                BurracoGameCreated.create(gameIdentity = gameIdentity),
-                PlayerAdded.create(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1)),
-                PlayerAdded.create(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity2)),
-                GameStarted.create(
+                BurracoGameCreated(gameIdentity = gameIdentity),
+                PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1)),
+                PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity2)),
+                GameStarted(
                         gameIdentity = gameIdentity,
                         playersCards = playersCards,
                         burracoDeckCards = burracoDeckCards,
@@ -95,7 +95,7 @@ class BurracoGameRepositoryEVAdapterTest {
         println("BurracoGameCreated: ${kMapper.writeValueAsString(events[0])}")
         println("PlayerAdded1: ${kMapper.writeValueAsString(events[1])}")
         println("PlayerAdded2: ${kMapper.writeValueAsString(events[2])}")
-        println("GameStarted: ${kMapper.writeValueAsString(events[3])}")
+        //println("GameStarted: ${kMapper.writeValueAsString(events[3])}")
     }
 
 //    @Test

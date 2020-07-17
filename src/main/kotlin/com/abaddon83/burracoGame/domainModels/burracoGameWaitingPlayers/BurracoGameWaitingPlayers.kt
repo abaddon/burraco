@@ -6,10 +6,8 @@ import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGame
 import com.abaddon83.burracoGame.shared.decks.Card
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
-import com.abaddon83.utils.es.AggregateRoot
 import com.abaddon83.utils.es.Event
 import com.abaddon83.utils.es.UnsupportedEventException
-import java.time.LocalDate
 
 data class BurracoGameWaitingPlayers constructor(
         override val identity: GameIdentity,
@@ -82,7 +80,7 @@ data class PlayerAdded(
         val gameIdentity: GameIdentity,
         val burracoPlayer: BurracoPlayer,
         val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): PlayerAdded =
+    override fun assignVersion(version: Long): PlayerAdded =
             this.copy(version = version)
 }
 
@@ -95,6 +93,6 @@ data class GameStarted(
         val discardPileCards: List<Card>,
         val playerTurn: PlayerIdentity,
         val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): GameStarted =
+    override fun assignVersion(version: Long): GameStarted =
             this.copy(version = version)
 }

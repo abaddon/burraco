@@ -45,6 +45,6 @@ data class BurracoGameCreated(
         val gameIdentity: GameIdentity,
         val players: List<BurracoPlayer> = listOf(),
         val version: Long? = null) : Event(version) {
-    override fun copyWithVersion(version: Long): BurracoGameCreated =
+    override fun assignVersion(version: Long): BurracoGameCreated =
             this.copy(version = version)
 }
