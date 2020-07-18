@@ -1,6 +1,5 @@
-package com.abaddon83.burracoGame.adapters.burracoGameRepositoryAdapters.ev
+package com.abaddon83.burracoGame.adapters.burracoGameEventStoreAdapters
 
-import com.abaddon83.burracoGame.adapters.burracoGameEventStoreAdapters.BurracoGameRepositoryEVAdapter
 import com.abaddon83.burracoGame.domainModels.BurracoGame
 import com.abaddon83.burracoGame.domainModels.BurracoGameCreated
 import com.abaddon83.burracoGame.domainModels.PlayerNotAssigned
@@ -9,12 +8,15 @@ import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.BurracoG
 import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.GameStarted
 import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.PlayerAdded
 import com.abaddon83.burracoGame.domainModels.burracoGameendeds.BurracoGameEnded
+import com.abaddon83.burracoGame.readModels.burracoGameList.BurracoGameListProjection
+import com.abaddon83.burracoGame.readModels.burracoGameList.BurracoGameListReadModel
 import com.abaddon83.burracoGame.shared.decks.Card
 import com.abaddon83.burracoGame.shared.decks.ListCardsBuilder
 import com.abaddon83.burracoGame.shared.games.GameIdentity
 import com.abaddon83.burracoGame.shared.players.PlayerIdentity
 import com.abaddon83.utils.es.Event
 import com.abaddon83.utils.es.eventStore.inMemory.InMemoryEventStore
+import com.abaddon83.utils.es.readModel.InMemorySingleDocumentStore
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import eventsourcing.messagebus.AsyncInMemoryBus
@@ -25,7 +27,12 @@ class BurracoGameRepositoryEVAdapterTest {
 
     @Test
     fun `load an event`() {
-        val eventBus = AsyncInMemoryBus(GlobalScope)
+
+        val burracoGameListDatastore = InMemorySingleDocumentStore<Iterable<com.abaddon83.burracoGame.readModels.burracoGameList.BurracoGame>>(emptyList())
+        val burracoGameListProjection = BurracoGameListProjection(burracoGameListDatastore)
+        val burracoGameListReadModelFacade = BurracoGameListReadModel(burracoGameListDatastore)
+
+        val eventBus = AsyncInMemoryBus(GlobalScope).register(burracoGameListProjection)
         val eventStore = InMemoryEventStore<GameIdentity>(eventBus)
         val repository = BurracoGameRepositoryEVAdapter(eventStore = eventStore)
 
@@ -52,8 +59,8 @@ class BurracoGameRepositoryEVAdapterTest {
 
         val events = listOf<Event>(
                 BurracoGameCreated(gameIdentity = gameIdentity),
-                PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1)),
-                PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity2)),
+                PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
+                PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
                 GameStarted(
                         gameIdentity = gameIdentity,
                         playersCards = playersCards,
@@ -92,11 +99,14 @@ class BurracoGameRepositoryEVAdapterTest {
         println()
 
         val kMapper = ObjectMapper().registerModule(KotlinModule())
-        println("BurracoGameCreated: ${kMapper.writeValueAsString(events[0])}")
-        println("PlayerAdded1: ${kMapper.writeValueAsString(events[1])}")
-        println("PlayerAdded2: ${kMapper.writeValueAsString(events[2])}")
+        //println("BurracoGameCreated: ${kMapper.writeValueAsString(events[0])}")
+        //println("PlayerAdded1: ${kMapper.writeValueAsString(events[1])}")
+        //println("PlayerAdded2: ${kMapper.writeValueAsString(events[2])}")
         //println("GameStarted: ${kMapper.writeValueAsString(events[3])}")
+        println("---------")
+        println(burracoGameListReadModelFacade.allBurracoGames())
     }
+
 
 //    @Test
 //    fun `test serialization`() {

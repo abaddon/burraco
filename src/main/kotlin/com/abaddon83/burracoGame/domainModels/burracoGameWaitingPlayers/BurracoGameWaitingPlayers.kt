@@ -20,7 +20,7 @@ data class BurracoGameWaitingPlayers constructor(
         check(!isAlreadyAPlayer(player.identity())) {
             warnMsg("The player ${player.identity()} is already a player of game ${this.identity()}")
         }
-        return applyAndQueueEvent(PlayerAdded(gameIdentity = identity, burracoPlayer = player))//BurracoGameWaitingPlayers(identity, listOf(players, listOf(player)).flatten())
+        return applyAndQueueEvent(PlayerAdded(gameIdentity = identity, playerIdentity = player.identity()))//BurracoGameWaitingPlayers(identity, listOf(players, listOf(player)).flatten())
     }
 
     fun isAlreadyAPlayer(playerIdentity: PlayerIdentity): Boolean {
@@ -51,7 +51,7 @@ data class BurracoGameWaitingPlayers constructor(
             }
 
     private fun apply(event: PlayerAdded): BurracoGameWaitingPlayers {
-        return copy(players = players.plus(event.burracoPlayer))
+        return copy(players = players.plus(PlayerInGame.create(event.playerIdentity, listOf())))
     }
 
     private fun apply(event: GameStarted): BurracoGameExecutionTurnBeginning {
@@ -78,7 +78,7 @@ data class BurracoGameWaitingPlayers constructor(
 
 data class PlayerAdded(
         val gameIdentity: GameIdentity,
-        val burracoPlayer: BurracoPlayer,
+        val playerIdentity: PlayerIdentity,
         val version: Long? = null) : Event(version) {
     override fun assignVersion(version: Long): PlayerAdded =
             this.copy(version = version)

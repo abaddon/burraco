@@ -1,6 +1,5 @@
 package com.abaddon83.burracoGame.shared.decks
 
-import java.awt.Color
 import java.lang.Exception
 
 data class Card(val suit: Suits.Suit, val rank: Ranks.Rank) : Comparable<Card> {
@@ -119,6 +118,8 @@ object Suits {
                 is Suit -> suit
                 else -> throw Exception("$value is not a valid Suit")
             }
+
+    enum class Color{RED,BLACK}
 
     interface Suit {
         val icon: Char;

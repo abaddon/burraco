@@ -27,12 +27,14 @@ class InMemoryEventStore<T>(eventPublisher: EventPublisher<Event>) : BaseEventSt
     //TEST
     fun uploadEvents(aggregate: AggregateRoot<T>, events: List<Event>){
         val streamKey = StreamKey(aggregate.aggregateType(), aggregate.identity())
-        var eventVersion: Long = 0
-        val list: MutableList<EventDescriptor<T>> = events.map { event ->
-            eventVersion++
-            EventDescriptor(streamKey, eventVersion, event.assignVersion(version = eventVersion))
-        }.toMutableList()
-        list.forEach { it -> println("version: ${it.version}  event: ${it.event.javaClass.simpleName}") }
-        streams[streamKey] = list
+        saveEvents(aggregate.aggregateType(),aggregate.identity(),events)
+        //var eventVersion: Long = 0
+        //val list: MutableList<EventDescriptor<T>> = events.map { event ->
+        //    eventVersion++
+        //    EventDescriptor(streamKey, eventVersion, event.assignVersion(version = eventVersion))
+        //}.toMutableList()
+        //list.forEach { it -> println("version: ${it.version}  event: ${it.event.javaClass.simpleName}") }
+
+        //streams[streamKey] = list
     }
 }
