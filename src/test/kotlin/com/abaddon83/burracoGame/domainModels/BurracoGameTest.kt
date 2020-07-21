@@ -1,7 +1,7 @@
 package com.abaddon83.burracoGame.domainModels
 
-import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
-import com.abaddon83.burracoGame.shared.games.GameIdentity
+import com.abaddon83.burracoGame.commandModel.models.BurracoGame
+import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
 import org.junit.Test
 
 class BurracoGameTest {

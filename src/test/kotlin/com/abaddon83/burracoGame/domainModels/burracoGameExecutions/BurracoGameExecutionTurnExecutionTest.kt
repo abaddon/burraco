@@ -1,14 +1,14 @@
 package com.abaddon83.burracoGame.domainModels.burracoGameExecutions
 
-import com.abaddon83.burracoGame.domainModels.BurracoScale
-import com.abaddon83.burracoGame.domainModels.BurracoTris
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames.BurracoCardsOnTable
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames.PlayerInGame
-import com.abaddon83.burracoGame.shared.burracos.BurracoIdentity
-import com.abaddon83.burracoGame.shared.decks.Card
-import com.abaddon83.burracoGame.shared.decks.Ranks
-import com.abaddon83.burracoGame.shared.decks.Suits
-import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.burracoGame.commandModel.models.BurracoScale
+import com.abaddon83.burracoGame.commandModel.models.BurracoTris
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.BurracoCardsOnTable
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.PlayerInGame
+import com.abaddon83.burracoGame.commandModel.models.burracos.BurracoIdentity
+import com.abaddon83.burracoGame.commandModel.models.decks.Card
+import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
+import com.abaddon83.burracoGame.commandModel.models.decks.Suits
+import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 import com.abaddon83.burracoGame.testUtils.BurracoGameInitTurnTestFactory
 import org.junit.Test
 import kotlin.test.assertFailsWith
@@ -119,7 +119,7 @@ fun `Given a player during his turn with a tris, when append a card on the tris,
         val tris = BurracoTris(BurracoIdentity.create(), Ranks.Ace, listOf(Card(Suits.Heart, Ranks.Ace), Card(Suits.Heart, Ranks.Ace), Card(Suits.Clover, Ranks.Ace)))
         val player1Id = PlayerIdentity.create()
         val cardToAppend = listOf(Card(Suits.Tile, Ranks.Ace))
-        val player1 = PlayerInGame(player1Id, cardToAppend, BurracoCardsOnTable(listOfTris = listOf(tris),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, cardToAppend, BurracoCardsOnTable(listOfTris = listOf(tris), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id)
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
@@ -140,7 +140,7 @@ fun `Given a player with a tris and during the turn of another player, when appe
         val tris = BurracoTris(BurracoIdentity.create(), Ranks.Ace, listOf(Card(Suits.Heart, Ranks.Ace), Card(Suits.Heart, Ranks.Ace), Card(Suits.Clover, Ranks.Ace)))
         val player1Id = PlayerIdentity.create()
         val cardToAppend = listOf(Card(Suits.Tile, Ranks.Ace))
-        val player1 = PlayerInGame(player1Id, cardToAppend, BurracoCardsOnTable(listOfTris = listOf(tris),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, cardToAppend, BurracoCardsOnTable(listOfTris = listOf(tris), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .setPlayer2Turn()
@@ -157,7 +157,7 @@ fun `Given a player of another game, with a tris, when append a card on the tris
         val tris = BurracoTris(BurracoIdentity.create(), Ranks.Ace, listOf(Card(Suits.Heart, Ranks.Ace), Card(Suits.Heart, Ranks.Ace), Card(Suits.Clover, Ranks.Ace)))
         val player1Id = PlayerIdentity.create()
         val cardToAppend = listOf(Card(Suits.Tile, Ranks.Ace))
-        val player1 = PlayerInGame(player1Id, cardToAppend, BurracoCardsOnTable(listOfTris = listOf(tris),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, cardToAppend, BurracoCardsOnTable(listOfTris = listOf(tris), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
@@ -171,7 +171,7 @@ fun `Given a player of another game, with a tris, when append a card on the tris
     @Test
 fun `Given a player during his turn with no cards, when pickUp the mazzetto, then I can see the mazzetto cards on my hand`() {
         val player1Id = PlayerIdentity.create()
-        val player1 = PlayerInGame(player1Id, listOf(), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, listOf(), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id)
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
@@ -184,7 +184,7 @@ fun `Given a player during his turn with no cards, when pickUp the mazzetto, the
     @Test
 fun `Given a player during his turn with some cards, when pickUp the mazzetto, then I receive an error`() {
         val player1Id = PlayerIdentity.create()
-        val player1 = PlayerInGame(player1Id, listOf(Card(Suits.Heart, Ranks.Ace)), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, listOf(Card(Suits.Heart, Ranks.Ace)), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
@@ -197,7 +197,7 @@ fun `Given a player during his turn with some cards, when pickUp the mazzetto, t
     @Test
 fun `Given a player during his turn with no cards and a mazzetto already taken, when pickUp the mazzetto, then I receive an error`() {
         val player1Id = PlayerIdentity.create()
-        val player1 = PlayerInGame(player1Id, listOf(Card(Suits.Heart, Ranks.Ace)), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), true)
+        val player1 = PlayerInGame(player1Id, listOf(Card(Suits.Heart, Ranks.Ace)), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), true)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
@@ -210,7 +210,7 @@ fun `Given a player during his turn with no cards and a mazzetto already taken, 
     @Test
 fun `Given a player with no cards, during the tun of another player , when pickUp the mazzetto, then I receive an error`() {
         val player1Id = PlayerIdentity.create()
-        val player1 = PlayerInGame(player1Id, listOf(), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, listOf(), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .setPlayer2Turn()
@@ -224,7 +224,7 @@ fun `Given a player with no cards, during the tun of another player , when pickU
     @Test
 fun `Given a player of another game , when pickUp the mazzetto, then I receive an error`() {
         val player1Id = PlayerIdentity.create()
-        val player1 = PlayerInGame(player1Id, listOf(), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, listOf(), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .setPlayer2Turn()
@@ -239,7 +239,7 @@ fun `Given a player of another game , when pickUp the mazzetto, then I receive a
 fun `Given a player during his turn with some cards, when drop a card on a discard pile, then I have a card less`() {
         val player1Id = PlayerIdentity.create()
         val cardToDrop = Card(Suits.Heart,Ranks.Six)
-        val player1 = PlayerInGame(player1Id, listOf(cardToDrop), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, listOf(cardToDrop), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create(player1Id = player1Id)
                 .setPlayer1(player1)
                 .buildTurnPhaseExecution()
@@ -258,7 +258,7 @@ fun `Given a player during his turn with some cards, when drop a card on a disca
 fun `Given a player during the turn of another player, when drop a card on a discard pile, then receive an error`() {
         val player1Id = PlayerIdentity.create()
         val cardToDrop = Card(Suits.Heart,Ranks.Six)
-        val player1 = PlayerInGame(player1Id, listOf(cardToDrop), BurracoCardsOnTable(listOfTris = listOf(),listOfScale =  listOf()), false)
+        val player1 = PlayerInGame(player1Id, listOf(cardToDrop), BurracoCardsOnTable(listOfTris = listOf(), listOfScale = listOf()), false)
         val game = BurracoGameInitTurnTestFactory.create()
                 .setPlayer1(player1)
                 .setPlayer2Turn()

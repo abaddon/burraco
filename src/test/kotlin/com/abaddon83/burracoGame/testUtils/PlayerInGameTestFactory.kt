@@ -1,10 +1,10 @@
 package com.abaddon83.burracoGame.testUtils
 
-import com.abaddon83.burracoGame.domainModels.BurracoScale
-import com.abaddon83.burracoGame.domainModels.BurracoTris
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames.PlayerInGame
-import com.abaddon83.burracoGame.shared.decks.Card
-import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.burracoGame.commandModel.models.BurracoScale
+import com.abaddon83.burracoGame.commandModel.models.BurracoTris
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.PlayerInGame
+import com.abaddon83.burracoGame.commandModel.models.decks.Card
+import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 
 data class PlayerInGameTestFactory(val playerInGame: PlayerInGame) {
 

@@ -1,6 +1,8 @@
 package com.abaddon83.burracoGame.domainModels
 
-import com.abaddon83.burracoGame.shared.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.commandModel.models.MazzettoDeck
+import com.abaddon83.burracoGame.commandModel.models.MazzettoDecks
+import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
 import org.junit.Test
 import kotlin.test.assertFailsWith
 

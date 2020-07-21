@@ -1,15 +1,18 @@
 package com.abaddon83.burracoGame.testUtils
 
-import com.abaddon83.burracoGame.domainModels.*
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.BurracoGameExecutionTurnBeginning
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.BurracoGameExecutionTurnEnd
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.BurracoGameExecutionTurnExecution
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames.PlayerInGame
-import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
-import com.abaddon83.burracoGame.shared.decks.Card
-import com.abaddon83.burracoGame.shared.decks.ListCardsBuilder
-import com.abaddon83.burracoGame.shared.games.GameIdentity
-import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.burracoGame.commandModel.models.BurracoDeck
+import com.abaddon83.burracoGame.commandModel.models.DiscardPile
+import com.abaddon83.burracoGame.commandModel.models.MazzettoDeck
+import com.abaddon83.burracoGame.commandModel.models.MazzettoDecks
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnBeginning
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnEnd
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnExecution
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.PlayerInGame
+import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
+import com.abaddon83.burracoGame.commandModel.models.decks.Card
+import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
+import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 
 data class BurracoGameInitTurnTestFactory(
         private val gameIdentity: GameIdentity,

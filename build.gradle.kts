@@ -25,6 +25,7 @@ val kotlinVersion="1.3.7"
 val ktorVersion = "1.3.2"
 val koinVersion = "2.1.6"
 val logbackVersion = "1.2.3"
+val exposedVersion = "0.24.1"
 
 dependencies {
     // Align versions of all Kotlin components
@@ -43,6 +44,12 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:${ktorVersion}")
     implementation("io.ktor:ktor-jackson:${ktorVersion}")
     //implementation("io.ktor:ktor-gson:${ktorVersion}")
+
+    //ORM
+    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
+    implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
+    implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
+
 
     //CQS
     implementation(group = "org.reflections",name ="reflections",version = "0.9.12" )

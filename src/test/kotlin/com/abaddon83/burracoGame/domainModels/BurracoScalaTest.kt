@@ -1,8 +1,9 @@
 package com.abaddon83.burracoGame.domainModels
 
-import com.abaddon83.burracoGame.shared.decks.Card
-import com.abaddon83.burracoGame.shared.decks.Ranks
-import com.abaddon83.burracoGame.shared.decks.Suits
+import com.abaddon83.burracoGame.commandModel.models.BurracoScale
+import com.abaddon83.burracoGame.commandModel.models.decks.Card
+import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
+import com.abaddon83.burracoGame.commandModel.models.decks.Suits
 import org.junit.Test
 import kotlin.test.assertFailsWith
 

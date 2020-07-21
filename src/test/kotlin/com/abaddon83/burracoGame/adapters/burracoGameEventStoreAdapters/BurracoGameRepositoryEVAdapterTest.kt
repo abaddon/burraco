@@ -1,19 +1,19 @@
 package com.abaddon83.burracoGame.adapters.burracoGameEventStoreAdapters
 
-import com.abaddon83.burracoGame.domainModels.BurracoGame
-import com.abaddon83.burracoGame.domainModels.BurracoGameCreated
-import com.abaddon83.burracoGame.domainModels.PlayerNotAssigned
-import com.abaddon83.burracoGame.domainModels.burracoGameExecutions.*
-import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
-import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.GameStarted
-import com.abaddon83.burracoGame.domainModels.burracoGameWaitingPlayers.PlayerAdded
-import com.abaddon83.burracoGame.domainModels.burracoGameendeds.BurracoGameEnded
-import com.abaddon83.burracoGame.readModels.burracoGameList.BurracoGameListProjection
-import com.abaddon83.burracoGame.readModels.burracoGameList.BurracoGameListReadModel
-import com.abaddon83.burracoGame.shared.decks.Card
-import com.abaddon83.burracoGame.shared.decks.ListCardsBuilder
-import com.abaddon83.burracoGame.shared.games.GameIdentity
-import com.abaddon83.burracoGame.shared.players.PlayerIdentity
+import com.abaddon83.burracoGame.commandModel.adapters.burracoGameRepositoryAdapters.BurracoGameRepositoryEVAdapter
+import com.abaddon83.burracoGame.commandModel.models.BurracoGame
+import com.abaddon83.burracoGame.commandModel.models.BurracoGameCreated
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.*
+import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
+import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.GameStarted
+import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.PlayerAdded
+import com.abaddon83.burracoGame.commandModel.models.burracoGameendeds.BurracoGameEnded
+import com.abaddon83.burracoGame.readModel.models.BurracoGameListProjection
+import com.abaddon83.burracoGame.readModel.models.BurracoGameListReadModel
+import com.abaddon83.burracoGame.commandModel.models.decks.Card
+import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
+import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 import com.abaddon83.utils.es.Event
 import com.abaddon83.utils.es.eventStore.inMemory.InMemoryEventStore
 import com.abaddon83.utils.es.readModel.InMemorySingleDocumentStore
@@ -28,11 +28,11 @@ class BurracoGameRepositoryEVAdapterTest {
     @Test
     fun `load an event`() {
 
-        val burracoGameListDatastore = InMemorySingleDocumentStore<Iterable<com.abaddon83.burracoGame.readModels.burracoGameList.BurracoGame>>(emptyList())
-        val burracoGameListProjection = BurracoGameListProjection(burracoGameListDatastore)
-        val burracoGameListReadModelFacade = BurracoGameListReadModel(burracoGameListDatastore)
+        //val burracoGameListDatastore = InMemorySingleDocumentStore<Iterable<com.abaddon83.burracoGame.readModel.models.BurracoGame>>(emptyList())
+        //val burracoGameListProjection = BurracoGameListProjection(burracoGameListDatastore)
+        //val burracoGameListReadModelFacade = BurracoGameListReadModel(burracoGameListDatastore)
 
-        val eventBus = AsyncInMemoryBus(GlobalScope).register(burracoGameListProjection)
+        val eventBus = AsyncInMemoryBus(GlobalScope)//.register(burracoGameListProjection)
         val eventStore = InMemoryEventStore<GameIdentity>(eventBus)
         val repository = BurracoGameRepositoryEVAdapter(eventStore = eventStore)
 
@@ -70,7 +70,7 @@ class BurracoGameRepositoryEVAdapterTest {
                         discardPileCards = discardPileCards,
                         playerTurn = playerIdentity1
                 ),
-                CardPickedFromDeck(gameIdentity = gameIdentity,player = playerIdentity1, cardTaken = burracoDeckCards[0] ),
+                CardPickedFromDeck(gameIdentity = gameIdentity, player = playerIdentity1, cardTaken = burracoDeckCards[0]),
                 CardDroppedIntoDiscardPile(gameIdentity = gameIdentity, player = playerIdentity1, cardDropped = burracoDeckCards[0]),
                 TurnEnded(gameIdentity = gameIdentity, player = playerIdentity1, nextPlayerTurn = playerIdentity2)
 
@@ -104,7 +104,7 @@ class BurracoGameRepositoryEVAdapterTest {
         //println("PlayerAdded2: ${kMapper.writeValueAsString(events[2])}")
         //println("GameStarted: ${kMapper.writeValueAsString(events[3])}")
         println("---------")
-        println(burracoGameListReadModelFacade.allBurracoGames())
+        //println(burracoGameListReadModelFacade.allBurracoGames())
     }
 
 

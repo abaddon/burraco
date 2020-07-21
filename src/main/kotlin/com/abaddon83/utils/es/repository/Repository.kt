@@ -9,4 +9,5 @@ interface Repository<T,A: AggregateRoot<T>> {
     fun getById(id: T): A?
     fun save(aggregate: A, expectedVersion: Long? = null) : A
     fun new(id: T) : A // Delegating the creation of a new Aggregate to the Repository, for simplicity
+    fun exist(id: T): Boolean
 }
