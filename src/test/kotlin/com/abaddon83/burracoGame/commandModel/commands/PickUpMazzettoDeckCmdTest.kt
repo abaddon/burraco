@@ -3,11 +3,19 @@ package com.abaddon83.burracoGame.commandModel.commands
 import com.abaddon83.burracoGame.commandModel.adapters.burracoGameRepositoryAdapters.BurracoGameRepositoryEVAdapter
 import com.abaddon83.burracoGame.commandModel.models.BurracoGame
 import com.abaddon83.burracoGame.commandModel.models.BurracoGameCreated
+import com.abaddon83.burracoGame.commandModel.models.BurracoScale
+import com.abaddon83.burracoGame.commandModel.models.BurracoTris
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.CardDroppedIntoDiscardPile
 import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.CardPickedFromDeck
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.CardsPickedFromDiscardPile
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.TrisDropped
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.GameStarted
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.PlayerAdded
+import com.abaddon83.burracoGame.commandModel.models.burracos.BurracoIdentity
 import com.abaddon83.burracoGame.commandModel.models.decks.Card
 import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
+import com.abaddon83.burracoGame.commandModel.models.decks.Suits
 import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 import com.abaddon83.burracoGame.commandModel.ports.BurracoGameRepositoryPort
@@ -25,7 +33,7 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import kotlin.test.assertFailsWith
 
-class DropCardOnDiscardPileCmdTest: KoinTest {
+class PickUpMazzettoDeckCmdTest : KoinTest {
 
     @get:Rule
     val koinTestRule = KoinTestRule.create {
@@ -33,29 +41,31 @@ class DropCardOnDiscardPileCmdTest: KoinTest {
     }
 
     @Test
-    fun `(async) Given a player during its turn, when I receive the command to drop off a card, then the card is dropped`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1, card = burracoDeckCards[0])
-        runBlocking { DropCardOnDiscardPileHandler().handleAsync(command) }
+    fun `(async) Given a command to pick up a mazzetto, when I execute the command, then the mazzetto is picked up`() {
+        val command = PickUpMazzettoDeckCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity1)
+        runBlocking { PickUpMazzettoDeckHandler().handleAsync(command) }
     }
 
     @Test
-    fun `Given a player during its turn, when I receive the command to drop off a card, then the card is dropped`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1, card = burracoDeckCards[0])
-        DropCardOnDiscardPileHandler().handle(command)
+    fun `Given a command to pick up a mazzetto, when I execute the command, then the mazzetto is picked up`() {
+        val command = PickUpMazzettoDeckCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity1)
+        PickUpMazzettoDeckHandler().handle(command)
     }
 
     @Test
-    fun `Given a player with a card already dropped, when I receive the comand to drop off a card, then nothing happened`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1, card = burracoDeckCards[0])
-        DropCardOnDiscardPileHandler().handle(command)
-        DropCardOnDiscardPileHandler().handle(command)
-    }
-
-    @Test
-    fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1, card = burracoDeckCards[0])
+    fun `Given a command to pick up a mazzetto already picked up, when I execute the command, then I receive an error`() {
+        val command = PickUpMazzettoDeckCmd(gameIdentity = gameIdentity, playerIdentity = playerIdentity1)
         assertFailsWith(IllegalStateException::class) {
-            DropCardOnDiscardPileHandler().handle(command)
+            PickUpMazzettoDeckHandler().handle(command)
+            PickUpMazzettoDeckHandler().handle(command)
+        }
+    }
+
+    @Test
+    fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`() {
+        val command = PickUpMazzettoDeckCmd(gameIdentity = GameIdentity.create(), playerIdentity = playerIdentity1)
+        assertFailsWith(IllegalStateException::class) {
+            PickUpMazzettoDeckHandler().handle(command)
         }
     }
 
@@ -67,17 +77,23 @@ class DropCardOnDiscardPileCmdTest: KoinTest {
     val allCards = ListCardsBuilder.allRanksWithJollyCards()
             .plus(ListCardsBuilder.allRanksWithJollyCards())
             .shuffled()
-    val cardsPlayer1 = Pair(playerIdentity1,allCards.take(11))
-    val cardsPlayer2 = Pair(playerIdentity2,allCards.take(11))
+
+    val burracoTris = BurracoTris(
+            identity = BurracoIdentity.create(),
+            rank = Ranks.Five,
+            cards = listOf(Card(Suits.Tile, rank = Ranks.Five), Card(Suits.Heart, rank = Ranks.Five), Card(Suits.Tile, rank = Ranks.Five)))
+
+    val cardsPlayer1 = Pair(playerIdentity1, burracoTris.showCards())
+    val cardsPlayer2 = Pair(playerIdentity2, allCards.take(11))
 
     val mazzettoDeck1Cards = allCards.take(11)
     val mazzettoDeck2Cards = allCards.take(11)
 
-    val discardPileCards = allCards.take(1)
+    val discardPileCards = listOf(Card(Suits.Pike, rank = Ranks.Five))
 
-    val burracoDeckCards = allCards.take(108-1-11-11-11-11)
+    val burracoDeckCards = allCards.take(108 - 1 - 3 - 11 - 11 - 11)
 
-    val playersCards = mapOf<PlayerIdentity,List<Card>>(cardsPlayer1,cardsPlayer2)
+    val playersCards = mapOf<PlayerIdentity, List<Card>>(cardsPlayer1, cardsPlayer2)
 
     val events = listOf<Event>(
             BurracoGameCreated(gameIdentity = gameIdentity),
@@ -92,15 +108,18 @@ class DropCardOnDiscardPileCmdTest: KoinTest {
                     discardPileCards = discardPileCards,
                     playerTurn = playerIdentity1
             ),
-            CardPickedFromDeck(gameIdentity = gameIdentity, player = playerIdentity1, cardTaken = burracoDeckCards[0])
+            CardsPickedFromDiscardPile(gameIdentity = gameIdentity, player = playerIdentity1, cardsTaken = discardPileCards),
+            TrisDropped(gameIdentity = gameIdentity, player = playerIdentity1, tris = burracoTris.copy(cards = burracoTris.showCards().plus(discardPileCards)))
+            //CardDroppedIntoDiscardPile(gameIdentity = gameIdentity, player = playerIdentity1, cardDropped = discardPileCards.first())
+
     )
 
     val testAdapters = module {
         val eventBus = AsyncInMemoryBus(GlobalScope)//.register(burracoGameListProjection)
         val eventStore = InMemoryEventStore<GameIdentity>(eventBus)
-        eventStore.uploadEvents(aggregate,events)
+        eventStore.uploadEvents(aggregate, events)
 
         val repository = BurracoGameRepositoryEVAdapter(eventStore = eventStore)
-        single< BurracoGameRepositoryPort> { repository}
+        single<BurracoGameRepositoryPort> { repository }
     }
 }

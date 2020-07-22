@@ -22,6 +22,32 @@ import kotlin.test.assertFailsWith
 
 class AddPlayerCmdTest: KoinTest {
 
+    @get:Rule
+    val koinTestRule = KoinTestRule.create {
+        modules(testAdapters)
+    }
+
+    @Test
+
+    fun `(async) Given a command to add a player to the game, when I execute the command, then the player is added`(){
+        val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentityToAdd = PlayerIdentity.create())
+        runBlocking { AddPlayerHandler().handleAsync(command) }
+    }
+
+    @Test
+    fun `Given a command to add a player to the game, when I execute the command, then the player is added`(){
+        val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentityToAdd = PlayerIdentity.create())
+        AddPlayerHandler().handle(command)
+    }
+
+    @Test
+    fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`(){
+        val command = AddPlayerCmd(gameIdentity = GameIdentity.create(), playerIdentityToAdd = PlayerIdentity.create())
+        assertFailsWith(IllegalStateException::class) {
+            AddPlayerHandler().handle(command)
+        }
+    }
+
     val gameIdentity: GameIdentity = GameIdentity.create()
     val aggregate = BurracoGame(identity = gameIdentity)
 
@@ -37,30 +63,5 @@ class AddPlayerCmdTest: KoinTest {
 
         val repository = BurracoGameRepositoryEVAdapter(eventStore = eventStore)
         single< BurracoGameRepositoryPort> { repository}
-    }
-
-    @get:Rule
-    val koinTestRule = KoinTestRule.create {
-        modules(testAdapters)
-    }
-
-    @Test
-    fun `(async) Given a burraco game, when I add player, then I the player is added to the game`(){
-        val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentityToAdd = PlayerIdentity.create())
-        runBlocking { AddPlayerHandler().handleAsync(command) }
-    }
-
-    @Test
-    fun `Given a burraco game, when I add player, then I the player is added to the game`(){
-        val command = AddPlayerCmd(gameIdentity = gameIdentity, playerIdentityToAdd = PlayerIdentity.create())
-        AddPlayerHandler().handle(command)
-    }
-
-    @Test
-    fun `Given a burraco game that not exist, when I add player, then I receive an error`(){
-        val command = AddPlayerCmd(gameIdentity = GameIdentity.create(), playerIdentityToAdd = PlayerIdentity.create())
-        assertFailsWith(IllegalStateException::class) {
-            AddPlayerHandler().handle(command)
-        }
     }
 }

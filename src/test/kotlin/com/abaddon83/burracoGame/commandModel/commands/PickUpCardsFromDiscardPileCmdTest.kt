@@ -24,7 +24,7 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import kotlin.test.assertFailsWith
 
-class PickUpACardFromDeckCmdTest: KoinTest {
+class PickUpCardsFromDiscardPileCmdTest: KoinTest {
 
     @get:Rule
     val koinTestRule = KoinTestRule.create {
@@ -32,29 +32,29 @@ class PickUpACardFromDeckCmdTest: KoinTest {
     }
 
     @Test
-    fun `(async) Given a command to pick up a card from the deck, when I execute the command, then the card is picked up`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
-        runBlocking { PickUpACardFromDeckHandler().handleAsync(command) }
+    fun `(async) Given a command to pick up a card from the discard pile, when I execute the command, then the card is picked up`(){
+        val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
+        runBlocking { PickUpCardsFromDiscardPileHandler().handleAsync(command) }
     }
 
     @Test
     fun `Given a command to pick up a card from the deck, when I execute the command, then the card is picked up`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
-        PickUpACardFromDeckHandler().handle(command)
+        val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
+        PickUpCardsFromDiscardPileHandler().handle(command)
     }
 
     @Test
     fun `Given a player with a card already picked-up, when I receive the comand to pick up a card, then nothing happened`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
-        PickUpACardFromDeckHandler().handle(command)
-        PickUpACardFromDeckHandler().handle(command)
+        val command = PickUpCardsFromDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
+        PickUpCardsFromDiscardPileHandler().handle(command)
+        PickUpCardsFromDiscardPileHandler().handle(command)
     }
 
     @Test
     fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1)
+        val command = PickUpCardsFromDiscardPileCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1)
         assertFailsWith(IllegalStateException::class) {
-            PickUpACardFromDeckHandler().handle(command)
+            PickUpCardsFromDiscardPileHandler().handle(command)
         }
     }
 

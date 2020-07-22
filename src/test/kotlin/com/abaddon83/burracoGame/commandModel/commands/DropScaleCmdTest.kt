@@ -3,10 +3,15 @@ package com.abaddon83.burracoGame.commandModel.commands
 import com.abaddon83.burracoGame.commandModel.adapters.burracoGameRepositoryAdapters.BurracoGameRepositoryEVAdapter
 import com.abaddon83.burracoGame.commandModel.models.BurracoGame
 import com.abaddon83.burracoGame.commandModel.models.BurracoGameCreated
+import com.abaddon83.burracoGame.commandModel.models.BurracoScale
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.CardPickedFromDeck
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.GameStarted
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.PlayerAdded
+import com.abaddon83.burracoGame.commandModel.models.burracos.BurracoIdentity
 import com.abaddon83.burracoGame.commandModel.models.decks.Card
 import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
+import com.abaddon83.burracoGame.commandModel.models.decks.Suits
 import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 import com.abaddon83.burracoGame.commandModel.ports.BurracoGameRepositoryPort
@@ -24,37 +29,36 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import kotlin.test.assertFailsWith
 
-class PickUpACardFromDeckCmdTest: KoinTest {
+class DropScaleCmdTest: KoinTest {
 
     @get:Rule
     val koinTestRule = KoinTestRule.create {
         modules(testAdapters)
     }
 
+    val burracoScale = BurracoScale(
+            identity = BurracoIdentity.create(),
+            suit = Suits.Tile,
+            cards = listOf(Card(Suits.Tile,rank = Ranks.Three),Card(Suits.Tile,rank = Ranks.Four),Card(Suits.Tile,rank = Ranks.Five)))
+
     @Test
-    fun `(async) Given a command to pick up a card from the deck, when I execute the command, then the card is picked up`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
-        runBlocking { PickUpACardFromDeckHandler().handleAsync(command) }
+    fun `(async) Given a command to drop a scale, when I execute the command, then the scale is dropped`(){
+
+        val command = DropScaleCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1,scale = burracoScale)
+        runBlocking { DropScaleHandler().handleAsync(command) }
     }
 
     @Test
-    fun `Given a command to pick up a card from the deck, when I execute the command, then the card is picked up`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
-        PickUpACardFromDeckHandler().handle(command)
-    }
-
-    @Test
-    fun `Given a player with a card already picked-up, when I receive the comand to pick up a card, then nothing happened`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
-        PickUpACardFromDeckHandler().handle(command)
-        PickUpACardFromDeckHandler().handle(command)
+    fun ` Given a command to drop a scale, when I execute the command, then the scale is dropped`(){
+        val command = DropScaleCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1,scale = burracoScale)
+        DropScaleHandler().handle(command)
     }
 
     @Test
     fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`(){
-        val command = PickUpACardFromDeckCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1)
+        val command = DropScaleCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1,scale = burracoScale)
         assertFailsWith(IllegalStateException::class) {
-            PickUpACardFromDeckHandler().handle(command)
+            DropScaleHandler().handle(command)
         }
     }
 
@@ -66,7 +70,7 @@ class PickUpACardFromDeckCmdTest: KoinTest {
     val allCards = ListCardsBuilder.allRanksWithJollyCards()
             .plus(ListCardsBuilder.allRanksWithJollyCards())
             .shuffled()
-    val cardsPlayer1 = Pair(playerIdentity1,allCards.take(11))
+    val cardsPlayer1 = Pair(playerIdentity1,allCards.take(8).plus(burracoScale.showCards()))
     val cardsPlayer2 = Pair(playerIdentity2,allCards.take(11))
 
     val mazzettoDeck1Cards = allCards.take(11)
@@ -90,7 +94,8 @@ class PickUpACardFromDeckCmdTest: KoinTest {
                     mazzettoDeck2Cards = mazzettoDeck2Cards,
                     discardPileCards = discardPileCards,
                     playerTurn = playerIdentity1
-            )
+            ),
+            CardPickedFromDeck(gameIdentity = gameIdentity, player = playerIdentity1, cardTaken = burracoDeckCards[0])
     )
 
     val testAdapters = module {

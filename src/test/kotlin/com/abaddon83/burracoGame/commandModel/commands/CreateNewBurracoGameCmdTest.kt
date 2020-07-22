@@ -17,16 +17,6 @@ import kotlin.test.assertFailsWith
 
 class CreateNewBurracoGameCmdTest: KoinTest {
 
-    val testAdapters = module {
-        val eventBus = AsyncInMemoryBus(GlobalScope)//.register(burracoGameListProjection)
-        val eventStore = InMemoryEventStore<GameIdentity>(eventBus)
-        val repository = BurracoGameRepositoryEVAdapter(eventStore = eventStore)
-        single< BurracoGameRepositoryPort> { repository}
-    }
-
-    //@get:Rule
-    //val diRepositoryTestRule = DIRepositoryTestRule()
-
     @get:Rule
     val koinTestRule = KoinTestRule.create {
         // Your KoinApplication instance here
@@ -34,21 +24,21 @@ class CreateNewBurracoGameCmdTest: KoinTest {
     }
 
     @Test
-    fun `(async) Given I receive a creation command, when I execute it, then I created a new burraco game`(){
+    fun `(async) Given a command to create a new game, when I execute the command, then a new game is created`(){
         val gameIdentity = GameIdentity.create()
         val command = CreateNewBurracoGameCmd(gameIdentity = gameIdentity)
         runBlocking { CreateNewBurracoGameHandler().handleAsync(command) }
     }
 
     @Test
-    fun `Given I receive a creation command, when I execute it, then I created a new burraco game`(){
+    fun `Given a command to create a new game, when I execute the command, then a new game is created`(){
         val gameIdentity = GameIdentity.create()
         val command = CreateNewBurracoGameCmd(gameIdentity = gameIdentity)
         CreateNewBurracoGameHandler().handle(command)
     }
 
     @Test
-    fun `(async) Given an existing burraco game , when I try to create it again, then I receive an execption`(){
+    fun `(async) Given an existing burraco game , when I try to create it again, then I receive an exception`(){
         val gameIdentity = GameIdentity.create()
         val command = CreateNewBurracoGameCmd(gameIdentity = gameIdentity)
         assertFailsWith(IllegalStateException::class){
@@ -60,7 +50,7 @@ class CreateNewBurracoGameCmdTest: KoinTest {
     }
 
     @Test
-    fun `Given an existing burraco game , when I try to create it again, then I receive an execption`(){
+    fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`(){
         val gameIdentity = GameIdentity.create()
         val command = CreateNewBurracoGameCmd(gameIdentity = gameIdentity)
         CreateNewBurracoGameHandler().handle(command)
@@ -70,4 +60,14 @@ class CreateNewBurracoGameCmdTest: KoinTest {
         }
 
     }
+
+    val testAdapters = module {
+        val eventBus = AsyncInMemoryBus(GlobalScope)//.register(burracoGameListProjection)
+        val eventStore = InMemoryEventStore<GameIdentity>(eventBus)
+        val repository = BurracoGameRepositoryEVAdapter(eventStore = eventStore)
+        single< BurracoGameRepositoryPort> { repository}
+    }
+
+    //@get:Rule
+    //val diRepositoryTestRule = DIRepositoryTestRule()
 }

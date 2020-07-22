@@ -62,7 +62,8 @@ data class BurracoGameExecutionTurnExecution private constructor(
     fun pickupMazzetto(playerIdentity: PlayerIdentity): BurracoGameExecutionTurnExecution {
         val player = validatePlayerId(playerIdentity)
         validatePlayerTurn(playerIdentity)
-        check(player.showMyCards().isEmpty()) { warnMsg("The player cannot pick up a Mazzetto if he still has cards") }
+        log.debug("show cards: ${player.showMyCards()}")
+        check(player.showMyCards().isEmpty()) { warnMsg("The player cannot pick up a Mazzetto if he still has cards ( num cards: ${player.showMyCards().size})") }
         check(!player.isMazzettoTaken()) { warnMsg("The player cannot pick up a Mazzetto he already taken") }
 
         val mazzetto = mazzettoDecks.firstMazzettoAvailable()

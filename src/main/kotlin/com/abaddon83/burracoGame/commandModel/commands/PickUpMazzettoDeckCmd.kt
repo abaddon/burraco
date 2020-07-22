@@ -46,8 +46,8 @@ class PickUpMazzettoDeckHandler() : CommandHandler<PickUpMazzettoDeckCmd>, KoinC
 
     private fun executeCmd(command: PickUpMazzettoDeckCmd) {
         when (val game = repository.getById(command.gameIdentity)) {
-            is BurracoGameExecutionTurnExecution -> game.pickupMazzetto(command.playerIdentity)
-            is BurracoGameExecutionTurnEnd -> game.pickupMazzetto(command.playerIdentity)
+            is BurracoGameExecutionTurnExecution -> repository.save(game.pickupMazzetto(command.playerIdentity))
+            is BurracoGameExecutionTurnEnd -> repository.save(game.pickupMazzetto(command.playerIdentity))
             is BurracoGameExecutionTurnBeginning -> throw Exception("Not yet implemented the possibility to update card order in the turn end phase ")
             else -> warnMsg("GameIdentity ${command.gameIdentity} not found exist")
         }
