@@ -1,9 +1,9 @@
-package com.abaddon83.burracoGame.controller.adapter.routes
+package com.abaddon83.burracoGame.api.routes
 
+import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.commandModel.ports.BurracoGameCommandControllerPort
-import com.abaddon83.burracoGame.controller.adapter.messages.requests.CreateGameRequest
-import com.abaddon83.burracoGame.controller.adapter.messages.requests.GameType
-import com.abaddon83.burracoGame.controller.adapter.messages.GameModule
+import com.abaddon83.burracoGame.api.messages.requests.CreateGameRequest
+import com.abaddon83.burracoGame.api.messages.requests.GameType
 import com.abaddon83.burracoGame.readModel.ports.BurracoGameReadModelControllerPort
 import io.ktor.application.call
 import io.ktor.request.receive
@@ -16,11 +16,12 @@ fun Routing.apiGames(commandController: BurracoGameCommandControllerPort, readMo
     route("games") {
         post {
             val request = call.receive<CreateGameRequest>()
-//            val gameResponse: GameModule = when (request.gameType) {
-//                GameType.BURRACO -> GameModule(commandController.createNewBurracoGame())
-//                //else -> throw IllegalArgumentException("Game type ${request.gameType} not found")
-//            }
-            call.respond("")//gameResponse)
+            val gameIdentity = GameIdentity.create()
+            when (request.gameType) {
+                GameType.BURRACO -> commandController.createNewBurracoGame(gameIdentity)
+            }
+            //TODO query to add
+            call.respond(gameIdentity)
         }
     }
 }

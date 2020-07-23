@@ -4,9 +4,9 @@
 package com.abaddon83
 
 import com.abaddon83.burracoGame.commandModel.ports.BurracoGameCommandControllerPort
-import com.abaddon83.burracoGame.controller.adapter.handleExceptions.errorsHandling
-import com.abaddon83.burracoGame.controller.adapter.routes.apiBurracoGames
-import com.abaddon83.burracoGame.controller.adapter.routes.apiGames
+import com.abaddon83.burracoGame.api.handleExceptions.errorsHandling
+import com.abaddon83.burracoGame.api.routes.apiBurracoGames
+import com.abaddon83.burracoGame.api.routes.apiGames
 import com.abaddon83.burracoGame.iocs.AppAdapters
 import com.abaddon83.burracoGame.readModel.ports.BurracoGameReadModelControllerPort
 import com.fasterxml.jackson.databind.SerializationFeature

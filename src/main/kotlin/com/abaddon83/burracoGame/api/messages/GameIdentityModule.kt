@@ -1,4 +1,4 @@
-package com.abaddon83.burracoGame.controller.adapter.messages
+package com.abaddon83.burracoGame.api.messages
 
 import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
 

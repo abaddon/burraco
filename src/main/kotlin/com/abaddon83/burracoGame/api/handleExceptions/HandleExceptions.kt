@@ -1,7 +1,7 @@
-package com.abaddon83.burracoGame.controller.adapter.handleExceptions
+package com.abaddon83.burracoGame.api.handleExceptions
 
 
-import com.abaddon83.burracoGame.controller.adapter.messages.ErrorMsgModule
+import com.abaddon83.burracoGame.api.messages.ErrorMsgModule
 import io.ktor.application.call
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpStatusCode

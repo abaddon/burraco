@@ -1,4 +1,4 @@
-package com.abaddon83.burracoGame.controller.adapter.messages.requests
+package com.abaddon83.burracoGame.api.messages.requests
 
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.abaddon83.burracoGame.controller.adapter.messages
+package com.abaddon83.burracoGame.api.messages
 
 data class ErrorMsgModule(
         val code: String,
