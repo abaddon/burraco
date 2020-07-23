@@ -14,12 +14,15 @@ data class BurracoGameEnded(
         override val players: List<BurracoPlayer>,
         val mazzettoMissed: Boolean) : BurracoGame(identity) {
 
-    override fun applyEvent(event: Event): BurracoGameEnded =
-            when (event) {
-                //is GameStarted -> apply(event)
-                //is NewTurnStarted -> apply(event)
-                else -> throw UnsupportedEventException(event::class.java)
-            }
+    override fun applyEvent(event: Event): BurracoGameEnded {
+        log.info("apply event: ${event::class.simpleName.toString()}")
+        return when (event) {
+            //is GameStarted -> apply(event)
+            //is NewTurnStarted -> apply(event)
+            else -> throw UnsupportedEventException(event::class.java)
+        }
+    }
+
 
     companion object Factory {
         fun create(identity: GameIdentity, players: List<PlayerInGame>, pozzettos: MazzettoDecks, playerTurn: PlayerIdentity): BurracoGameEnded =

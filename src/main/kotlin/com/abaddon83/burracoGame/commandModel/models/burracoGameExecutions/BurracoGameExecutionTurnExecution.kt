@@ -81,15 +81,18 @@ data class BurracoGameExecutionTurnExecution private constructor(
         )
     }
 
-    override fun applyEvent(event: Event): BurracoGame =
-            when (event) {
-                is CardDroppedIntoDiscardPile -> apply(event)
-                is TrisDropped -> apply(event)
-                is ScaleDropped -> apply(event)
-                is CardAddedOnBurraco -> apply(event)
-                is MazzettoPickedUp -> apply(event)
-                else -> throw UnsupportedEventException(event::class.java)
-            }
+    override fun applyEvent(event: Event): BurracoGame {
+        log.info("apply event: ${event::class.simpleName.toString()}")
+        return when (event) {
+            is CardDroppedIntoDiscardPile -> apply(event)
+            is TrisDropped -> apply(event)
+            is ScaleDropped -> apply(event)
+            is CardAddedOnBurraco -> apply(event)
+            is MazzettoPickedUp -> apply(event)
+            else -> throw UnsupportedEventException(event::class.java)
+        }
+    }
+
 
     private fun apply(event: CardDroppedIntoDiscardPile): BurracoGameExecutionTurnEnd {
         val player = players.find { p -> p.identity() == event.player }!!

@@ -3,6 +3,7 @@ package com.abaddon83.burracoGame.commandModel.commands
 import com.abaddon83.burracoGame.commandModel.adapters.burracoGameRepositoryAdapters.BurracoGameRepositoryEVAdapter
 import com.abaddon83.burracoGame.commandModel.models.BurracoGame
 import com.abaddon83.burracoGame.commandModel.models.BurracoGameCreated
+import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.CardDroppedIntoDiscardPile
 import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.CardPickedFromDeck
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.GameStarted
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.PlayerAdded
@@ -25,7 +26,7 @@ import org.koin.test.KoinTest
 import org.koin.test.KoinTestRule
 import kotlin.test.assertFailsWith
 
-class DropCardOnDiscardPileCmdTest: KoinTest {
+class EndPlayerTurnCmdTest: KoinTest {
 
     @get:Rule
     val koinTestRule = KoinTestRule.create {
@@ -33,29 +34,29 @@ class DropCardOnDiscardPileCmdTest: KoinTest {
     }
 
     @Test
-    fun `(async) Given a command to drop a card in the discard pile, when I execute the command, then the card is dropped`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1, card = burracoDeckCards[0])
-        runBlocking { DropCardOnDiscardPileHandler().handleAsync(command) }
+    fun `(async) Given a command to end player turn, when I execute the command, then the player turn is ended`(){
+        val command = EndPlayerTurnCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
+        runBlocking { EndPlayerTurnHandler().handleAsync(command) }
     }
 
     @Test
-    fun `Given a command to drop a card in the discard pile, when I execute the command, then the card is dropped`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1, card = burracoDeckCards[0])
-        DropCardOnDiscardPileHandler().handle(command)
+    fun `Given a command to end player turn, when I execute the command, then the player turn is ended`(){
+        val command = EndPlayerTurnCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
+        EndPlayerTurnHandler().handle(command)
     }
 
     @Test
-    fun `Given a command to drop a card already dropped, when I execute the command, then nothing happened`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1, card = burracoDeckCards[0])
-        DropCardOnDiscardPileHandler().handle(command)
-        DropCardOnDiscardPileHandler().handle(command)
+    fun `Given a command to end player turn that is already ended, when I execute the command, then I receive an error`(){
+        val command = EndPlayerTurnCmd(gameIdentity = gameIdentity,playerIdentity = playerIdentity1)
+        EndPlayerTurnHandler().handle(command)
+        EndPlayerTurnHandler().handle(command)
     }
 
     @Test
     fun `Given a command to execute on a burraco game that doesn't exist, when I execute the command, then I receive an error`(){
-        val command = DropCardOnDiscardPileCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1, card = burracoDeckCards[0])
+        val command = EndPlayerTurnCmd(gameIdentity = GameIdentity.create(),playerIdentity = playerIdentity1)
         assertFailsWith(IllegalStateException::class) {
-            DropCardOnDiscardPileHandler().handle(command)
+            EndPlayerTurnHandler().handle(command)
         }
     }
 
@@ -92,7 +93,8 @@ class DropCardOnDiscardPileCmdTest: KoinTest {
                     discardPileCards = discardPileCards,
                     playerTurn = playerIdentity1
             ),
-            CardPickedFromDeck(gameIdentity = gameIdentity, player = playerIdentity1, cardTaken = burracoDeckCards[0])
+            CardPickedFromDeck(gameIdentity = gameIdentity, player = playerIdentity1, cardTaken = burracoDeckCards[0]),
+            CardDroppedIntoDiscardPile(gameIdentity = gameIdentity, player = playerIdentity1, cardDropped = burracoDeckCards[0])
     )
 
     val testAdapters = module {

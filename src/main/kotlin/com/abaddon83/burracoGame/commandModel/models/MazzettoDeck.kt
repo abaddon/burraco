@@ -14,7 +14,7 @@ data class MazzettoDeck private constructor(override val cards: MutableList<Card
 
     companion object Factory {
         fun create(cards:List<Card>): MazzettoDeck {
-            require(cards.size == 11 || cards.size == 18){"Pozzetto Size wrong, current size: ${cards.size}"}
+            require(cards.size == 11 || cards.size == 18){"Mazzetto Size is wrong, current size: ${cards.size}"}
             return MazzettoDeck(cards.toMutableList())
         }
 

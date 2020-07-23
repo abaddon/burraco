@@ -21,11 +21,14 @@ open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoo
 
     override fun listOfPlayers(): List<BurracoPlayer> = players
 
-    override fun applyEvent(event: Event): BurracoGame =
-            when (event) {
-                is BurracoGameCreated -> apply(event)
-                else -> throw UnsupportedEventException(event::class.java)
-            }
+    override fun applyEvent(event: Event): BurracoGame {
+        log.info("apply event: ${event::class.simpleName.toString()}")
+        return when (event) {
+            is BurracoGameCreated -> apply(event)
+            else -> throw UnsupportedEventException(event::class.java)
+        }
+    }
+
 
     private fun apply(event: BurracoGameCreated):BurracoGameWaitingPlayers {
         return BurracoGameWaitingPlayers(event.gameIdentity,players = event.players)
