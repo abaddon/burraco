@@ -6,7 +6,7 @@
 ![Status](https://img.shields.io/static/v1?label=Status&message=Work%20In%20Progess&color=yellow)
 
 ### branches
-- [master](https://github.com/abaddon/burraco/tree/master) (default branch) : CQRS version written in Kotlin
+- [master](https://github.com/abaddon/burraco/tree/master) (default branch) : CQRS + Event Source version written in Kotlin
 - [versions/scala_cqs](https://github.com/abaddon/burraco/tree/versions/scala_cqs) : CQS version written in Scala
 - [versions/kotlin_cqs](https://github.com/abaddon/burraco/tree/versions/kotlin_cqs) CQS version written in Kotlin
 
