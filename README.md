@@ -6,11 +6,9 @@
 ![Status](https://img.shields.io/static/v1?label=Status&message=Work%20In%20Progess&color=yellow)
 
 ### branches
-- [master_kotlin](https://github.com/abaddon/burraco/tree/master_kotlin) (default branch) : CQRS version written in Kotlin
-- [master](https://github.com/abaddon/burraco/tree/master) : CQS version written in Scala
-
-### tags
-- [CQS](https://github.com/abaddon/burraco/releases/tag/cqs) CQS version written in Kotlin
+- [master](https://github.com/abaddon/burraco/tree/master) (default branch) : CQRS version written in Kotlin
+- [versions/scala_cqs](https://github.com/abaddon/burraco/tree/versions/scala_cqs) : CQS version written in Scala
+- [versions/kotlin_cqs](https://github.com/abaddon/burraco/tree/versions/kotlin_cqs) CQS version written in Kotlin
 
 ## Todo List
 Game context:
