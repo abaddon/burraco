@@ -5,6 +5,13 @@
 
 ![Status](https://img.shields.io/static/v1?label=Status&message=Work%20In%20Progess&color=yellow)
 
+### branches
+- [master_kotlin](https://github.com/abaddon/burraco/tree/master_kotlin) (default branch) : CQRS version written in Kotlin
+- [master](https://github.com/abaddon/burraco/tree/master) : CQS version written in Scala
+
+### tags
+- [CQS](https://github.com/abaddon/burraco/releases/tag/cqs) CQS version written in Kotlin
+
 ## Todo List
 Game context:
 - [x] Implement Burraco game command model
@@ -31,3 +38,6 @@ Based on:
 * [Domain Driven Design](https://martinfowler.com/tags/domain%20driven%20design.html)
 
 ![architecture schema](./docs/architecture-cqrs.jpg)
+
+# API documentation
+- [Postmand API documentation](https://documenter.getpostman.com/view/11592805/T1DpCxrz?version=latest)
