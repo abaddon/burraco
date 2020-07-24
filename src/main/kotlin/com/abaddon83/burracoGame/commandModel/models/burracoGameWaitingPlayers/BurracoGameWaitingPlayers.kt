@@ -4,6 +4,8 @@ import com.abaddon83.burracoGame.commandModel.models.*
 import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnBeginning
 import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.PlayerInGame
 import com.abaddon83.burracoGame.commandModel.models.decks.Card
+import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
+import com.abaddon83.burracoGame.commandModel.models.decks.Suits
 import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
 import com.abaddon83.utils.es.Event
@@ -32,7 +34,7 @@ data class BurracoGameWaitingPlayers constructor(
             warnMsg("Not enough players to initiate the game, ( Min: ${minPlayers})")
         }
         val burracoDealer = BurracoDealer.create(this)
-        return applyAndQueueEvent(GameStarted(
+        return applyAndQueueEvent(GameStarted.create(
                 gameIdentity = identity(),
                 playersCards = burracoDealer.playersCards,
                 burracoDeckCards = burracoDealer.burracoDeck.cards.toList(),
@@ -58,18 +60,21 @@ data class BurracoGameWaitingPlayers constructor(
     }
 
     private fun apply(event: GameStarted): BurracoGameExecutionTurnBeginning {
-        val burracoPlayersInGame = event.playersCards.map { (playerIdentity, playerCards) ->
-            PlayerInGame.create(playerIdentity = playerIdentity, cards = playerCards)
+        val burracoPlayersInGame = event.players.map { list ->
+            PlayerInGame.create(
+                    playerIdentity = PlayerIdentity.create(list.identity),
+                    cards = list.cards.map { c -> Card(Suits.valueOf(c.suit), Ranks.valueOf(c.rank)) }
+            )
         }
         val gameUpdated = BurracoGameExecutionTurnBeginning.create(
                 identity = identity(),
                 players = burracoPlayersInGame,
-                burracoDeck = BurracoDeck.create(event.burracoDeckCards),
+                burracoDeck = BurracoDeck.create(event.burracoDeckCards.map { c -> Card(Suits.valueOf(c.suit), Ranks.valueOf(c.rank)) }),
                 mazzettoDecks = MazzettoDecks.create(listOf(
-                        MazzettoDeck.create(event.mazzettoDeck1Cards),
-                        MazzettoDeck.create(event.mazzettoDeck2Cards))),
-                discardPile = DiscardPile.create(event.discardPileCards),
-                playerTurn = event.playerTurn
+                        MazzettoDeck.create(event.mazzettoDeck1Cards.map { c -> Card(Suits.valueOf(c.suit), Ranks.valueOf(c.rank)) }),
+                        MazzettoDeck.create(event.mazzettoDeck2Cards.map { c -> Card(Suits.valueOf(c.suit), Ranks.valueOf(c.rank)) }))),
+                discardPile = DiscardPile.create(event.discardPileCards.map { c -> Card(Suits.valueOf(c.suit), Ranks.valueOf(c.rank)) }),
+                playerTurn = PlayerIdentity.create(event.playerIdentityTurn)
         )
         gameUpdated.testInvariants()
         return gameUpdated
@@ -85,21 +90,44 @@ data class PlayerAdded(
         val version: Long? = null) : Event(version) {
     override fun assignVersion(version: Long): PlayerAdded =
             this.copy(version = version)
-    companion object Factory{
+
+    companion object Factory {
         fun create(gameIdentity: GameIdentity, playerIdentity: PlayerIdentity): PlayerAdded =
-            PlayerAdded(gameIdentity = gameIdentity.convertTo().toString(),playerIdentity = playerIdentity.convertTo().toString())
+                PlayerAdded(gameIdentity = gameIdentity.convertTo().toString(), playerIdentity = playerIdentity.convertTo().toString())
     }
 }
 
 data class GameStarted(
-        val gameIdentity: GameIdentity,
-        val playersCards: Map<PlayerIdentity, List<Card>>,
-        val burracoDeckCards: List<Card>,
-        val mazzettoDeck1Cards: List<Card>,
-        val mazzettoDeck2Cards: List<Card>,
-        val discardPileCards: List<Card>,
-        val playerTurn: PlayerIdentity,
+        val gameIdentity: String,
+        val players: List<Player>,
+        val burracoDeckCards: List<BasicCard>,
+        val mazzettoDeck1Cards: List<BasicCard>,
+        val mazzettoDeck2Cards: List<BasicCard>,
+        val discardPileCards: List<BasicCard>,
+        val playerIdentityTurn: String,
         val version: Long? = null) : Event(version) {
     override fun assignVersion(version: Long): GameStarted =
             this.copy(version = version)
+
+    data class BasicCard(val suit: String, val rank: String)
+    data class Player(val identity: String, val cards: List<BasicCard>)
+
+    companion object Factory {
+        fun create(gameIdentity: GameIdentity,
+                   playersCards: Map<PlayerIdentity, List<Card>>,
+                   burracoDeckCards: List<Card>,
+                   mazzettoDeck1Cards: List<Card>,
+                   mazzettoDeck2Cards: List<Card>,
+                   discardPileCards: List<Card>,
+                   playerTurn: PlayerIdentity): GameStarted =
+                GameStarted(
+                        gameIdentity = gameIdentity.convertTo().toString(),
+                        players = playersCards.map { (playerIdentity, cards) -> Player(playerIdentity.convertTo().toString(), cards.map { card -> BasicCard(card.suit.javaClass.simpleName, card.rank.javaClass.simpleName) }) },
+                        burracoDeckCards = burracoDeckCards.map { card -> BasicCard(card.suit.javaClass.simpleName, card.rank.javaClass.simpleName) },
+                        mazzettoDeck1Cards = mazzettoDeck1Cards.map { card -> BasicCard(card.suit.javaClass.simpleName, card.rank.javaClass.simpleName) },
+                        mazzettoDeck2Cards = mazzettoDeck2Cards.map { card -> BasicCard(card.suit.javaClass.simpleName, card.rank.javaClass.simpleName) },
+                        discardPileCards = discardPileCards.map { card -> BasicCard(card.suit.javaClass.simpleName, card.rank.javaClass.simpleName) },
+                        playerIdentityTurn = playerTurn.convertTo().toString()
+                )
+    }
 }

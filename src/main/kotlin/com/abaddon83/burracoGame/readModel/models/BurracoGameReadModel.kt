@@ -2,6 +2,7 @@ package com.abaddon83.burracoGame.readModel.models
 
 import com.abaddon83.burracoGame.api.messages.CardModule
 import com.abaddon83.burracoGame.commandModel.models.BurracoGameCreated
+import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.GameStarted
 import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.PlayerAdded
 import com.abaddon83.burracoGame.readModel.ports.DocumentStorePort
 import com.abaddon83.utils.es.Event
@@ -20,7 +21,7 @@ data class BurracoGame(
         val players: List<BurracoPlayer>,
         val playerTurn: BurracoPlayer? = null,
         val numMazzettoAvailable: Int = 0,
-        val discardPile: List<CardModule>? = listOf()
+        val discardPile: List<Card>? = listOf()
 )
 
 class BurracoGameReadModel(private val burracoGameStore: DocumentStore<BurracoGame>) {
@@ -44,6 +45,16 @@ class BurracoGameProjection() : Handles<Event>, KoinComponent, WithLog() {
                 val updatedBurracoGame = burracoGame.copy( players = burracoGame.players.plus(event.getBurracoPlayer()))
                 burracoGameStore.save(event.gameIdentity,updatedBurracoGame)
             }
+            is GameStarted -> {
+                val burracoGame = checkNotNull(burracoGameStore.get(event.gameIdentity)){ errorMsg("Received event ${event::class.simpleName} but the game key ${event.gameIdentity} is not found")}
+                val updatedBurracoGame = burracoGame.copy(
+                        status = "Execution",
+                        playerTurn = BurracoPlayer(identity = UUID.fromString(event.playerIdentityTurn)),
+                        numMazzettoAvailable = 2,
+                        discardPile = event.discardPileCards.map { c -> Card(Suit.valueOf(c.suit), Rank.valueOf(c.rank))}
+                )
+                burracoGameStore.save(event.gameIdentity,updatedBurracoGame)
+            }
         }
     }
 
@@ -53,5 +64,7 @@ class BurracoGameProjection() : Handles<Event>, KoinComponent, WithLog() {
             players = listOf())
 
     private fun PlayerAdded.getBurracoPlayer(): BurracoPlayer = BurracoPlayer(identity = UUID.fromString(this.playerIdentity))
+
+
 
 }

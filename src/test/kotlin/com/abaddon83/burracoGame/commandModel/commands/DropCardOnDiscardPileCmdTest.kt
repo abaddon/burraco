@@ -83,7 +83,7 @@ class DropCardOnDiscardPileCmdTest: KoinTest {
             BurracoGameCreated.create(gameIdentity = gameIdentity),
             PlayerAdded.create(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
             PlayerAdded.create(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
-            GameStarted(
+            GameStarted.create(
                     gameIdentity = gameIdentity,
                     playersCards = playersCards,
                     burracoDeckCards = burracoDeckCards,

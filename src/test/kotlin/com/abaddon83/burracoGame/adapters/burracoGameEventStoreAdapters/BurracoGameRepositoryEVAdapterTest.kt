@@ -61,7 +61,7 @@ class BurracoGameRepositoryEVAdapterTest {
                 BurracoGameCreated(identity = gameIdentity.convertTo().toString()),
                 PlayerAdded.create(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
                 PlayerAdded.create(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
-                GameStarted(
+                GameStarted.create(
                         gameIdentity = gameIdentity,
                         playersCards = playersCards,
                         burracoDeckCards = burracoDeckCards,
