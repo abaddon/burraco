@@ -1,7 +1,5 @@
 # Burraco Card game
-![Kotlin CI](https://github.com/abaddon/burraco/workflows/Kotlin%20CI/badge.svg?branch=master_kotlin&event=push) [![codecov](https://codecov.io/gh/abaddon/burraco/branch/master_kotlin/graph/badge.svg?token=I5MUK1OLTQ)](https://codecov.io/gh/abaddon/burraco/branch/master_kotlin) 
-
-![Scala CI](https://github.com/abaddon/burraco/workflows/Scala%20CI/badge.svg?branch=master&event=push) [![codecov](https://codecov.io/gh/abaddon/burraco/branch/master/graph/badge.svg?token=I5MUK1OLTQ)](https://codecov.io/gh/abaddon/burraco) 
+![Kotlin CI](https://github.com/abaddon/burraco/workflows/Kotlin%20CI/badge.svg?branch=master&event=push) [![codecov](https://codecov.io/gh/abaddon/burraco/branch/master/graph/badge.svg?token=I5MUK1OLTQ)](https://codecov.io/gh/abaddon/burraco/branch/master)  
 
 ![Status](https://img.shields.io/static/v1?label=Status&message=Work%20In%20Progess&color=yellow)
 
