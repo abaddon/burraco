@@ -5,9 +5,9 @@ name: Kotlin CI
 
 on:
   push:
-    branches: [ master_kotlin ]
+    branches: [ master ]
   pull_request:
-    branches: [ master_kotlin ]
+    branches: [ master ]
 
 jobs:
   test:
