@@ -58,7 +58,7 @@ class BurracoGameRepositoryEVAdapterTest {
         val aggregate = BurracoGame(identity = gameIdentity)
 
         val events = listOf<Event>(
-                BurracoGameCreated(gameIdentity = gameIdentity),
+                BurracoGameCreated(identity = gameIdentity.convertTo().toString()),
                 PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
                 PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
                 GameStarted(

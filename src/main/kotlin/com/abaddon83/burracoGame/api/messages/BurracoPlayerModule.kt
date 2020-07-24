@@ -1,15 +1,17 @@
 package com.abaddon83.burracoGame.api.messages
 
-import com.abaddon83.burracoGame.commandModel.models.BurracoPlayer
+import com.abaddon83.burracoGame.readModel.models.BurracoPlayer
+import java.util.*
+
 
 data class BurracoPlayerModule(
-        val id: PlayerIdentityModule
+        val id: UUID
 ) {
 
     companion object Factory {
         fun from(player: BurracoPlayer): BurracoPlayerModule =
                 BurracoPlayerModule(
-                        id = PlayerIdentityModule.from(player.identity())
+                        id = player.identity
                 )
     }
 }

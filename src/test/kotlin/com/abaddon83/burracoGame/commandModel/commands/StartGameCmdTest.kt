@@ -62,7 +62,7 @@ class StartGameCmdTest: KoinTest {
     val playerIdentity2 = PlayerIdentity.create()
 
     val events = listOf<Event>(
-            BurracoGameCreated(gameIdentity = gameIdentity),
+            BurracoGameCreated.create(gameIdentity = gameIdentity),
             PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
             PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity2)
     )

@@ -52,7 +52,7 @@ class AddPlayerCmdTest: KoinTest {
     val aggregate = BurracoGame(identity = gameIdentity)
 
     val events = listOf<Event>(
-            BurracoGameCreated(gameIdentity = gameIdentity)
+            BurracoGameCreated.create(gameIdentity = gameIdentity)
     )
 
 

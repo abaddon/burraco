@@ -17,7 +17,7 @@ open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoo
     object TYPE : AggregateType {
         override fun toString() = "BurracoGame"
     }
-    override fun aggregateType(): com.abaddon83.utils.es.AggregateType = TYPE
+    override fun aggregateType(): AggregateType = TYPE
 
     override fun listOfPlayers(): List<BurracoPlayer> = players
 
@@ -31,13 +31,13 @@ open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoo
 
 
     private fun apply(event: BurracoGameCreated):BurracoGameWaitingPlayers {
-        return BurracoGameWaitingPlayers(event.gameIdentity,players = event.players)
+        return BurracoGameWaitingPlayers(GameIdentity.create(event.identity), listOf())
     }
 
     companion object Factory {
         fun create(gameIdentity: GameIdentity): BurracoGameWaitingPlayers {
             return BurracoGame(gameIdentity)
-                    .applyAndQueueEvent(BurracoGameCreated(gameIdentity = gameIdentity, players = listOf()))
+                    .applyAndQueueEvent(BurracoGameCreated.create(gameIdentity = gameIdentity))
         }
     }
 }
@@ -45,9 +45,13 @@ open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoo
 //Events
 
 data class BurracoGameCreated(
-        val gameIdentity: GameIdentity,
-        val players: List<BurracoPlayer> = listOf(),
+        val identity: String,
         val version: Long? = null) : Event(version) {
     override fun assignVersion(version: Long): BurracoGameCreated =
             this.copy(version = version)
+
+    companion object Factory{
+    fun create(gameIdentity: GameIdentity): BurracoGameCreated =
+            BurracoGameCreated(identity = gameIdentity.convertTo().toString())
+    }
 }

@@ -18,13 +18,13 @@ import java.util.*
 fun Routing.apiBurracoGames(commandController: BurracoGameCommandControllerPort, readModelController: BurracoGameReadModelControllerPort) {
 
     route("games/burraco/{gameId}") {
-//        get() {
-//            val gameIdentity = requireNotNull(GameIdentity.create(call.parameters["gameId"]!!)) { "PlayerIdentity ${call.parameters["gameId"] ?: "null"} missing or malformed" }
-//            val burracoGame = readModelController.findBurracoGameBy(gameIdentity)
-//                    ?: throw NoSuchElementException("BurracoGame with $gameIdentity not found")
-//
-//            call.respond(BurracoGameModule.from(burracoGame))
-//        }
+        get() {
+            val gameIdentity = requireNotNull(UUID.fromString(call.parameters["gameId"]!!)) { "PlayerIdentity ${call.parameters["gameId"] ?: "null"} missing or malformed" }
+            val burracoGame = readModelController.findBurracoGame(gameIdentity)
+                    ?: throw NoSuchElementException("BurracoGame with $gameIdentity not found")
+
+            call.respond(BurracoGameModule.from(burracoGame))
+        }
         route("join") {
             post {
                 val gameIdentity = requireNotNull(GameIdentity.create(call.parameters["gameId"]!!)) { "PlayerIdentity ${call.parameters["gameId"] ?: "null"} missing or malformed" }

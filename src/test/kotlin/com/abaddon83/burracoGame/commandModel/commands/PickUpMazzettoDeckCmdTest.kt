@@ -96,7 +96,7 @@ class PickUpMazzettoDeckCmdTest : KoinTest {
     val playersCards = mapOf<PlayerIdentity, List<Card>>(cardsPlayer1, cardsPlayer2)
 
     val events = listOf<Event>(
-            BurracoGameCreated(gameIdentity = gameIdentity),
+            BurracoGameCreated.create(gameIdentity = gameIdentity),
             PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
             PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
             GameStarted(
