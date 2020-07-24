@@ -2,6 +2,7 @@ package com.abaddon83.burracoGame.readModel.models
 
 import com.abaddon83.burracoGame.api.messages.CardModule
 import com.abaddon83.burracoGame.commandModel.models.BurracoGameCreated
+import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.PlayerAdded
 import com.abaddon83.burracoGame.readModel.ports.DocumentStorePort
 import com.abaddon83.utils.es.Event
 import com.abaddon83.utils.es.messageBus.Handles
@@ -38,6 +39,11 @@ class BurracoGameProjection() : Handles<Event>, KoinComponent, WithLog() {
                 check(burracoGameStore.get(event.identity)== null){errorMsg("The game identity with id: ${event.identity} already exist!! duplicated events??")}
                 burracoGameStore.save(event.identity,event.toBurracoGame())
             }
+            is PlayerAdded -> {
+                val burracoGame = checkNotNull(burracoGameStore.get(event.gameIdentity)){ errorMsg("Received event ${event::class.simpleName} but the game key ${event.gameIdentity} is not found")}
+                val updatedBurracoGame = burracoGame.copy( players = burracoGame.players.plus(event.getBurracoPlayer()))
+                burracoGameStore.save(event.gameIdentity,updatedBurracoGame)
+            }
         }
     }
 
@@ -45,5 +51,7 @@ class BurracoGameProjection() : Handles<Event>, KoinComponent, WithLog() {
             identity = UUID.fromString(this.identity),
             status = "WAITING",
             players = listOf())
+
+    private fun PlayerAdded.getBurracoPlayer(): BurracoPlayer = BurracoPlayer(identity = UUID.fromString(this.playerIdentity))
 
 }

@@ -59,8 +59,8 @@ class BurracoGameRepositoryEVAdapterTest {
 
         val events = listOf<Event>(
                 BurracoGameCreated(identity = gameIdentity.convertTo().toString()),
-                PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
-                PlayerAdded(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
+                PlayerAdded.create(gameIdentity = gameIdentity, playerIdentity = playerIdentity1),
+                PlayerAdded.create(gameIdentity = gameIdentity, playerIdentity = playerIdentity2),
                 GameStarted(
                         gameIdentity = gameIdentity,
                         playersCards = playersCards,
@@ -116,7 +116,7 @@ class BurracoGameRepositoryEVAdapterTest {
 //
 //        val playerIdentity1 = PlayerIdentity.create()
 //
-//        val event = PlayerAdded(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1))
+//        val event = PlayerAdded.create(gameIdentity = gameIdentity, burracoPlayer = PlayerNotAssigned(playerIdentity1))
 //
 //
 //        println(event.burracoPlayer.identity())
