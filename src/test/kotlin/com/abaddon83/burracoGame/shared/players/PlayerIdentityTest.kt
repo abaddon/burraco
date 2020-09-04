@@ -1,6 +1,6 @@
 package com.abaddon83.burracoGame.shared.players
 
-import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
+import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
 import org.junit.Test
 import java.util.*
 import kotlin.test.assertFailsWith

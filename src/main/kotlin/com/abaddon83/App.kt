@@ -3,12 +3,12 @@
  */
 package com.abaddon83
 
-import com.abaddon83.burracoGame.commandModel.ports.BurracoGameCommandControllerPort
+import com.abaddon83.burracoGame.writeModel.ports.CommandControllerPort
 import com.abaddon83.burracoGame.api.handleExceptions.errorsHandling
-import com.abaddon83.burracoGame.api.routes.apiBurracoGames
-import com.abaddon83.burracoGame.api.routes.apiGames
-import com.abaddon83.burracoGame.iocs.AppAdapters
-import com.abaddon83.burracoGame.readModel.ports.BurracoGameReadModelControllerPort
+import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.CommandControllerRestAdapter
+import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.commandApiBurracoGames
+import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemory
+import com.abaddon83.burracoGame.writeModel.ports.EventStore
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -20,8 +20,6 @@ import io.ktor.routing.Routing
 import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import org.koin.ktor.ext.Koin
-import org.koin.ktor.ext.inject
 
 //class App {
 //    val greeting: String
@@ -34,17 +32,18 @@ import org.koin.ktor.ext.inject
 //    println(App().greeting)
 //}
 
-fun Application.di() {
-    //DI setup
-    install(Koin) {
-        printLogger()
-        modules(AppAdapters)
-    }
-}
+//fun Application.di() {
+//    //DI setup
+//    install(Koin) {
+//        printLogger()
+//        modules(AppAdapters)
+//    }
+//}
 
 fun Application.main() {
-    val burracoGameCommandController: BurracoGameCommandControllerPort by inject()
-    val burracoGameReadModelController: BurracoGameReadModelControllerPort by inject()
+    val eventStore: EventStore = EventStoreInMemory()
+    val burracoGameCommandController: CommandControllerPort = CommandControllerRestAdapter(eventStore)
+    //val burracoGameReadModelController: BurracoGameReadModelControllerPort by inject()
 
     //HTTP
     install(DefaultHeaders)
@@ -53,7 +52,6 @@ fun Application.main() {
         jackson {
             configure(SerializationFeature.INDENT_OUTPUT, true)
             register(ContentType.Application.Json, JacksonConverter())
-
         }
     }
 
@@ -61,8 +59,9 @@ fun Application.main() {
         errorsHandling()
     }
     install(Routing) {
-        apiGames(burracoGameCommandController,burracoGameReadModelController)
-        apiBurracoGames(burracoGameCommandController,burracoGameReadModelController)
+        commandApiBurracoGames(burracoGameCommandController)
+        //apiGames(burracoGameCommandController,burracoGameReadModelController)
+        //apiBurracoGames(burracoGameCommandController,burracoGameReadModelController)
     }
 }
 

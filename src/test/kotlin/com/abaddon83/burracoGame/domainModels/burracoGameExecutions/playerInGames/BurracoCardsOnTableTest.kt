@@ -1,12 +1,12 @@
 package com.abaddon83.burracoGame.domainModels.burracoGameExecutions.playerInGames
 
-import com.abaddon83.burracoGame.commandModel.models.BurracoScale
-import com.abaddon83.burracoGame.commandModel.models.BurracoTris
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.BurracoCardsOnTable
-import com.abaddon83.burracoGame.commandModel.models.decks.Card
-import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
-import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
-import com.abaddon83.burracoGame.commandModel.models.decks.Suits
+import com.abaddon83.burracoGame.writeModel.models.BurracoScale
+import com.abaddon83.burracoGame.writeModel.models.BurracoTris
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.playerInGames.BurracoCardsOnTable
+import com.abaddon83.burracoGame.writeModel.models.decks.Card
+import com.abaddon83.burracoGame.writeModel.models.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.writeModel.models.decks.Ranks
+import com.abaddon83.burracoGame.writeModel.models.decks.Suits
 import org.junit.Test
 import kotlin.test.assertFailsWith
 

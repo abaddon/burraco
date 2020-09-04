@@ -1,8 +1,8 @@
 package com.abaddon83.burracoGame.readModel.queries
 
-import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
+import com.abaddon83.burracoGame.writeModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
 import com.abaddon83.burracoGame.readModel.ports.BurracoGameReadModelRepositoryPort
-import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
+import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 import com.abaddon83.utils.cqs.queries.Query
 import com.abaddon83.utils.cqs.queries.QueryHandler
 import kotlinx.coroutines.runBlocking

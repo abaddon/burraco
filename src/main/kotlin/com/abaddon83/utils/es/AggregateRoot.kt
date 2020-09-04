@@ -1,5 +1,6 @@
 package com.abaddon83.utils.es
 
+import com.abaddon83.burracoGame.writeModel.events.Event
 import com.abaddon83.utils.ddd.Entity
 import java.util.*
 
@@ -28,7 +29,17 @@ abstract class AggregateRoot<T>(): Entity<T>() {
         return updatedAggregate as A
     }
 
-    protected abstract fun applyEvent(event: Event): AggregateRoot<T>
+    fun <A: AggregateRoot<T>> applyAndQueueEvents(events: List<Event>): A {
+        log.debug("Applying ${events.size} events")
+
+        val updatedAggregate = events.fold( this, { agg, event  -> agg.applyEvent(event) as A })
+
+        log.debug("Queueing ${events.size} uncommitted changes events" )
+        updatedAggregate.uncommittedChanges.addAll(events)
+        return updatedAggregate  as A
+    }
+
+    abstract fun applyEvent(event: Event): AggregateRoot<T>
 
     fun <A: AggregateRoot<T>> loadFromHistory(aggregate: A, history: Iterable<Event>): A {
         log.debug("Reloading aggregate $aggregate state from history")

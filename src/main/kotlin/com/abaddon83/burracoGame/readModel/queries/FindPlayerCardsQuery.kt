@@ -1,9 +1,9 @@
 package com.abaddon83.burracoGame.readModel.queries
 
 import com.abaddon83.burracoGame.readModel.ports.BurracoGameReadModelRepositoryPort
-import com.abaddon83.burracoGame.commandModel.models.decks.Card
-import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
-import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
+import com.abaddon83.burracoGame.writeModel.models.decks.Card
+import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
+import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
 import com.abaddon83.utils.cqs.queries.Query
 import com.abaddon83.utils.cqs.queries.QueryHandler
 import com.abaddon83.utils.logs.WithLog

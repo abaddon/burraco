@@ -1,14 +1,14 @@
 package com.abaddon83.burracoGame.domainModels.burracoGameExecutions
 
-import com.abaddon83.burracoGame.commandModel.models.BurracoScale
-import com.abaddon83.burracoGame.commandModel.models.BurracoTris
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.BurracoCardsOnTable
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.PlayerInGame
-import com.abaddon83.burracoGame.commandModel.models.burracos.BurracoIdentity
-import com.abaddon83.burracoGame.commandModel.models.decks.Card
-import com.abaddon83.burracoGame.commandModel.models.decks.Ranks
-import com.abaddon83.burracoGame.commandModel.models.decks.Suits
-import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
+import com.abaddon83.burracoGame.writeModel.models.BurracoScale
+import com.abaddon83.burracoGame.writeModel.models.BurracoTris
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.playerInGames.BurracoCardsOnTable
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.playerInGames.PlayerInGame
+import com.abaddon83.burracoGame.writeModel.models.burracos.BurracoIdentity
+import com.abaddon83.burracoGame.writeModel.models.decks.Card
+import com.abaddon83.burracoGame.writeModel.models.decks.Ranks
+import com.abaddon83.burracoGame.writeModel.models.decks.Suits
+import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
 import com.abaddon83.burracoGame.testUtils.BurracoGameInitTurnTestFactory
 import org.junit.Test
 import kotlin.test.assertFailsWith

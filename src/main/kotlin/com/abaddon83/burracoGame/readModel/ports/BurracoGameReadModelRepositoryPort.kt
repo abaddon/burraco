@@ -1,13 +1,13 @@
 package com.abaddon83.burracoGame.readModel.ports
 
-import com.abaddon83.burracoGame.commandModel.models.BurracoGame
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecution
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnBeginning
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnEnd
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnExecution
-import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
-import com.abaddon83.burracoGame.commandModel.models.burracoGameendeds.BurracoGameEnded
-import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
+import com.abaddon83.burracoGame.writeModel.models.BurracoGame
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecution
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecutionTurnBeginning
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecutionTurnEnd
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecutionTurnExecution
+import com.abaddon83.burracoGame.writeModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
+import com.abaddon83.burracoGame.writeModel.models.burracoGameendeds.BurracoGameEnded
+import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 
 interface BurracoGameReadModelRepositoryPort {
     fun save(burracoGame: BurracoGameWaitingPlayers): BurracoGameWaitingPlayers

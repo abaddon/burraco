@@ -1,18 +1,18 @@
 package com.abaddon83.burracoGame.testUtils
 
-import com.abaddon83.burracoGame.commandModel.models.BurracoDeck
-import com.abaddon83.burracoGame.commandModel.models.DiscardPile
-import com.abaddon83.burracoGame.commandModel.models.MazzettoDeck
-import com.abaddon83.burracoGame.commandModel.models.MazzettoDecks
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnBeginning
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnEnd
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.BurracoGameExecutionTurnExecution
-import com.abaddon83.burracoGame.commandModel.models.burracoGameExecutions.playerInGames.PlayerInGame
-import com.abaddon83.burracoGame.commandModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
-import com.abaddon83.burracoGame.commandModel.models.decks.Card
-import com.abaddon83.burracoGame.commandModel.models.decks.ListCardsBuilder
-import com.abaddon83.burracoGame.commandModel.models.games.GameIdentity
-import com.abaddon83.burracoGame.commandModel.models.players.PlayerIdentity
+import com.abaddon83.burracoGame.writeModel.models.BurracoDeck
+import com.abaddon83.burracoGame.writeModel.models.DiscardPile
+import com.abaddon83.burracoGame.writeModel.models.MazzettoDeck
+import com.abaddon83.burracoGame.writeModel.models.MazzettoDecks
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecutionTurnBeginning
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecutionTurnEnd
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.BurracoGameExecutionTurnExecution
+import com.abaddon83.burracoGame.writeModel.models.burracoGameExecutions.playerInGames.PlayerInGame
+import com.abaddon83.burracoGame.writeModel.models.burracoGameWaitingPlayers.BurracoGameWaitingPlayers
+import com.abaddon83.burracoGame.writeModel.models.decks.Card
+import com.abaddon83.burracoGame.writeModel.models.decks.ListCardsBuilder
+import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
+import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
 
 data class BurracoGameInitTurnTestFactory(
         private val gameIdentity: GameIdentity,
@@ -60,7 +60,7 @@ data class BurracoGameInitTurnTestFactory(
                     players = when (singlePlayer) {
                         true -> listOf(player1)
                         false -> listOf(player1, player2)
-                    }
+                    }, burracoDeck = burracoDeckBuild()
             )
 
     fun burracoDeckBuild(): BurracoDeck {
