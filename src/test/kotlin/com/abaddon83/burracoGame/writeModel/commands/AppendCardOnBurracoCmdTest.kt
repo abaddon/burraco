@@ -1,7 +1,7 @@
 package com.abaddon83.burracoGame.writeModel.commands
 
 
-import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemory
+import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemoryAdapter
 import com.abaddon83.burracoGame.writeModel.events.*
 import com.abaddon83.burracoGame.writeModel.models.BurracoDeck
 import com.abaddon83.burracoGame.writeModel.models.BurracoGame
@@ -44,7 +44,7 @@ class AppendCardOnBurracoCmdTest {
     }
 
 
-    val eventStore = EventStoreInMemory()
+    val eventStore = EventStoreInMemoryAdapter()
     private val commandHandler = CommandHandler(eventStore)
     val deck = BurracoDeck.create()
     val gameIdentity: GameIdentity = GameIdentity.create()

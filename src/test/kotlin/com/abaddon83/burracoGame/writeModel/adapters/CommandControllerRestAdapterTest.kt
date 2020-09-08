@@ -1,7 +1,7 @@
 package com.abaddon83.burracoGame.writeModel.adapters
 
-import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.CommandControllerRestAdapter
-import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemory
+import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.WriteModelControllerRestAdapter
+import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemoryAdapter
 import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
 import com.abaddon83.utils.functionals.Invalid
@@ -17,6 +17,6 @@ class CommandControllerRestAdapterTest {
 
     }
 
-    val commandController = CommandControllerRestAdapter(eventStore = EventStoreInMemory())
+    val commandController = WriteModelControllerRestAdapter(eventStore = EventStoreInMemoryAdapter())
 
 }

@@ -3,11 +3,17 @@
  */
 package com.abaddon83
 
-import com.abaddon83.burracoGame.writeModel.ports.CommandControllerPort
+import com.abaddon83.burracoGame.writeModel.ports.WriteModelControllerPort
 import com.abaddon83.burracoGame.api.handleExceptions.errorsHandling
-import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.CommandControllerRestAdapter
+import com.abaddon83.burracoGame.localEventStore.EventStoreInMemory
+import com.abaddon83.burracoGame.readModel.adapters.EventListenerAdapter
+import com.abaddon83.burracoGame.readModel.adapters.ReadModelRepositoryInMemoryAdapter
+import com.abaddon83.burracoGame.readModel.adapters.readModelRestAdapter.ReadModelControllerAdapter
+import com.abaddon83.burracoGame.readModel.adapters.readModelRestAdapter.queryApiBurracoGames
+import com.abaddon83.burracoGame.readModel.ports.ReadModelControllerPort
+import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.WriteModelControllerRestAdapter
 import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.commandApiBurracoGames
-import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemory
+import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemoryAdapter
 import com.abaddon83.burracoGame.writeModel.ports.EventStore
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
@@ -41,9 +47,18 @@ import io.ktor.server.netty.Netty
 //}
 
 fun Application.main() {
-    val eventStore: EventStore = EventStoreInMemory()
-    val burracoGameCommandController: CommandControllerPort = CommandControllerRestAdapter(eventStore)
-    //val burracoGameReadModelController: BurracoGameReadModelControllerPort by inject()
+    //read model
+    val readModelRepository= ReadModelRepositoryInMemoryAdapter()
+    val readModelEventListener = EventListenerAdapter(readModelRepository)
+    EventStoreInMemory.addListener(readModelEventListener)
+    val burracoGameReadModelController: ReadModelControllerPort = ReadModelControllerAdapter(readModelRepository)
+
+    // write model
+    val eventStore: EventStore = EventStoreInMemoryAdapter() //eventStore adapter
+    val burracoGameWriteModelController: WriteModelControllerPort = WriteModelControllerRestAdapter(eventStore)
+
+
+
 
     //HTTP
     install(DefaultHeaders)
@@ -59,7 +74,8 @@ fun Application.main() {
         errorsHandling()
     }
     install(Routing) {
-        commandApiBurracoGames(burracoGameCommandController)
+        commandApiBurracoGames(burracoGameWriteModelController)
+        queryApiBurracoGames(burracoGameReadModelController)
         //apiGames(burracoGameCommandController,burracoGameReadModelController)
         //apiBurracoGames(burracoGameCommandController,burracoGameReadModelController)
     }

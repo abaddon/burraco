@@ -4,7 +4,7 @@ import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapte
 import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.bodyRequests.*
 import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
-import com.abaddon83.burracoGame.writeModel.ports.CommandControllerPort
+import com.abaddon83.burracoGame.writeModel.ports.WriteModelControllerPort
 import com.abaddon83.utils.functionals.Invalid
 import com.abaddon83.utils.functionals.Valid
 import io.ktor.application.*
@@ -13,7 +13,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Routing.commandApiBurracoGames(controller: CommandControllerPort) {
+fun Routing.commandApiBurracoGames(controller: WriteModelControllerPort) {
     route("games/burraco") {
         post {
             val request = call.receive<CreateGameRequest>()

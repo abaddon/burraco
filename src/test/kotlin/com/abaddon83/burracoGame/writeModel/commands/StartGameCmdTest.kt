@@ -1,6 +1,6 @@
 package com.abaddon83.burracoGame.writeModel.commands
 
-import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemory
+import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemoryAdapter
 import com.abaddon83.burracoGame.writeModel.events.BurracoGameCreated
 import com.abaddon83.burracoGame.writeModel.events.Event
 import com.abaddon83.burracoGame.writeModel.events.PlayerAdded
@@ -39,7 +39,7 @@ class StartGameCmdTest {
         assert(commandHandler.handle(command) is Invalid)
     }
 
-    val eventStore = EventStoreInMemory()
+    val eventStore = EventStoreInMemoryAdapter()
     private val commandHandler = CommandHandler(eventStore)
     val deck = BurracoDeck.create()
     val gameIdentity: GameIdentity = GameIdentity.create()

@@ -9,13 +9,13 @@ import com.abaddon83.burracoGame.writeModel.ports.EventStore
 import com.abaddon83.burracoGame.writeModel.models.decks.Card
 import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
-import com.abaddon83.burracoGame.writeModel.ports.CommandControllerPort
+import com.abaddon83.burracoGame.writeModel.ports.WriteModelControllerPort
 import com.abaddon83.burracoGame.writeModel.ports.Outcome
 import com.abaddon83.utils.functionals.Invalid
 import com.abaddon83.utils.functionals.Valid
 
 
-class CommandControllerRestAdapter(override val eventStore: EventStore) : CommandControllerPort {
+class WriteModelControllerRestAdapter(override val eventStore: EventStore) : WriteModelControllerPort {
 
     override fun createNewBurracoGame(gameIdentity: GameIdentity): Outcome {
         val cmdResult = commandHandle.handle(CreateNewBurracoGameCmd(gameIdentity))

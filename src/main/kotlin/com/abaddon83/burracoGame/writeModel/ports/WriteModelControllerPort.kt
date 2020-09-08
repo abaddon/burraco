@@ -11,7 +11,7 @@ import com.abaddon83.utils.functionals.Validated
 typealias Outcome = Validated<DomainError, OutcomeDetail>
 typealias OutcomeDetail = Map<String,String>
 
-interface CommandControllerPort {
+interface WriteModelControllerPort {
 
     val eventStore: EventStore
 
