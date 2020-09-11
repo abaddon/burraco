@@ -27,37 +27,18 @@ import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
-//class App {
-//    val greeting: String
-//        get() {
-//            return "Hello world."
-//        }
-//}
-//
-//fun main(args: Array<String>) {
-//    println(App().greeting)
-//}
-
-//fun Application.di() {
-//    //DI setup
-//    install(Koin) {
-//        printLogger()
-//        modules(AppAdapters)
-//    }
-//}
-
 fun Application.main() {
     //read model
     val readModelRepository= ReadModelRepositoryInMemoryAdapter()
     val readModelEventListener = EventListenerAdapter(readModelRepository)
-    EventStoreInMemory.addListener(readModelEventListener)
+    //EventStoreInMemory.addListener(readModelEventListener) //sync version
+    EventStoreInMemory.addListener(readModelEventListener.createActor())
+
     val burracoGameReadModelController: ReadModelControllerPort = ReadModelControllerAdapter(readModelRepository)
 
     // write model
     val eventStore: EventStore = EventStoreInMemoryAdapter() //eventStore adapter
     val burracoGameWriteModelController: WriteModelControllerPort = WriteModelControllerRestAdapter(eventStore)
-
-
 
 
     //HTTP
@@ -76,8 +57,6 @@ fun Application.main() {
     install(Routing) {
         commandApiBurracoGames(burracoGameWriteModelController)
         queryApiBurracoGames(burracoGameReadModelController)
-        //apiGames(burracoGameCommandController,burracoGameReadModelController)
-        //apiBurracoGames(burracoGameCommandController,burracoGameReadModelController)
     }
 }
 
