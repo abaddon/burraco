@@ -12,6 +12,7 @@ import com.abaddon83.burracoGame.writeModel.models.burracoGameWaitingPlayers.Bur
 import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 import com.abaddon83.utils.cqs.commands.Command
 import com.abaddon83.utils.functionals.*
+import com.abaddon83.utils.logs.WithLog
 import java.util.*
 
 typealias CmdResult = Validated<DomainError, Iterable<Event>>
@@ -20,7 +21,7 @@ typealias EsScope = EventStore.() -> CmdResult
 
 data class CommandMsg(val command: Command, val response: CmdResult) // a command with a result
 
-class CommandHandler(val eventStore: EventStore) {
+class CommandHandler(val eventStore: EventStore): WithLog("CommandHandler") {
 
     fun handle(cmd: Command): CmdResult =
             CommandMsg(cmd, Valid(listOf())).let {
@@ -46,7 +47,7 @@ class CommandHandler(val eventStore: EventStore) {
 
     private fun processPoly(c: Command): EsScope {
 
-        println("Processing ${c}")
+        log.debug("Processing ${c}")
 
         val cmdResult = when (c) {
             is CreateNewBurracoGameCmd -> execute(c)

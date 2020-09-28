@@ -6,7 +6,7 @@ import com.abaddon83.burracoGame.writeModel.models.decks.Card
 import com.abaddon83.burracoGame.writeModel.models.games.GameIdentity
 import com.abaddon83.burracoGame.writeModel.models.players.PlayerIdentity
 
-abstract class BurracoGameExecution(identity: GameIdentity) : BurracoGame(identity) {
+abstract class BurracoGameExecution(identity: GameIdentity, classname:String) : BurracoGame(identity, classname) {
     abstract override val players: List<PlayerInGame>
     protected abstract val playerTurn: PlayerIdentity
     protected abstract val burracoDeck: BurracoDeck

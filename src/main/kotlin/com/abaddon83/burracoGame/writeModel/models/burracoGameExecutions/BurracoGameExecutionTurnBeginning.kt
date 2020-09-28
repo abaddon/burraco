@@ -19,7 +19,7 @@ data class BurracoGameExecutionTurnBeginning private constructor(
         override val burracoDeck: BurracoDeck,
         override val mazzettoDecks: MazzettoDecks,
         override val discardPile: DiscardPile
-) : BurracoGameExecution(identity) {
+) : BurracoGameExecution(identity,"BurracoGameExecutionTurnBeginning") {
 
     companion object Factory {
         fun create(identity: GameIdentity, players: List<PlayerInGame>, burracoDeck: BurracoDeck, mazzettoDecks: MazzettoDecks, discardPile: DiscardPile, playerTurn: PlayerIdentity): BurracoGameExecutionTurnBeginning {

@@ -1,17 +1,30 @@
 package com.abaddon83.burracoGame.writeModel.models
 
 import com.abaddon83.burracoGame.writeModel.models.burracos.BurracoIdentity
+import com.abaddon83.burracoGame.writeModel.models.burracos.BurracoIdentityCustomSerializer
 import com.abaddon83.burracoGame.writeModel.models.burracos.Scale
 import com.abaddon83.burracoGame.writeModel.models.decks.Card
+import com.abaddon83.burracoGame.writeModel.models.decks.CardCustomSerializer
 import com.abaddon83.burracoGame.writeModel.models.decks.Ranks
 import com.abaddon83.burracoGame.writeModel.models.decks.Suits
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.*
 import kotlin.math.min
 
+@Serializable(with = BurracoScaleCustomSerializer::class)
 data class BurracoScale(
         override val identity: BurracoIdentity,
         override val suit: Suits.Suit,
         override val cards: List<Card>
-): Scale() {
+): Scale("BurracoScale") {
 
     override fun addCards(cardsToAdd: List<Card>): BurracoScale = this.copy(
                 cards = validateNewCards(cardsToAdd)
@@ -116,5 +129,39 @@ data class BurracoScale(
             return jollies
         }
 
+    }
+}
+
+
+object BurracoScaleCustomSerializer : KSerializer<BurracoScale> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("BurracoScale", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: BurracoScale) {
+        val scaleString = Json.encodeToJsonElement(value.let { scale ->
+            mapOf(
+                    "identity" to Json.encodeToJsonElement(BurracoIdentityCustomSerializer,scale.identity()),
+                    "cards" to JsonArray(scale.showCards().map { card ->
+                        Json.encodeToJsonElement(CardCustomSerializer,card)
+                    }),
+                    "suit" to Json.encodeToJsonElement(scale.showSuit() .javaClass.simpleName),
+
+                    )
+        })
+        encoder.encodeString(scaleString.toString())
+    }
+
+    override fun deserialize(decoder: Decoder): BurracoScale {
+        val scaleJson = Json.decodeFromString<JsonElement>(decoder.decodeString())
+        return scaleJson.let { scale ->
+            val identity = Json.decodeFromJsonElement<BurracoIdentity>(BurracoIdentityCustomSerializer,scale.jsonObject.getValue("identity"))
+
+            val cards = (scale.jsonObject.getValue("cards").jsonArray.map { jsonElement ->
+                Json.decodeFromJsonElement<Card>(CardCustomSerializer,jsonElement)
+            }).toList()
+
+            val suit = Suits.valueOf(Json.decodeFromJsonElement<String>(scale.jsonObject.getValue("suit")))
+
+            BurracoScale(identity, suit, cards)
+        }
     }
 }

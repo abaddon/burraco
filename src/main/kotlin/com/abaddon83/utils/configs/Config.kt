@@ -6,7 +6,7 @@ import java.io.FileInputStream
 import java.util.*
 
 
-object Config: WithLog() {
+object Config: WithLog("Config") {
     private const val localPropertyPath: String = "./local.properties"
     private val localProperties = Properties()
 

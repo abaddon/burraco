@@ -4,7 +4,7 @@ import com.abaddon83.burracoGame.writeModel.models.decks.Card
 import com.abaddon83.burracoGame.writeModel.models.decks.Deck
 import com.abaddon83.utils.logs.WithLog
 
-data class DiscardPile private constructor(override val cards: MutableList<Card>): Deck,WithLog() {
+data class DiscardPile private constructor(override val cards: MutableList<Card>): Deck,WithLog("DiscardPile") {
 
     override fun grabAllCards(): List<Card> {
         check(cards.size >0){warnMsg("The DiscardPile is empty, you can't grab a card from here")}

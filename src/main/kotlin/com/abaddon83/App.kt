@@ -7,6 +7,7 @@ import com.abaddon83.burracoGame.writeModel.ports.WriteModelControllerPort
 import com.abaddon83.burracoGame.api.handleExceptions.errorsHandling
 import com.abaddon83.burracoGame.localEventStore.EventStoreInMemory
 import com.abaddon83.burracoGame.readModel.adapters.EventListenerAdapter
+import com.abaddon83.burracoGame.readModel.adapters.EventListenerRabbitmqAdapter
 import com.abaddon83.burracoGame.readModel.adapters.ReadModelRepositoryInMemoryAdapter
 import com.abaddon83.burracoGame.readModel.adapters.readModelRestAdapter.ReadModelControllerAdapter
 import com.abaddon83.burracoGame.readModel.adapters.readModelRestAdapter.queryApiBurracoGames
@@ -14,30 +15,39 @@ import com.abaddon83.burracoGame.readModel.ports.ReadModelControllerPort
 import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.WriteModelControllerRestAdapter
 import com.abaddon83.burracoGame.writeModel.adapters.commandControllerRestAdapters.commandApiBurracoGames
 import com.abaddon83.burracoGame.writeModel.adapters.eventStoreInMemories.EventStoreInMemoryAdapter
+import com.abaddon83.burracoGame.writeModel.adapters.eventStoreRabbitmq.EventStoreRabbitmqAdapter
 import com.abaddon83.burracoGame.writeModel.ports.EventStore
+import com.abaddon83.utils.rabbitmq.RabbitMqClient
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.*
 import io.ktor.http.ContentType
-import io.ktor.jackson.JacksonConverter
-import io.ktor.jackson.jackson
+import io.ktor.jackson.*
 import io.ktor.routing.Routing
 import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import kotlinx.serialization.modules.SerializersModule
 
 fun Application.main() {
     //read model
     val readModelRepository= ReadModelRepositoryInMemoryAdapter()
-    val readModelEventListener = EventListenerAdapter(readModelRepository)
+    //RABBITMQ version
+    val readModelEventListener = EventListenerRabbitmqAdapter(readModelRepository);
+    RabbitMqClient.addListener("burraco","readModel",readModelEventListener.deliverCallback,readModelEventListener.cancelCallback);
+
+    //IN MEMORY VERSION
+    //val readModelEventListener = EventListenerAdapter(readModelRepository)
     //EventStoreInMemory.addListener(readModelEventListener) //sync version
-    EventStoreInMemory.addListener(readModelEventListener.createActor())
+    //EventStoreInMemory.addListener(readModelEventListener.createActor())
 
     val burracoGameReadModelController: ReadModelControllerPort = ReadModelControllerAdapter(readModelRepository)
 
     // write model
-    val eventStore: EventStore = EventStoreInMemoryAdapter() //eventStore adapter
+    //val eventStore: EventStore = EventStoreInMemoryAdapter() //eventStore adapter
+    val eventStore: EventStore = EventStoreRabbitmqAdapter() //eventStore adapter with RabbitMQ
+
     val burracoGameWriteModelController: WriteModelControllerPort = WriteModelControllerRestAdapter(eventStore)
 
 
@@ -58,6 +68,7 @@ fun Application.main() {
         commandApiBurracoGames(burracoGameWriteModelController)
         queryApiBurracoGames(burracoGameReadModelController)
     }
+
 }
 
 fun main(args: Array<String>) {

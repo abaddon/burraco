@@ -12,7 +12,7 @@ import com.abaddon83.utils.es.UnsupportedEventException
 data class BurracoGameEnded(
         override val identity: GameIdentity,
         override val players: List<BurracoPlayer>,
-        val mazzettoMissed: Boolean) : BurracoGame(identity) {
+        val mazzettoMissed: Boolean) : BurracoGame(identity,"BurracoGameEnded") {
 
     override fun applyEvent(event: Event): BurracoGameEnded {
         log.info("apply event: ${event::class.simpleName.toString()}")

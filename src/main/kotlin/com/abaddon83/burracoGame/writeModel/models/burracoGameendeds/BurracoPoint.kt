@@ -7,7 +7,7 @@ import com.abaddon83.burracoGame.writeModel.models.decks.Card
 data class BurracoPoint private constructor(
         override val identity: BurracoIdentity,
         override val cards: List<Card>
-): Burraco() {
+): Burraco("BurracoPoint") {
     constructor(burraco: Burraco): this(burraco.identity(),burraco.showCards())
 
 }

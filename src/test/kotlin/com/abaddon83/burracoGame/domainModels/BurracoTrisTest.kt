@@ -1,11 +1,16 @@
 package com.abaddon83.burracoGame.domainModels
 
 import com.abaddon83.burracoGame.writeModel.models.BurracoTris
+import com.abaddon83.burracoGame.writeModel.models.BurracoTrisCustomSerializer
 import com.abaddon83.burracoGame.writeModel.models.decks.Card
 import com.abaddon83.burracoGame.writeModel.models.decks.ListCardsBuilder
 import com.abaddon83.burracoGame.writeModel.models.decks.Ranks
 import com.abaddon83.burracoGame.writeModel.models.decks.Suits
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class BurracoTrisTest {
@@ -200,6 +205,20 @@ class BurracoTrisTest {
         assertFailsWith(IllegalStateException::class){
             burracoTris.addCards(cards)
         }
+    }
+
+    @Test
+    fun `given a tris when I serialise it, then I should have the same tris deserialized`() {
+        val burracoTrisRank = Ranks.Five
+        val burracoTrisSize = 3
+
+        val burracoTris = createABurracoTrisWith(burracoTrisRank, burracoTrisSize)
+
+        val jsonString = Json.encodeToString(BurracoTrisCustomSerializer,burracoTris);
+        val deserializedTris = Json.decodeFromString<BurracoTris>(BurracoTrisCustomSerializer,jsonString)
+        assertEquals(burracoTris.identity(),deserializedTris.identity())
+        assertEquals(burracoTris.showCards(),deserializedTris.showCards())
+        assertEquals(burracoTris.showRank(),deserializedTris.showRank())
     }
 
     //TODO missing test related to the definition of a Burraco

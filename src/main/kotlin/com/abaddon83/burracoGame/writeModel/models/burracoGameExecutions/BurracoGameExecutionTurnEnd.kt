@@ -19,7 +19,7 @@ data class BurracoGameExecutionTurnEnd private constructor(
         override val mazzettoDecks: MazzettoDecks,
         override val discardPile: DiscardPile,
         override val identity: GameIdentity
-) : BurracoGameExecution(identity) {
+) : BurracoGameExecution(identity,"BurracoGameExecutionTurnEnd") {
 
 
     override fun applyEvent(event: Event): BurracoGame {

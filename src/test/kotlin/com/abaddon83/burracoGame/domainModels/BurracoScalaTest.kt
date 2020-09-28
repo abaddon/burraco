@@ -1,10 +1,13 @@
 package com.abaddon83.burracoGame.domainModels
 
 import com.abaddon83.burracoGame.writeModel.models.BurracoScale
+import com.abaddon83.burracoGame.writeModel.models.BurracoScaleCustomSerializer
 import com.abaddon83.burracoGame.writeModel.models.decks.Card
 import com.abaddon83.burracoGame.writeModel.models.decks.Ranks
 import com.abaddon83.burracoGame.writeModel.models.decks.Suits
+import kotlinx.serialization.json.Json
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class BurracoScalaTest {
@@ -404,6 +407,24 @@ class BurracoScalaTest {
         assertFailsWith(AssertionError::class) {
             scale.addCards(cardToAdd)
         }
+    }
+
+    @Test
+    fun `given a scale when I serialise it, then I should have the same scale deserialized`() {
+        val cards = listOf(
+                Card(Suits.Heart, Ranks.King),
+                Card(Suits.Heart, Ranks.Queen),
+                Card(Suits.Heart, Ranks.Jack),
+                Card(Suits.Heart, Ranks.Ten),
+                Card(Suits.Heart, Ranks.Nine)
+        ).shuffled()
+        val scale = BurracoScale.create(cards)
+
+        val jsonString = Json.encodeToString(BurracoScaleCustomSerializer,scale);
+        val deserializedScale = Json.decodeFromString<BurracoScale>(BurracoScaleCustomSerializer,jsonString)
+        assertEquals(scale.identity(),deserializedScale.identity())
+        assertEquals(scale.showCards(),deserializedScale.showCards())
+        assertEquals(scale.showSuit(),deserializedScale.showSuit())
     }
 
 }

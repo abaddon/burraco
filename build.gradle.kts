@@ -4,13 +4,16 @@
  * This generated file contains a sample Kotlin application project to get you started.
  */
 
+
+
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-
+    kotlin("jvm") version "1.4.10" // or kotlin("multiplatform") or any other kotlin plugin
+    kotlin("plugin.serialization") version "1.4.10"
     // Apply the application plugin to add support for building a CLI application.
     application
     jacoco
+
 
 }
 
@@ -21,18 +24,21 @@ repositories {
     jcenter()
 }
 
-val kotlinVersion="1.3.7"
+val kotlinVersion="1.4.10"
 val ktorVersion = "1.3.2"
 val koinVersion = "2.1.6"
 val logbackVersion = "1.2.3"
 val exposedVersion = "0.24.1"
+val rabbitMqClientVersion = "5.9.0"
 
 dependencies {
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
     // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(kotlin("stdlib", org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION)) // or "stdlib-jdk8"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2") // JVM dependency
+
 
     // Use coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
@@ -63,7 +69,7 @@ dependencies {
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${kotlinVersion}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.9")
 
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
@@ -74,6 +80,11 @@ dependencies {
     //Asynchronous Web Framework
     testImplementation("io.ktor:ktor-server-test-host:${ktorVersion}")
     implementation(kotlin("script-runtime"))
+
+    //RabbitMQ
+    implementation("com.rabbitmq:amqp-client:${rabbitMqClientVersion}")
+
+
 
 }
 

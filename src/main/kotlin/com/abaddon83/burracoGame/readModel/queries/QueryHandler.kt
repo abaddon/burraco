@@ -8,7 +8,7 @@ data class QueryMsg(val query: Query, val response: List<ReadEntity>)
 
 
 
-class QueryHandler(readModelRepository: ReadModelRepositoryPort): WithLog() {
+class QueryHandler(readModelRepository: ReadModelRepositoryPort): WithLog("QueryHandler") {
 
     val repository = readModelRepository
 

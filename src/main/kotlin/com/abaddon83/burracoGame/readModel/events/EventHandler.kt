@@ -5,7 +5,7 @@ import com.abaddon83.burracoGame.readModel.ports.ReadModelRepositoryPort
 import com.abaddon83.burracoGame.writeModel.events.*
 import com.abaddon83.utils.logs.WithLog
 
-class EventHandler(readModelRepository: ReadModelRepositoryPort): WithLog() {
+class EventHandler(readModelRepository: ReadModelRepositoryPort): WithLog("EventHandler") {
 
     val repository = readModelRepository
 
@@ -14,23 +14,26 @@ class EventHandler(readModelRepository: ReadModelRepositoryPort): WithLog() {
             is BurracoGameEvent -> when (e) {
 
                 is BurracoGameCreated ->  {
-                    log.info("Event loaded in the read model")
+                    log.info("Event ${e.javaClass.simpleName} loaded in the read model")
                     repository.save(ReadBurracoGame(identity = e.key(), status = "Waiting players"))
 
                 }
                 is PlayerAdded -> {
+                    log.info("Event ${e.javaClass.simpleName} loaded in the read model")
                     val item = repository.get(e.key())
                     item?.copy(status = "Waiting players")?.let {
                         repository.save(it)
                     }
                 }
                 is GameStarted ->{
+                    log.info("Event ${e.javaClass.simpleName} loaded in the read model")
                     val item = repository.get(e.key())
                     item?.copy(status = "Game Started")?.let {
                         repository.save(it)
                     }
                 }
                 is CardPickedFromDeck -> {
+                    log.info("Event ${e.javaClass.simpleName} loaded in the read model")
                     val item = repository.get(e.key())
                     item?.copy(status = "Game Started")?.let {
                         repository.save(it)

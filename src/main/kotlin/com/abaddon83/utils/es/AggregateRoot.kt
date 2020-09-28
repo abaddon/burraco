@@ -2,12 +2,13 @@ package com.abaddon83.utils.es
 
 import com.abaddon83.burracoGame.writeModel.events.Event
 import com.abaddon83.utils.ddd.Entity
+import javassist.bytecode.stackmap.TypeData
 import java.util.*
 
 interface AggregateType
 
 
-abstract class AggregateRoot<T>(): Entity<T>() {
+abstract class AggregateRoot<T>(className: String): Entity<T>(className) {
 
     abstract fun aggregateType(): AggregateType
 

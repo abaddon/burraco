@@ -15,7 +15,7 @@ data class PlayerInGame constructor(
         private val cardsOnTable: BurracoCardsOnTable,
         private val mazzettoTaken: Boolean = false
 
-) : BurracoPlayer() {
+) : BurracoPlayer("PlayerInGame") {
 
     fun isMazzettoTaken(): Boolean = mazzettoTaken
 

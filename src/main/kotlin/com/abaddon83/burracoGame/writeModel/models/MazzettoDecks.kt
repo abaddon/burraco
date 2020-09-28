@@ -3,7 +3,7 @@ package com.abaddon83.burracoGame.writeModel.models
 import com.abaddon83.utils.logs.WithLog
 
 
-data class MazzettoDecks private constructor(val list: List<MazzettoDeck>): WithLog() {
+data class MazzettoDecks private constructor(val list: List<MazzettoDeck>): WithLog("MazzettoDecks") {
 
     fun firstMazzettoAvailable(): MazzettoDeck {
         check(list.isNotEmpty()){ warnMsg("Mazzetto list empty, all Mazzetto taken")}

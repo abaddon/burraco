@@ -11,7 +11,7 @@ data class PlayerScore private constructor(
         val winner: Boolean,
         val burracoList: List<BurracoPoint>,
         val remainedCards: List<Card>
-): BurracoPlayer() {
+): BurracoPlayer("PlayerScore") {
 
     companion object Factory{
         fun create(player: PlayerInGame, winner: Boolean): PlayerScore =

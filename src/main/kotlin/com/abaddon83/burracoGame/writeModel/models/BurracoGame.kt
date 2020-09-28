@@ -9,7 +9,8 @@ import com.abaddon83.utils.es.AggregateRoot
 import com.abaddon83.utils.es.AggregateType
 import com.abaddon83.utils.es.UnsupportedEventException
 
-open class BurracoGame(override val identity: GameIdentity) : Game, AggregateRoot<GameIdentity>() {
+open class BurracoGame(override val identity: GameIdentity, className:String) : Game, AggregateRoot<GameIdentity>(className) {
+    constructor(identity: GameIdentity): this(identity,"BurracoGame")
     override val maxPlayers: Int = 4
     override val minPlayers: Int = 2
     override val totalCardsRequired: Int = 108

@@ -4,7 +4,7 @@ import com.abaddon83.burracoGame.writeModel.models.decks.Card
 import com.abaddon83.utils.ddd.Entity
 
 
-abstract class Burraco : Entity<BurracoIdentity>() {
+abstract class Burraco(className: String) : Entity<BurracoIdentity>(className) {
 
     protected abstract val cards: List<Card>
 

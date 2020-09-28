@@ -14,7 +14,7 @@ import com.abaddon83.utils.es.UnsupportedEventException
 data class BurracoGameWaitingPlayers constructor(
         override val identity: GameIdentity,
         override val players: List<BurracoPlayer>,
-        val burracoDeck: BurracoDeck) : BurracoGame(identity) {
+        val burracoDeck: BurracoDeck) : BurracoGame(identity,"BurracoGameWaitingPlayers") {
 
     fun addPlayer(player: BurracoPlayer): BurracoGameWaitingPlayers {
         check(players.size < maxPlayers) {

@@ -3,8 +3,10 @@ package com.abaddon83.utils.logs
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-open class WithLog {
-    protected val log: Logger = LoggerFactory.getLogger("com.abaddon83")
+open class WithLog(className: String) {
+    constructor(): this("com.abaddon83")
+
+    protected val log: Logger = LoggerFactory.getLogger(className)
 
     fun errorMsg(error: String): String{
         log.error(error)
