@@ -23,7 +23,6 @@ data class BurracoGameEnded(
         }
     }
 
-
     companion object Factory {
         fun create(identity: GameIdentity, players: List<PlayerInGame>, pozzettos: MazzettoDecks, playerTurn: PlayerIdentity): BurracoGameEnded =
             BurracoGameEnded(
@@ -36,9 +35,7 @@ data class BurracoGameEnded(
                 players.map { p ->
                     PlayerScore.create(p, p.identity() == winner)
                 }
-
     }
-
 }
 
 

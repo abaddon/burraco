@@ -1,5 +1,6 @@
 package com.abaddon83.utils.rabbitmq
 
+import com.abaddon83.utils.configs.Config
 import com.rabbitmq.client.*
 import java.nio.charset.StandardCharsets
 
@@ -12,11 +13,11 @@ object RabbitMqClient {
         if (connection != null && connection.isOpen) {
             return connection;
         }
-        factory.setUsername("guest");
-        factory.setPassword("guest");
-        factory.setVirtualHost("/");
-        factory.setHost("localhost");
-        factory.setPort(5672);
+        factory.setUsername(Config.getProperty("rabbitmq.client.username"));
+        factory.setPassword(Config.getProperty("rabbitmq.client.password"));
+        factory.setVirtualHost(Config.getProperty("rabbitmq.client.virtualhost"));
+        factory.setHost(Config.getProperty("rabbitmq.client.host"));
+        Config.getProperty("rabbitmq.client.port")?.let { factory.setPort(it.toInt()) }
 
         return factory.newConnection();
     }
@@ -39,13 +40,9 @@ object RabbitMqClient {
         )
     }
 
-    fun addListener(queueName: String, consumerTag: String, deliverCallback: DeliverCallback, cancelCallback: CancelCallback ){
+    fun addListener(queueName: String, consumerTag: String, deliverCallback: DeliverCallback, cancelCallback: CancelCallback) {
         getChannel().basicConsume(queueName, true, consumerTag, deliverCallback, cancelCallback)
     }
-
-
-
-
 
 
 }
