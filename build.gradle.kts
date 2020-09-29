@@ -13,6 +13,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application.
     application
     jacoco
+    maven
 
 
 }
@@ -111,5 +112,26 @@ tasks.jacocoTestReport {
 tasks.test {
     finalizedBy(tasks.jacocoTestReport)
 
+}
+
+task("writeNewPom") {
+    doLast {
+        maven.pom {
+            withGroovyBuilder {
+                "project" {
+                    setProperty("groupId", "com.abaddon83")
+                    setProperty("inceptionYear", "2020")
+                    setProperty("version","0.0.1")
+                    "licenses" {
+                        "license" {
+                            setProperty("name", "The Apache Software License, Version 2.0")
+                            setProperty("url", "http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            setProperty("distribution", "repo")
+                        }
+                    }
+                }
+            }
+        }.writeTo("./pom.xml")
+    }
 }
 
