@@ -131,6 +131,7 @@ task("writeNewPom") {
                     }
                 }
             }
+        //}.writeTo("$buildDir/pom.xml")
         }.writeTo("./pom.xml")
     }
 }
