@@ -26,7 +26,7 @@ repositories {
 }
 
 val kotlinVersion="1.4.10"
-val ktorVersion = "1.3.2"
+val ktorVersion = "1.4.1"
 val koinVersion = "2.1.6"
 val logbackVersion = "1.2.3"
 val exposedVersion = "0.24.1"
