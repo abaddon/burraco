@@ -30,7 +30,7 @@ val ktorVersion = "1.3.2"
 val koinVersion = "2.1.6"
 val logbackVersion = "1.2.3"
 val exposedVersion = "0.24.1"
-val rabbitMqClientVersion = "5.9.0"
+val rabbitMqClientVersion = "5.12.0"
 
 dependencies {
     // Align versions of all Kotlin components
