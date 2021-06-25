@@ -8,7 +8,7 @@
 
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    kotlin("jvm") version "1.4.10" // or kotlin("multiplatform") or any other kotlin plugin
+    kotlin("jvm") version "1.5.20" // or kotlin("multiplatform") or any other kotlin plugin
     kotlin("plugin.serialization") version "1.4.10"
     // Apply the application plugin to add support for building a CLI application.
     application
