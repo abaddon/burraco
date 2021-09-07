@@ -38,7 +38,7 @@ dependencies {
 
     // Use the Kotlin JDK 8 standard library.
     implementation(kotlin("stdlib", org.jetbrains.kotlin.config.KotlinCompilerVersion.VERSION)) // or "stdlib-jdk8"
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2") // JVM dependency
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0-RC") // JVM dependency
 
 
     // Use coroutines
